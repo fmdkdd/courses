@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>basics.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>basics.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        <h2 id="pr-liminaires">Préliminaires</h2>
+<p>Vous pouvez effectuer tous les exercices de ce TP dans la console
+interactive de votre navigateur.  Pour la faire apparaître sous
+Chrome, le raccourci est <code>Ctrl+Maj+j</code>, ou bien Menu -&gt; Outils -&gt;
+Console JavaScript.</p>
+<p>Dans cette console vous pouvez taper du code JavaScript et
+l&#39;envoyer à l&#39;interpréteur (touche <code>Entrée</code>) qui vous affiche la
+valeur de retour de votre expression.</p>
+<p>Pour écrire une expression sur plusieurs lignes, utilisez
+<code>Shift+Entrée</code>.</p>
+<p>Test rapide, combien vaut cette expression ?</p>
+
+        
+          <div class='highlight'><pre><span class="number">1</span> * <span class="number">2.12</span> + <span class="number">3</span> / <span class="number">4e3</span> % <span class="number">5</span> + <span class="string">'6'</span>;</pre></div>
+        
+      
+        
+        <h2 id="tour-de-chauffe">Tour de chauffe</h2>
+<p>Le premier mot clé à maîtriser est <code>var</code> pour déclarer une
+variable.</p>
+
+        
+          <div class='highlight'><pre><span class="keyword">var</span> x = <span class="number">1</span>;</pre></div>
+        
+      
+        
+        <p><strong>Déclarez</strong> plusieurs variables dans la console, et assignez-leur
+les valeurs qui vous chantent.  Des nombres, des chaînes de
+caractères, d&#39;autres variables ...
+Vous pouvez aussi les déclarer puis changer leur valeur dans un
+second temps.</p>
+<h2 id="func-fu">Func-fu</h2>
+<p>Les variables c&#39;est bien utile, mais les fonctions encore plus !</p>
+
+        
+          <div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">square</span><span class="params">(x)</span> {</span>
+	<span class="keyword">return</span> x*x;
+}
+
+square(<span class="number">12</span>);</pre></div>
+        
+      
+        
+        <p><strong>Écrivez</strong> les fonctions suivantes, puis <strong>testez</strong>-les.</p>
+<ul>
+<li>x → x³</li>
+<li>n → Fib(n)</li>
+</ul>
+<p>Encore plus utile qu&#39;une fonction : une fonction d&#39;ordre supérieur.
+<strong>Complétez</strong> la définition de la fonction <code>compose</code> qui implémente
+<code>f ∘ g</code> (on suppose que <code>g</code> prend un seul argument).</p>
+
+        
+          <div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">compose</span><span class="params">(f, g)</span> {</span>
+
+}
+
+compose(square, fibo)(<span class="number">8</span>) == square(fibo(<span class="number">8</span>));</pre></div>
+        
+      
+        
+        <h2 id="-t-a-b-l-e-a-u-x-">[T,a,b,l,e,a,u,x]</h2>
+<p>Voici un tableau vide.</p>
+
+        
+          <div class='highlight'><pre><span class="keyword">var</span> array = [];</pre></div>
+        
+      
+        
+        <p>On peut s&#39;en servir comme une liste, et y ajouter des éléments (par
+la queue).</p>
+
+        
+          <div class='highlight'><pre>array.push(<span class="number">1</span>);
+array.push(<span class="number">2</span>);
+array.push(<span class="number">3</span>);</pre></div>
+        
+      
+        
+        <p>... et en retirer.</p>
+
+        
+          <div class='highlight'><pre>array.pop();
+array.pop();</pre></div>
+        
+      
+        
+        <p>Son attribut <code>length</code> reflète toujours sa longueur.</p>
+
+        
+          <div class='highlight'><pre>array.length == <span class="number">1</span>;</pre></div>
+        
+      
+        
+        <p>La fonction <code>accum</code> prend comme argument une fonction <code>fun</code> et un
+entier <code>n</code>, et renvoie le tableau <code>[fun(0), fun(1), ..., fun(n)]</code>.
+<strong>Écrivez</strong> cette fonction.</p>
+
+        
+          <div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">accum</span><span class="params">(fun, n)</span> {</span>
+
+}
+
+accum(compose(square, fibo), <span class="number">10</span>);</pre></div>
+        
+      
+        
+        <h2 id="-o-b-j-e-t-s-">{{{O}{{b}}}{j}{{e,t}{s}}}</h2>
+<p>Lorsqu&#39;un tableau ne suffit plus à modéliser vos besoin, il y a
+l&#39;objet.  Un objet associe des identifiants à des valeurs.  Les
+valeurs peuvent être des nombres, chaînes, variables, tableaux,
+mais aussi des fonctions, et bien sûr des objets.</p>
+
+        
+          <div class='highlight'><pre><span class="keyword">var</span> truth = {
+	Ce: <span class="string">'premier'</span>,
+	cours: {de: <span class="string">'JavaScript'</span>},
+	est: [<span class="string">'vraiment'</span>, <span class="string">'trop'</span>],
+	une: <span class="function"><span class="keyword">function</span><span class="params">(wait_for_it)</span> {</span>
+		<span class="keyword">return</span> wait_for_it;
+	},
+	puissance: <span class="number">9000</span>
+};</pre></div>
+        
+      
+        
+        <p>Un objet peut être vu comme un tableau associatif, ou <em>map</em> en
+anglais; une collection de pairs <code>(clé, valeur)</code>.</p>
+
+        
+          <div class='highlight'><pre><span class="keyword">var</span> heroes = {
+	<span class="string">'Tintin'</span>: {
+		creator: <span class="string">'Hergé'</span>,
+		likes: <span class="string">'Milou'</span>
+	},
+	<span class="string">'Scrooge McDuck'</span>: {
+		creator: <span class="string">'Carl Barks'</span>,
+		likes: <span class="string">'Money'</span>
+	},
+	<span class="string">'Batman'</span>: {
+		creator: [<span class="string">'Bob Kane'</span>, <span class="string">'Bill Finger'</span>],
+		likes: <span class="string">'Robin'</span>
+	}
+};</pre></div>
+        
+      
+        
+        <p>Une fonction peut référencer l&#39;objet sur lequel elle est appelée
+avec le mot-clé <code>this</code>.</p>
+
+        
+          <div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">getFact</span><span class="params">(name, fact)</span> {</span>
+	<span class="keyword">return</span> <span class="keyword">this</span>[name][fact];
+}
+
+heroes.getFact = getFact;
+heroes.getFact(<span class="string">'Batman'</span>, <span class="string">'likes'</span>) == <span class="string">'Robin'</span>;</pre></div>
+        
+      
+        
+        <p><strong>Écrivez</strong> la fonction <code>setFact</code>, ajoutez-la à l&#39;objet
+<code>heroes</code> et testez-la.</p>
+
+        
+          <div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">setFact</span><span class="params">(name, fact, newFact)</span> {</span>
+
+}</pre></div>
+        
+      
+        
+        <h2 id="bonus">Bonus</h2>
+<p>Félicitations !  Vous êtes arrivés au bout de ce premier TP.
+Quelques questions à creuser avant de partir :</p>
+<ul>
+<li>Avez-vous écrit la fonction qui calcule les nombres de Fibonacci
+récursivement <em>et</em> itérativement ?</li>
+<li>Même question pour la fonction <code>accum</code>.</li>
+</ul>
+
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

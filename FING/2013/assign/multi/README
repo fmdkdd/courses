@@ -1,0 +1,32 @@
+To have a multiuser canvas, you need to start two servers:
+1. a standard web server to serve the HTML and JS files to other users
+2. a WebSocket server that will broadcast the drawing commands to all
+   users
+
+To do that:
+1. Open up two consoles, go to this directory (‘multi’).
+2. Launch the WebSocket server first, with the command
+
+    node server-websocket.js
+
+   The console should print “WebSocket server started on port 8080”.
+
+3. In the other console, launch the web server with the command
+
+    node node_modules/simple-server/bin/simple-server.js
+
+   Or, in Windows:
+
+    node node_modules\simple-server\bin\simple-server.js
+
+   The console should print “Simple-Server listening to
+   http://localhost:3000/ ...”
+
+4. Now open up a web browser and go to the URL
+   “http://localhost:3000/index.html”.  You should be able to draw in
+   the upper-left area by moving your mouse around.
+
+5. For others to join you, they must know your IP address.  Google is
+   your friend.  Once you have that, say “192.167.26.56” you can tell
+   them to browse to “http://192.167.26.56:3000/index.html” and you
+   will draw on the same canvas.

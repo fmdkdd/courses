@@ -1,0 +1,308 @@
+* Agenda
+** Lundi 10/12/2012
+*** 9h30 -- 10h45
+	 Cours
+
+*** 11h -- 12h15
+	 Cours
+
+*** 13h30 -- 14h45
+	 TP
+
+** Mardi 10/12/2012
+*** 8h -- 9h15
+	 Cours
+
+*** 9h30 -- 10h45
+	 TP
+
+*** 11h -- 12h15
+	 TP
+
+
+
+* Acquis
+** Prépa GE -- Option Info
+	Notions de bases en:
+	- logique, logique booléenne
+	- programmation: instructions séquentielles, fonctions, variables,
+     boucles, récursion
+	- algorithmique: tri par insertion
+	- complexité: concept, notation O(n)
+	- automates
+
+** Deuxième année à l'École
+*** Langages de programmation I
+**** Interprétation et compilation (35h)
+	  Syntaxe et sémantique, interprétation, compilation.
+
+	  - expressions régulières
+	  - fabrication d'un analyseur lexical, LL, LR
+	  - arbres abstraits annotés
+
+**** C++ (10h)
+	  - Passage de Java à C++
+	  - Gestion de la mémoire explicite
+	  - Manipulation d'adresses
+
+
+*** Langages de programmation II
+**** Objectifs
+	  - Obtenir des pouvoirs de modélisation et de programmation grâce aux
+		 nouveaux paradigmes -- au delà de Java.
+	  - Discuter de l'adéquation d'un langage à des besoins spécifiques
+	  - Être à l'aise avec des langages intégrant plusieurs paradigmes
+
+**** Contenu
+	  - intro au fonctionnel en Haskell (12h)
+	  - POO avancée avec Scala (9h)
+	  - les aspects avec AspectJ (6h)
+	  - programmation logique et par contraintes en Prolog (6h)
+	  - langages de scripts (12h)
+		 + JS: prototypes, pages web dynamiques
+		 + Ruby: réflexion et métaclasses, application aux shells systèmes
+
+* Idées
+** Monkey see, monkey do
+	Les FING ne sont pas en apprentissage, mais la meilleure façon de
+	leur apprendre comment programmmer en JS reste de leur montrer à
+	quoi ressemble du vrai code JS, et de les laisser le modifier à
+	leur guise pour vraiment comprendre ce qu'il s'y passe.
+
+	Ne pas se contenter d'une lecture passive, donc ennuyeuse et
+	infructueuse, mais partir d'exemples réels simples, facilement
+	compréhensibles en isolation, qui pourront être modifiés à la
+	volée.
+
+** Distinction prototype / classes
+	Insister sur les différences entre ces deux sous-paradigmes de
+	l'objet.
+
+	Préférer le champ lexical du prototype, et les méthodes de JS qui y
+	correspondent (pas de `new`, mais `Object.create`).
+
+	Prendre des exemples de code JS qui suivent le paradigme de
+	prototype, et qui l'exploitent de façon particulièrement
+	pertinente.
+
+	Bien sûr, mentionner la confusion usuelle qui resulte d'un mélange
+	de ces deux paradigmes, avec de (mauvais) exemples (anonymes?), et
+	montrer en quoi cette confusion est néfaste au long terme.  La
+	confusion au sein même du comité TC39 est flagrante.
+
+	Justification: le module a pour but de faire maîtriser différents
+	paradigmes aux élèves.  Aucun intérêt de faire du Java en JS.
+
+** DONE Tour d'horizon de JS aujourd'hui
+	 CLOSED: [2012-11-24 Sat 18:40]
+	Pour éliminer quelconques a priori sur le JS des années 90, et
+	donner envie.  Des applications du canvas, de l'API audio (Staurt
+	Memo), du web RTC, des websockets (Sparkets, BrowserQuest) ... en
+	passant par le full AJAX (Battlefield), les applications complètes
+	familières (Gmail), aux démos juste impressionantes (webGL +
+	shaders, fractals, demos ...)
+
+	FirefoxOS, JS is the platform, Brent Victor
+
+	Démo multi-plateforme: Firefox, Chrome ... ok ... smartphone !
+
+** DONE Forme = contenu
+	- Présentation en JS (slide.js, impress?)
+	- Exemples interactifs
+	- REPL réactif (pas de reload requis, cf. slime/swank)
+
+** Exemple fil rouge
+	Partir d'une application ultra basique (limiter le HTML/CSS qui
+	n'est pas l'objet du cours -- <canvas> ?), et l'étoffer au fur et à
+	mesure avec des concepts plus avancés (prototypes, mode switching,
+	mixins).
+
+*** Pacman?
+	 + Mode-switching quand il mange des fruits
+	 + Prototypes pour les tiles/sprites
+	 + Évènements clavier
+	 + Dessin canvas
+	 + Thématisation possible "Pacmines", récolte les antisèches, évite
+      les profs, mange un champignon -> poursuis les pour les bouffer!
+
+
+	 Légèrement plus compliqué que Pong, mais potentiellement plus fun.
+	 Bejeweled un peu trop simple, pas assez d'illustrations
+	 pertinentes pour les fonctionnalités JS.
+
+	 https://home.comcast.net/~jpittman2/pacman/pacmandossier.html
+
+	 Définir une API simple et événementielle pour construire le jeu.
+
+**** Fonctionnalités
+	  - Niveau
+	  - Dessin
+	  - Mouvement (de Pacman)
+	  - Évènements clavier
+	  - Collisions
+	  - Mort
+	  - Mouvement (des ghosts)
+	  - Champignons
+
+* Contenu
+** DONE Historique de JS
+	 CLOSED: [2012-11-24 Sat 17:54]
+	- Netscape, Brendan Eich
+	- Langage de script pour le web
+	- Rapprochement Sun -> syntaxe C/Java
+	- ES1,2,3,5
+	- TC39, ES6 -- Harmony, 1JS (peut-être à la fin?)
+
+** DONE Pourquoi JS ?
+	 CLOSED: [2012-11-24 Sat 17:54]
+	- Numéro 1 sur Github (et utilisé par Github)
+	- Tendance cloud computing
+	  + dumb terminal => navigateur
+	- Chrome OS (laptop / desktop)
+	- Firefox OS (smartphone)
+	- Windows 8 (desktop / laptop / tablets)
+
+
+	Il s'échappe du navigateur !
+	- nodeJS
+	- 17921 packages npm
+
+	Lingua franca du web
+
+** DONE Éco-système JS
+	 CLOSED: [2012-11-24 Sat 17:54]
+	- HTML DOM / BOM
+	- Cible de compilation
+	  + CoffeeScript
+	  + TypeScript
+	  + Dart
+	  + Emscripten !
+
+** DONE Qu'est-ce que JS
+	 CLOSED: [2012-11-24 Sat 17:54]
+	- Langage de script du web
+	- dynamique
+	- prototype
+	- à objets
+	- asynchrone
+	- évenementiel
+	- fonctionnel
+
+** DONE Qu'est-ce que n'est pas JS
+	 CLOSED: [2012-11-24 Sat 17:54]
+	- pas simple (mais qu'est ce qu'il l'est ?)
+	- non typé
+	- encapsulation et isolation difficiles
+	- incohérent
+	- inélégant
+
+** DONE Syntaxe
+	 CLOSED: [2012-11-25 Sun 13:40]
+	- [X] globals
+	- [X] var
+	- [X] const
+	- [X] semicolons
+	- [X] function
+	- [X] (if for loop)
+	- [ ] exceptions
+	- [X] tableaux
+	- [X] objets
+	- [X] new, delete
+
+** DONE Sémantique
+	 CLOSED: [2012-11-25 Sun 13:40]
+	- [X] typé dynamiquement
+	- [X] nombres
+	  + [X] Numbers.MIN_VALUE, Numers.MAX_VALUE
+	- [X] booléen
+	- [X] chaînes (unicode)
+	- [ ] null
+	- [X] undefined
+	- [X] pas de portée sur les blocs
+	- [X] variables hissées
+
+** Idiomes
+ 	- [ ] asynchronisme
+	- [ ] setTimeout, setInterval
+	- [ ] callbacks
+	- [ ] arguments optionnels
+	- [ ] fermetures
+
+** Prototypes
+	- prototype chain
+	- object !<=> class
+	- mixins
+	- mode switching
+
+
+	De la chaîne basique:
+	null --> Object --> foo --> bar
+
+** Web dynamique
+	- interactivité
+	- événements
+
+** Réferences
+	https://developer.mozilla.org/en-US/docs/JavaScript/Guide
+	http://es5.github.com/
+	http://eloquentjavascript.net/contents.html
+
+* Discussion avec Rémi
+  - [X] Discuter avec Jacques du contenu (responsable de l'U.V.)
+  - [X] Plus d'exemples de modification d'objets
+  - [X] Ça me fait penser, une visualisation du contenu d'un objet
+    dynamique serait sympa.  obj.a = 'b' et un objet en HTML contient
+    'b'.  Pareil pour les tableaux.
+  - [X] Convertir le cours du mardi en TP double (même salle pour deux groupes)
+  - [X] Ajouter le cours sur Campus
+  - [X] Insister sur le "Pourquoi JS?".  Quand faut-il s'en servir ?
+    Quand faut-il mieux utiliser autre chose ?
+  - [X] Intérêt des langages de scripts (rapidité, peu de contraintes);
+    désavantages (pas de filet, pas d'erreurs pendant le
+    développement, erreurs silencieuses ...)
+  - [X] Problème de gestion de la complexité -> interfaces complètement
+    dynamique, fautes de frappes attrapées dynamiquement (et
+    silencieuses: obj.referer = 'truc', obj.referrer == undefined),
+  - [X] Parler des outils de dev JS: Eclipse, Debugger FF/Chrome
+  - [ ] Imprimer l'examen papier deux jours avant à la reprographie.
+  - [X] Faire un repérage des salles
+  - [X] Chopper toutes les démos en local
+  - [X] Plus d'histoire sur les déboires de JS, du comité, du standard
+    HTML5.  Anecdotique et bon à savoir (tag img, 'first to ship wins')
+  - [X] Virer les code 'preload', pour plutôt questionner l'auditoire !
+  - [ ] Se renseigner sur le modèle d'exécution de JS dans les browsers
+    (event loop, blocking/non-blocking scripts, when to run setTimeout
+    code ...)
+  - [X] Remplir les <aside>
+  - [X] Donner des références pour aller plus loin
+
+  - Convertir tout ça en séminaire sur JS dans l'équipe (contacter
+    Julien Cohen)
+
+** DONE ce week-end
+	 CLOSED: [2012-12-07 Fri 20:34]
+	- [X] Établir un plan détaillé des cours/TP
+   - [X] Examen: prévoir petit quizz(es) + morceau de code à fournir
+     en projet (étoffer une fonctionnalité de Pacmine, e.g. les bonus
+     ?  les fantômes ?).
+   - [X] Décider d'un éditeur qu'ils emploieront, et les prévenir une
+     semaine à l'avance des outils nécessaires (prévient des erreurs
+     de syntaxe)
+
+** À la trappe
+  - [ ] Ajouter un exemple d'interaction client-serveur (serveur echo, requête AJAX ?)
+
+* Discussion avec Jacques
+  - Voir avec Adrien pour ce qui a été fait en JS
+
+* Seconde discussion avec Rémi
+  - [X] Donner tous les éléments pour comprendre l'énoncé des TP
+  - [X] Élaborer un cours de "basics"
+  - [X] Surtout ne pas oublier de parler de l'environnement de travail
+  - [X] Faire une mise en garde sur la façon de travailler un peu
+    différente de ce module (moins écrire que lire, comprendre,
+    assimiler les idiomes)
+  - [X] Préparer le QCM (différentes modalités de questions)
+  - Rajouter des tests pour chaque "ordre" pour qu'ils puissent
+    tester à chaque fois la validité (plutôt que d'empiler les
+    erreurs).

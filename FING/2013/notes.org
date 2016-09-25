@@ -1,0 +1,8 @@
+* Améliorations
+- Ne pas utiliser de ‘o’ et de ‘0’ dans du code demandé !  Je fais la
+  distinction car je connais la police de caractères; les élèves non.
+- Des vidéos courtes (5~10min) sur des points précis, avec
+  des ressources textuelles pour aller plus loin.
+- Fournir plus d’objectifs aux élèves qui avancent vite, pour qu’ils
+  en profitent un max.
+- Mettre au clair le mécanisme d’évaluation dès le début.

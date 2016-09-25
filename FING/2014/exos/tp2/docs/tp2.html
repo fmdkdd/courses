@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Creating objects in JavaScripts</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="creating-objects-in-javascripts">Creating objects in JavaScripts</h1>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> c1, c2;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="singleton-literal">Singleton literal</h3>
+<p>The easiest way to create an object in JavaScript is to create a
+<em>singleton</em>.  The object literal syntax makes this concise.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><strong>Complete</strong> this definition, and <strong>check</strong> that all the tests
+evaluate to <code>true</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> counterSingleton = {
+  i: <span class="hljs-number">0</span>,
+
+  inc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    counterSingleton.i += <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> counterSingleton.i;
+  },
+
+  dec: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+
+  },
+};
+
+c1 = counterSingleton;
+c2 = counterSingleton;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Since its a singleton, there are no “instances”, just aliasing of
+the same object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1 === c2; <span class="hljs-comment">//:</span>
+
+c1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+c2.inc() === <span class="hljs-number">3</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="closure-with-state">Closure with state</h3>
+<p>The singleton has its uses, but what if we need more than one
+counter?  In this case, we can get by with a <em>closure</em>.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>The <code>counterFactory</code> function returns an object that contains the
+two methods <code>inc</code> and <code>dec</code>.  Each of these method refer to the <code>i</code>
+that is defined inside <code>counterFactory</code>.  <strong>Complete</strong> the
+definition and check the tests.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counterFactory</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">return</span> {};
+}
+
+c1 = counterFactory();
+c2 = counterFactory();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>This time the two objects are different</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1 !== c2; <span class="hljs-comment">//:</span>
+
+c1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+c2.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>The functions, however, are also different, even though they
+contain the same code.  Each instance has new functions.  Not only
+does this waste memory space, but it prevents us from easily adding
+or changing functions on all the instances at once.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1.inc !== c2.inc; <span class="hljs-comment">//:</span>
+c1.dec !== c2.dec; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="factory-and-prototype-object">Factory and prototype object</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Since the issue with <code>counterFactory</code> is duplication, we will
+define the functions <code>inc</code> and <code>dec</code> outside the factory, in a
+<em>prototype</em> object.  Note that now the methods need to refer to <code>i</code>
+using the special value <code>this</code>, since we do not know the instance
+when defining these methods.  <strong>Complete</strong> the definition, and the
+factory below, then check the tests.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> counterPrototype = {
+  inc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.i += <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.i;
+  },
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>The <code>counterPrototypeFactory</code> function returns a new object that
+has <code>counterPrototype</code> as its prototype.  This is achieved using
+<code>Object.create</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counterPrototypeFactory</span><span class="hljs-params">()</span> </span>{
+
+}
+
+c1 = counterPrototypeFactory();
+c2 = counterPrototypeFactory();
+
+c1 !== c2; <span class="hljs-comment">//:</span>
+
+c1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+c2.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>This time, the functions are the same.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1.inc === c2.inc; <span class="hljs-comment">//:</span>
+c1.dec === c2.dec; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="constructor-function">Constructor function</h3>
+<p>The previous pattern is not the most common way to define objects
+in JavaScript.  The usual way is to use a <em>constructor function</em>.
+But the differences between the two are superficial.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>First we need to define the constructor.  Here we just need to set
+the instance properties.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">CounterConstructor</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">this</span>.i = <span class="hljs-number">0</span>;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Then, to define the methods, we add properties to the
+<code>CounterConstructor.prototype</code> object.  <strong>Complete</strong> this
+definition.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>CounterConstructor.prototype.inc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+
+};
+
+CounterConstructor.prototype.dec = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Lastly, to call the constructor function we need to use the keyword
+<code>new</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1 = <span class="hljs-keyword">new</span> CounterConstructor();
+c2 = <span class="hljs-keyword">new</span> CounterConstructor();
+
+c1 !== c2; <span class="hljs-comment">//:</span>
+
+c1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+c2.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Functions are still shared.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1.inc === c2.inc; <span class="hljs-comment">//:</span>
+c1.dec === c2.dec; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <h3 id="literal-with-constructor">Literal with constructor</h3>
+<p>Using a prototype object and a factory or using a constructor
+function and extending its <code>prototype</code> object are equivalent.  The
+former is more explicit, while the latter hides the object
+construction and prototype assignation with the <code>new</code> keyword.</p>
+<p>But they both lack in syntactic cohesion.  The constructor must be
+defined in one place, the prototype in another.  Is there another
+way?</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>The <code>counterLiteral</code> object integrates its constructor as a
+property named <code>new</code>.  This is exactly the same as in the factory
+and prototype object pattern, but with the factory moved as a
+property of the prototype object.  <strong>Complete</strong> this definition.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> counterLiteral = {
+
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p><code>new</code> is just a standard method of <code>counterLiteral</code>.  No need for a
+special keyword.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1 = counterLiteral.new();
+c2 = counterLiteral.new();
+
+c1 !== c2; <span class="hljs-comment">//:</span>
+
+c1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+c2.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+c1.dec() === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Functions are still shared.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>c1.inc === c2.inc; <span class="hljs-comment">//:</span>
+c1.dec === c2.dec; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <h2 id="the-reset-counter">The reset counter</h2>
+<p>Now we wish to extend the counter with a reset functionality.  Of
+course we not want to modify the counter objects themselves, since
+we also wish to create plain counter alongside reset counters.  We
+would like reset counters to <em>inherit</em> the <code>inc</code> and <code>dec</code> methods
+from counter objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> r1, r2;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <h3 id="singleton-literal">Singleton literal</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Extending a singleton object is easily done by assigning a parent
+object as the value of the special <code>__proto__</code> property.
+<strong>Complete</strong> this definition.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> resetCounterSingleton = {
+
+};
+
+r1 = resetCounterSingleton;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>This checks that even though <code>inc</code> and <code>dec</code> are not defined on the
+object <code>r1</code> itself, we can still reach them via the prototype
+chain.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>r1.hasOwnProperty(<span class="hljs-string">'inc'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+r1.hasOwnProperty(<span class="hljs-string">'dec'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'inc'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'dec'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+
+r1.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">3</span>; <span class="hljs-comment">//:</span>
+r1.i === <span class="hljs-number">3</span>; <span class="hljs-comment">//:</span>
+r1.reset();
+r1.i === <span class="hljs-number">0</span>;
+r1.resetCount === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <h3 id="factory-and-prototype-object">Factory and prototype object</h3>
+<p>Of course, if we want more than one instance of reset counter, we
+cannot settle with a singleton.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>The first way to do that is to use the factory and prototype object
+again.  Here, the prototype object will inherit from
+<code>counterPrototype</code>.  <strong>Complete</strong> the definitions of the prototype
+object and factory function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> resetCounterPrototype = {
+
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resetCounterPrototypeFactory</span><span class="hljs-params">()</span> </span>{
+
+}
+
+r1 = resetCounterPrototypeFactory();
+r2 = resetCounterPrototypeFactory();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>The <code>inc</code> and <code>dec</code> methods are inherited.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>r1.hasOwnProperty(<span class="hljs-string">'inc'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+r1.hasOwnProperty(<span class="hljs-string">'dec'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'inc'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'dec'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+
+r1.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.i === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.reset();
+r1.i === <span class="hljs-number">0</span>;
+r1.resetCount === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>The two instances are distinct and do not share state.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>r1 !== r2; <span class="hljs-comment">//:</span>
+r2.i === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r2.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <h3 id="function-constructor">Function constructor</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Same as before, but with the additional prototype link.
+<strong>Complete</strong> these definitions.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ResetCounterConstructor</span><span class="hljs-params">()</span> </span>{
+
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>This is how we  add the prototype link in this pattern.  The
+constructor property is a reference to the constructor function
+that is automatically made when creating a function.  Here we need
+to update it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>ResetCounterConstructor.prototype = <span class="hljs-built_in">Object</span>.create(CounterConstructor.prototype);
+ResetCounterConstructor.prototype.constructor = ResetCounterConstructor;
+
+r1 = <span class="hljs-keyword">new</span> ResetCounterConstructor();
+r2 = <span class="hljs-keyword">new</span> ResetCounterConstructor();
+
+r1.hasOwnProperty(<span class="hljs-string">'inc'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+r1.hasOwnProperty(<span class="hljs-string">'dec'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'inc'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'dec'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+
+r1.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.i === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.reset();
+r1.i === <span class="hljs-number">0</span>;
+r1.resetCount === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+
+r1 !== r2; <span class="hljs-comment">//:</span>
+r2.i === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r2.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <h3 id="literal-with-constructor">Literal with constructor</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>The last pattern is, once again, the literal object with a
+constructor.  <strong>Complete</strong> this definition and check the tests.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> resetCounterLiteral = {
+
+};
+
+r1 = resetCounterLiteral.new();
+r2 = resetCounterLiteral.new();
+
+r1.hasOwnProperty(<span class="hljs-string">'inc'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+r1.hasOwnProperty(<span class="hljs-string">'dec'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'inc'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'dec'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+
+r1.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+r1.inc() === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.i === <span class="hljs-number">2</span>; <span class="hljs-comment">//:</span>
+r1.reset();
+r1.i === <span class="hljs-number">0</span>;
+r1.resetCount === <span class="hljs-number">1</span>; <span class="hljs-comment">//:</span>
+
+r1 !== r2; <span class="hljs-comment">//:</span>
+r2.i === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span>
+r2.resetCount === <span class="hljs-number">0</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Finally, with this last pattern, we can add methods on objects, and
+use <code>new</code> to create objects that share these methods.  You might
+have to alter <code>resetCounterLiteral</code> to make the following tests
+work.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>r1.set = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> </span>{ <span class="hljs-keyword">this</span>.i = i; };
+<span class="hljs-keyword">var</span> r3 = r1.new();
+r1.hasOwnProperty(<span class="hljs-string">'set'</span>); <span class="hljs-comment">//:</span>
+<span class="hljs-string">'set'</span> <span class="hljs-keyword">in</span> r1; <span class="hljs-comment">//:</span>
+r3.hasOwnProperty(<span class="hljs-string">'set'</span>) === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span>
+<span class="hljs-string">'set'</span> <span class="hljs-keyword">in</span> r3; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Only objects created from <code>r1</code> have the <code>set</code> method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-string">'set'</span> <span class="hljs-keyword">in</span> r2 === <span class="hljs-literal">false</span>; <span class="hljs-comment">//:</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <h2 id="bonus">Bonus</h2>
+<p>We could have used the closure pattern as well to define a reset
+counter and still use delegation.  Can you write it?</p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

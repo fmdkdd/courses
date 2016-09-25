@@ -1,0 +1,218 @@
+JavaScript syntax cheatsheet
+
+* Primitives
+Numbers: 10
+
+Booleans: true, false
+
+Strings: “string” ‘string’
+
+undefined / null
+
+* Comments
+C/Java like.
+
+Single-line:
+: //
+
+Multi-line:
+: /* */
+
+* Operators
+** Arithmetic
+Binary: + - * / %
+
+Unary: ++ --
+
+** Booleans
+
+&& || !
+
+** Comparison
+
+Equality: ==, ===, !=, !==
+
+> >= < <=
+
+** Affectation
+
+= += -= *= /= %=
+
+* Variables
+Undef:
+: var a;
+
+Declare and affect:
+: var a = 1;
+
+Multi:
+: var a = 1, b = 2, c = 3;
+
+* Functions
+Named:
+#+BEGIN_SRC js
+function square(x) {
+  return x * x;
+}
+#+END_SRC
+
+Anonymous:
+#+BEGIN_SRC js
+var square = function(x) { return x * x; }
+#+END_SRC
+
+* Objects
+Literal:
+#+BEGIN_SRC js
+{
+ a: 1,
+ b: 2
+}
+#+END_SRC
+
+: o.a = 12;
+: o[‘a’] = 12;
+: delete o[p];
+
+* Arrays
+Literal:
+#+BEGIN_SRC js
+[1,2,3]
+#+END_SRC
+
+: a[1] = 2;
+: delete a[1]
+
+* Control structures
+** if
+: if (cond) {} else {}
+
+** for
+: for (var i = 0; i < arr.length; ++i) {}
+
+** switch
+#+BEGIN_SRC js
+switch (str) {
+  case ‘b’: ... break;
+}
+#+END_SRC
+
+** while
+#+BEGIN_SRC js
+while (cond) { }
+#+END_SRC
+
+** do while
+#+BEGIN_SRC js
+do {
+} while (cond);
+#+END_SRC
+
+* Exceptions
+#+BEGIN_SRC js
+try {
+  throw error;
+} catch (e) {}
+#+END_SRC
+
+* Lexicon
+
+- Callback ::
+- Prototype ::
+
+* Useful built-ins
+
+** __proto__
+
+** Object
+
+- create
+- keys
+
+** Function
+
+- bind
+- call / apply
+
+** Array
+
+- map / filter / reduce / forEach
+- join
+- pop / push
+- slice
+- sort
+
+** Math
+
+everything ...
+
+** JSON
+
+- parse
+
+** String
+
+- contains
+- replace
+- trim
+
+* Patterns
+** Iteration
+*** Over an array
+
+*** Over an object
+
+** Functions as parameters
+
+** Callbacks
+
+** IIFE
+
+* Alternate concept: the pangram.
+
+A syntactically correct JS program that shows of the most useful
+features.
+
+Legend categorizes and details the syntax, as well as providing visual
+anchors.
+
+#+BEGIN_SRC js
+  /* String "a" -> String "Hello a
+   *                       Bonjour a
+   *                       こんにちわ a"
+   */
+  function greet(person) {
+    if (person === undefined) {
+      person = 'nobody';
+    }
+
+    var message;
+    var greetings = ['Hello', "Bonjour", 'こんにちわ'];
+
+    message = '';
+    for (var i = 0; i < greetings.length; ++i) {
+      var g = greetings[i];
+      message += g + ' ' + person + '\n';
+    }
+
+    return message;
+  }
+
+  var speaker = {
+    breath: 10,
+    greet: function(person) {
+      while (this.breath > 0) {
+        console.log(greet(person));
+        this.breath = this.breath - 1;
+      }
+      console.log('out of breath');
+    },
+    inhale: function() {
+      this.breath = 10;
+    },
+  };
+
+  speaker.greet('FING');
+  speaker.inhale();
+  speaker.greet('FONG');
+#+END_SRC

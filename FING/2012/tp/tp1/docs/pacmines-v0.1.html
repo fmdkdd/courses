@@ -1,0 +1,89 @@
+<!DOCTYPE html>  <html> <head>   <title>pacmines-v0.1.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               pacmines-v0.1.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h2>Préliminaires</h2>
+
+<p>À partir de ce TP, il sera plus commode d'éditer le fichier
+<code>pacmines-v0.1.js</code> dans un éditeur de texte, de le sauvegarder, et
+de recharger la page <code>index.html</code> dans le navigateur.</p>
+
+<p>Si le script comporte une erreur, elle s'affichera dans la console
+du navigateur (<code>Ctrl+Maj+j</code> dans Chrome).</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Pacmines</h2>
+
+<p>Un niveau de <strong>Pacmines</strong> est une grille.</p>
+
+<p>Une case de cette grille a des propriétés individuelles; on
+représentera donc une case par un objet.</p>
+
+<p>Il y a 3 types de cases dans Pacmines :</p>
+
+<ol>
+<li>Le sol.</li>
+<li>Les murs.</li>
+<li>Les pilules.</li>
+</ol>
+
+<p>Les cases « sol » sont vides, et Pacmines pourra s'y déplacer.  Les
+cases « murs » sont pleines : on ne peut pas les traverser.  Les
+cases « pilules » contiennent des ... pilules ... qui sont dévorées
+par Pacmines pour tenter de satisfaire sa faim insatiable, et
+augmenter son score.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>Objectifs</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>Écrire la fonction <code>initLevel</code></h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Cette fonction prend en entrée la carte en version ASCII située
+dans la page HTML et rend un objet.  Par exemple :</p>
+
+<pre><code>####
+#..#
+####
+</code></pre>
+
+<p>Chaque caractère représente le type de la case.  La légende est la
+suivante :</p>
+
+<pre><code>' ' // sol
+'#' // mur
+'.' // pilule
+</code></pre>
+
+<p>La carte en entrée est un tableau de tableaux qui eux-mêmes
+contiennent des caractères.  Le tableau correspondant à la carte
+précédente est donc :</p>
+
+<pre><code>[['#', '#', '#', '#'], ['#','.','.','#'], ['#', '#', '#', '#']]
+</code></pre>
+
+<p>On suppose que les tableaux internes ont tous la même longueur.</p>
+
+<p>L'objet retourné a la structure suivante :</p>
+
+<pre><code>{
+   height: // nombre de tableaux internes de la carte
+   width:  // longueur de chaque tableau interne (supposée fixe)
+   tiles:  // tableau de cases (qui sont elles-mêmes des objets)
+}
+</code></pre>
+
+<p>Pour créer chaque case, faites appel à la fonction
+<code>createTileFromMap</code>, définie par la suite.</p>
+
+<p>La fonction <code>initLevel</code> se charge aussi d'ajouter les coordonnées
+<code>x</code> et <code>y</code> à l'objet case retourné par <code>createTileFromMap</code>.  Par
+exemple, la seconde pilule de la carte ASCII montrée au dessus a
+comme coordonnées (2,1).</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">initLevel</span><span class="p">(</span><span class="nx">map</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>Écrire la fonction <code>createTileFromMap</code></h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>La fonction <code>createTileFromMap</code> prend un caractère en entrée et
+renvoie un objet représentant une case.  Une case a les propriétés
+suivantes :</p>
+
+<ul>
+<li>Une couleur <code>color</code> qui est une couleur valide en
+<a href="https://developer.mozilla.org/en-US/docs/CSS/color_value">CSS</a>;
+donc une chaîne de caractères décrivant une couleur valide ou une
+valeur hexadécimale.</li>
+<li>Une fonction de dessin <code>draw</code> qui a pour valeur
+<code>Pacmines.painters.tile</code> (dessine un carré).</li>
+<li>Une hauteur <code>height</code> et largeur <code>width</code> de dessin pour
+<code>Pacmines.painters.tile</code>.  Les murs sont infranchissables,
+donc à dessiner avec une taille égale à leur largeur (variable
+globale <code>tileHeight</code>).  En revanche, les pilules sont
+certainement plus petites que les murs ...</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">createTileFromMap</span><span class="p">(</span><span class="nx">mapChar</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

@@ -1,0 +1,304 @@
+#+Title: Quiz JavaScript (correction)
+#+date: 11 décembre 2012
+#+Author: Langages de nouvelles génération A2/FING
+#+Language: fr
+#+Options: toc:nil
+
+#+LATEX_CMD: lualatex
+#+LATEX_CLASS_OPTIONS: [a4paper, 12pt]
+
+#+LATEX_HEADER: \addtolength{\topmargin}{-.8in}
+#+LATEX_HEADER: \addtolength{\textheight}{1.6in}
+
+## Font selection
+#+Latex_Header: \setmainfont[Mapping=tex-text]{Liberation Serif}
+#+Latex_Header: \newfontfamily\progfont[Scale=MatchLowercase]{Ubuntu Mono}
+#+Latex_Header: \usepackage{wasysym}
+
+#+Latex_Header: \usepackage[usenames, dvipsnames]{xcolor}
+#+Latex_Header: \newcommand{\fullpoint}[1]{\textcolor{RubineRed}{#1}}
+#+Latex_Header: \newcommand{\halfpoint}[1]{\textcolor{SkyBlue}{#1}}
+#+Latex_Header: \newcommand{\jedipoint}[1]{\textcolor{SeaGreen}{#1}}
+
+#+Latex_Header: \newcommand{\choice}[1]{\Square\hspace{2pt} #1\hspace{5pt}}
+#+Latex_Header: \newcommand{\choicec}[1]{\Square\hspace{2pt} \lstinline{#1}\hspace{5pt}}
+#+Latex_Header: \newcommand{\choiceg}[1]{\fullpoint{\XBox\hspace{2pt} #1\hspace{5pt}}}
+#+Latex_Header: \newcommand{\choicecg}[1]{\fullpoint{\XBox\hspace{2pt} \lstinline{#1}\hspace{5pt}}}
+#+Latex_Header: \newcommand{\choicegh}[1]{\halfpoint{\XBox\hspace{2pt} #1\hspace{5pt}}}
+#+Latex_Header: \newcommand{\choicecgh}[1]{\halfpoint{\XBox\hspace{2pt} \lstinline{#1}\hspace{5pt}}}
+
+## Listings
+#+Latex_Header: \usepackage{listings}
+#+Latex_Header: \lstset{basicstyle=\progfont}
+#+Latex_Header: \lstset{tabsize=3, columns=fullflexible, keepspaces=true}
+#+Latex_Header: \lstset{breaklines=false, showstringspaces=false}
+#+Latex_Header: \lstset{frame=leftline, framerule=1pt}
+#+Latex_Header: \lstset{framesep=2pt}
+#+Latex_Header: \lstdefinelanguage{JavaScript}{
+#+Latex_Header:   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+#+Latex_Header:   keywordstyle=\bfseries,
+#+Latex_Header:   ndkeywords={class, export, boolean, throw, implements, import, this},
+#+Latex_Header:   ndkeywordstyle=\bfseries,
+#+Latex_Header:   identifierstyle=,
+#+Latex_Header:   sensitive=false,
+#+Latex_Header:   comment=[l]{//},
+#+Latex_Header:   morecomment=[s]{/*}{*/},
+#+Latex_Header:   morestring=[b]',
+#+Latex_Header:   morestring=[b]"
+#+Latex_Header: }
+
+*Nom* :
+
+Sans machine ni document.
+
+Durée : 20 minutes.
+
+Cocher la bonne réponse (il peut y en avoir plusieurs).
+
+| \fullpoint{1 point} | \halfpoint{0.5 point} | \jedipoint{1 μmol de midichloriens}   |
+
+1)
+	#+begin_src javascript
+		  var a = 2;
+	#+end_src
+
+  Que vaut \lstinline{a} ?
+
+  \choicecg{2} \choicec{"a"} \choicec{undefined} \jedipoint{\choice{Obiwan Kenobi}}
+
+2)
+	#+begin_src javascript
+		 var f = function (x) {
+			 return x;
+		 }
+	#+end_src
+
+	\lstinline{f(f("f"))} retourne la chaîne \lstinline{f} ?
+
+   \choiceg{Vrai} \choice{Faux}
+
+3)
+  #+begin_src javascript
+		function A(x) {
+			return function(y) {
+				return x + y;
+			}
+		}
+  #+end_src
+
+  Que vaut \lstinline{A(2)(3)} ?
+
+  \choicec{3} \choicec{2} \choicecg{5} \choicec{undefined}
+
+4)
+  #+begin_src javascript
+		function B(fun) {
+			return function(x) {
+				return fun(x)(x);
+			}
+		}
+  #+end_src
+
+  Que vaut \lstinline{B(A)(3)}, \lstinline{A} étant la fonction de la
+  question 3 ?
+
+  \choicec{9} \choicecg{6} \choicec{3} \choicec{undefined}
+
+5)
+  #+begin_src javascript
+		var tab = [0];
+		tab.push(3);
+		tab.push(2);
+		tab.push(1);
+  #+end_src
+
+  Que vaut \lstinline{tab.length} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicecg{4} \choicec{undefined}
+
+  Que vaut \lstinline{tab[1]} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicecg{3} \choicec{4} \choicec{undefined}
+
+  Que vaut \lstinline{tab[1+2]} ?
+
+  \choicec{0} \choicecg{1} \choicec{2} \choicec{3} \choicec{4} \choicec{undefined}
+
+7) Un tableau contient uniquement des éléments homogènes.
+
+   \choice{Vrai} \choiceg{Faux}
+
+8) Un objet peut contenir des fonctions.
+
+   \choiceg{Vrai} \choice{Faux}
+
+9)
+  #+begin_src javascript
+    var O = {
+       x: 2,
+       a: "a"
+    }
+    M = Object.create(O);
+    M.x = 3
+  #+end_src
+
+  Que vaut \lstinline{M.x} ?
+
+  \choicec{2} \choicecg{3} \choicec{undefined}
+
+  Que vaut \lstinline{O.x} ?
+
+  \choicecg{2} \choicec{3} \choicec{undefined}
+
+10)
+	#+begin_src javascript
+     var O = {
+        x: 2,
+        a: "a"
+     }
+     M = Object.create(O);
+     O.a = "b"
+	#+end_src
+
+	Que vaut \lstinline{M.a} ?
+
+   \choicec{"a"} \choicecg{"b"} \choicec{undefined}
+
+	Que vaut \lstinline{O.a} ?
+
+   \choicec{"a"} \choicecg{"b"} \choicec{undefined}
+
+11)
+	#+begin_src javascript
+     var O = {
+        x: 2,
+        f: function() {
+           x = x + 2;
+        }
+     }
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f()} ?
+
+   \choicecgh{2} \choicec{4} \choicec{undefined}
+   \choicegh{\lstinline{O.f()} génère une erreur}
+
+12)
+	#+begin_src javascript
+     var O = {
+        x: 2,
+        f: function(x) {
+           x = x + 2;
+        }
+     }
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f(2)} ?
+
+   \choicecg{2} \choicec{4} \choicec{undefined}
+   \choice{\lstinline{O.f(2)} génère une erreur}
+
+13)
+	#+begin_src javascript
+     var O = {
+        x: 2,
+        f: function() {
+           this.x = this.x + 2;
+        }
+     }
+     O.f();
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f()} ?
+
+   \choicec{2} \choicecg{4} \choicec{undefined}
+   \choice{\lstinline{O.f()} génère une erreur}
+
+14)
+	#+begin_src javascript
+     var O = {
+        x: 2,
+        f: function(x) {
+           this.x = x + 2;
+        }
+     }
+     O.f(2);
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f(2)} ?
+
+   \choicec{2} \choicecg{4} \choicec{undefined}
+   \choice{\lstinline{O.f(2)} génère une erreur}
+
+15) Écrire la fonction \lstinline{map(f, list)} qui applique la
+    fonction \lstinline{f} à chaque élément du tableau
+    \lstinline{list} et retourne un tableau contenant le résultat de
+    chaque application.
+
+	#+begin_src javascript
+     function map(f, list) {
+        var result = [];
+        for (var i in list)
+           result[i] = f(list[i]);
+        return result;
+     }
+
+     function map(f, list) {
+        var result = [];
+        for (var i = 0; i < list.length; ++i)
+           result[i] = f(list[i]);
+        return result;
+     }
+
+     function map(f, list) {
+        var tail = list.pop();
+        var result = map(f, list);
+        result.push(f(fail));
+        return result;
+     }
+
+	#+end_src
+
+	 Barème :
+	 - 1,5 points si \lstinline{map} fonctionne
+	 - 0,5 points pour une boucle correcte (avec \lstinline{var i = 0; i < tab.length; i++})
+	 - 0,5 points pour un \lstinline{result.push(f(list[i]))} ou \lstinline{result[i] = f(list[i])}
+	   dans un nouveau tableau
+	 - 0,5 points pour un \lstinline{return} et pas de variables globales
+
+	 Exemples:
+
+    #+begin_src javascript
+      function map(f, list) {
+         array tableau = [];
+         for (var i = 0; i <= list.lenght; ++i)
+            tableau.push(f(list[i]));
+         return tableau;
+      }
+	 #+end_src
+
+	 0 (ne fonctionne pas) + 0 boucle incorrecte (<= et typo) + 0,5
+    (push ou =) + 0,5 (return)
+
+	 #+begin_src javascript
+      var map = function(f, list) {
+         for (var i=0; i < list.length; ++i)
+            list[i] = f(list[i]);
+         return list;
+      }
+	 #+end_src
+
+	 1,5 (fonctionne) + 0,5 boucle correcte + 0 modifie l'argument +
+    0,5 return
+
+	 #+begin_src javascript
+      function map(f, list) {
+         retour = [];
+         for (var i = 0; i < list.length; ++i)
+            retour.push(f(list[i]));
+         return retour;
+      }
+	 #+end_src
+
+	 1,5 (fonctionne) + 0,5 boucle correcte + 0,5 push + 0 car \lstinline{retour}
+    est globale
