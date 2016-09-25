@@ -1,0 +1,37 @@
+html {
+  background-color: #666;
+}
+
+#map {
+  display: none;
+}
+
+#level {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+#level td {
+  height: 32px;
+  width: 32px;
+}
+
+.empty {
+  background-color: #77b6b9;
+}
+
+.wall {
+  background-color: rgb(247, 251, 247);
+}
+
+.hero {
+  background-color: #666;
+}
+
+.lava {
+  background-color: #b52a26;
+}
+
+.coin {
+  background-color: #efbf0d;
+}

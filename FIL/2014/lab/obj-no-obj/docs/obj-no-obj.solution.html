@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Object-Oriented programming without objects</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="object-oriented-programming-without-objects">Object-Oriented programming without objects</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>In this exercise, you will build the principles of
+object-orientation without using a single object.</p>
+<p>The purpose of the exercise is two-fold.  First, it shows that
+higher-order functions and lexical closures are expressive enough
+to simulate an object-oriented language.</p>
+<p>Secondly, it reveals that object concepts like method call, dynamic
+dispatch, methods table and self reference are really not magical.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="get-comfortable-with-closures">Get comfortable with closures</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>To start with, let’s get comfortable with closures.</p>
+<p>We’ve seen the adder, which takes a first argument and returns
+closure on <code>x</code> which takes a second argument <code>y</code> and return the sum
+of <code>x</code> and <code>y</code>.  We use the term “closures” because we say that the
+<code>add2</code> <em>closes</em> over its argument <code>x</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">adder</span><span class="hljs-params">(x)</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(y)</span> </span>{
+    <span class="hljs-keyword">return</span> x + y;
+  };
+}
+
+<span class="hljs-keyword">var</span> add2 = adder(<span class="hljs-number">2</span>);
+add2(<span class="hljs-number">8</span>); <span class="hljs-comment">// 10</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>We can view <code>x</code> as part of the <em>state</em> of the returned function
+<code>add2</code>.  It is even more clear when using <em>mutable state</em> in the
+closure, as in the <code>counter</code>.</p>
+<p>The function <code>counter</code> holds an internal value and returns a
+function which increases and returns its internal value when
+called.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counter</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    x += <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> x;
+  };
+}
+
+<span class="hljs-keyword">var</span> c = counter();
+c(); <span class="hljs-comment">// 1</span>
+c(); <span class="hljs-comment">// 2</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>What if we want to be able to increase or decrease the counter?  We
+can only return one function.  But we can accept a ‘message’
+argument that will differentiate the cases of increasing and
+decreasing the counter.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bidiCounter</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> </span>{
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'inc'</span>) {
+      x += <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">return</span> x;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'dec'</span>) {
+      x -= <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">return</span> x;
+    }
+  };
+}
+
+<span class="hljs-keyword">var</span> c = bidiCounter();
+c(<span class="hljs-string">'inc'</span>); <span class="hljs-comment">// 1</span>
+c(<span class="hljs-string">'inc'</span>); <span class="hljs-comment">// 2</span>
+c(<span class="hljs-string">'dec'</span>); <span class="hljs-comment">// 1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Alternatively, we could have returned an array of two functions:
+inc and dec.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bidiCounter2</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">return</span> [<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inc</span><span class="hljs-params">()</span> </span>{
+    x += <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> x;
+  }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dec</span><span class="hljs-params">()</span> </span>{
+    x -= <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> x;
+  }];
+}
+
+<span class="hljs-keyword">var</span> cmds = bidiCounter2();
+<span class="hljs-keyword">var</span> inc = cmds[<span class="hljs-number">0</span>];
+<span class="hljs-keyword">var</span> dec = cmds[<span class="hljs-number">1</span>];
+inc(); <span class="hljs-comment">// 1</span>
+inc(); <span class="hljs-comment">// 2</span>
+dec(); <span class="hljs-comment">// 1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>When we think about it, the <code>c</code> function begins to look like an
+object.  It has states, <code>x</code>, and it has ways of executing different
+behavior depending on the message given.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="another-example-stack">Another example: stack</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Let’s try another example: a stack ‘object’.</p>
+<p>A stack must understands 4 messages:</p>
+<ol>
+<li>‘push’, which pushes a item on top of the stack</li>
+<li>‘pop’, which removes the item at the top of the stack and
+returns it</li>
+<li>‘peek’ which returns the item at the top of the stack (but does
+not remove it)</li>
+<li>‘size’ which returns the number of elements in the stack</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stack</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> items = [];
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (msg === <span class="hljs-string">'push'</span>) items.push(arg);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (msg === <span class="hljs-string">'pop'</span>) <span class="hljs-keyword">return</span> items.pop();
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (msg === <span class="hljs-string">'peek'</span>) <span class="hljs-keyword">return</span> items[items.length - <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (msg === <span class="hljs-string">'size'</span>) <span class="hljs-keyword">return</span> items.length;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}
+
+<span class="hljs-keyword">var</span> s = stack();
+s(<span class="hljs-string">'push'</span>, <span class="hljs-number">1</span>);
+s(<span class="hljs-string">'push'</span>, <span class="hljs-number">2</span>);
+s(<span class="hljs-string">'push'</span>, <span class="hljs-number">3</span>);
+s(<span class="hljs-string">'size'</span>); <span class="hljs-comment">// 3</span>
+s(<span class="hljs-string">'pop'</span>); <span class="hljs-comment">// 3</span>
+s(<span class="hljs-string">'peek'</span>); <span class="hljs-comment">// 2</span>
+s(<span class="hljs-string">'size'</span>); <span class="hljs-comment">// 2</span>
+s(<span class="hljs-string">'poke'</span>); <span class="hljs-comment">// Message not understood</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>A cleaner way to write this is to define each internal ‘method’ as
+a property function inside a list of <code>methods</code>.  Note that we are
+using a JavaScript object, but only as a dictionary structure.  We
+could have used an array as well, or a Map.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stack2</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> items = [];
+
+  <span class="hljs-keyword">var</span> methods = {
+    push: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> </span>{ items.push(item); },
+    pop: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> items.pop(); },
+    peek: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> items[items.length - <span class="hljs-number">1</span>]; },
+  };
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (methods[msg])
+      <span class="hljs-keyword">return</span> methods[msg](arg);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>We use <code>stack2</code> exactly like we use <code>stack</code>.  The pattern is then
+apparent: inner variables to hold state, a dictionary of methods
+and a returned function that dispatches depending on the requested
+command.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h2 id="dynamic-dispatch">Dynamic dispatch</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Let’s build another collection.  This time a queue, a first-in,
+first-out collection.</p>
+<p>The <code>queue</code> function creates a queue which responds to the
+following messages:</p>
+<ol>
+<li>‘enqueue’ takes an argument and adds this element to the end of
+the queue</li>
+<li>‘dequeue’ removes and returns the first element of the queue</li>
+<li>‘size’ returns the number of elements in the queue</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queue</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> items = [];
+
+  <span class="hljs-keyword">var</span> methods = {
+    enqueue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> </span>{ items.push(item); },
+    dequeue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> items.shift(); } ,
+    size: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> items.length; },
+  };
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (methods[msg])
+      <span class="hljs-keyword">return</span> methods[msg](arg);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}
+
+<span class="hljs-keyword">var</span> q = queue();
+q(<span class="hljs-string">'enqueue'</span>, <span class="hljs-number">1</span>);
+q(<span class="hljs-string">'enqueue'</span>, <span class="hljs-number">2</span>);
+q(<span class="hljs-string">'enqueue'</span>, <span class="hljs-number">3</span>);
+q(<span class="hljs-string">'size'</span>); <span class="hljs-comment">// 3</span>
+q(<span class="hljs-string">'dequeue'</span>); <span class="hljs-comment">// 1</span>
+q(<span class="hljs-string">'dequeue'</span>); <span class="hljs-comment">// 2</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Now, we can write a generic function size that retrieves the size
+of the collection.  All that matters is that the object passed as
+an argument to this function understands the message ‘size’, and
+returns a meaningful value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">collectionSize</span><span class="hljs-params">(collection)</span> </span>{
+  <span class="hljs-keyword">return</span> collection(<span class="hljs-string">'size'</span>);
+}
+
+collectionSize(q);
+collectionSize(s);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h2 id="a-simple-point-object">A simple point object</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Another example of abstraction with objects is a 1-dimensional
+point.</p>
+<p>The <code>point</code> function takes one argument: the initial value for the
+x coordinate of the point, and returns a function that understands
+the following messages:</p>
+<ol>
+<li>‘x’: returns the value of the x coordinate</li>
+<li>‘setX’: takes an argument and sets the x coordinate of the point
+to the argument value</li>
+<li>‘equals’: takes another point as argument, and returns true if
+and only if both points have the same coordinates</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">point</span><span class="hljs-params">(x)</span> </span>{
+  <span class="hljs-keyword">var</span> methods = {
+    x: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> x; },
+    setX: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v)</span> </span>{ x = v; } ,
+    equals: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> </span>{
+      <span class="hljs-keyword">return</span> p(<span class="hljs-string">'x'</span>) === x;
+    },
+  };
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (methods[msg])
+      <span class="hljs-keyword">return</span> methods[msg](arg);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}
+
+<span class="hljs-keyword">var</span> p1 = point(<span class="hljs-number">0</span>);
+<span class="hljs-keyword">var</span> p2 = point(<span class="hljs-number">1</span>);
+p1(<span class="hljs-string">'x'</span>); <span class="hljs-comment">// 0</span>
+p1(<span class="hljs-string">'equals'</span>, p2); <span class="hljs-comment">// false</span>
+p1(<span class="hljs-string">'setX'</span>, <span class="hljs-number">1</span>);
+p1(<span class="hljs-string">'equals'</span>, p2); <span class="hljs-comment">// true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <h2 id="abstracting-the-object-pattern">Abstracting the object pattern</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>All these object definitions are frankly getting a little
+repetitive.  Once we have seen the pattern, the methods objects is
+always defined in the same way, and the returned function is always
+the same.</p>
+<p>We can abstract the pattern by creating an <code>object</code> function, which
+takes the attributes and the methods of the object to create, and
+return the dispatching function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">object</span><span class="hljs-params">(state, methods)</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (methods[msg])
+      <span class="hljs-keyword">return</span> methods[msg](state, arg);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Here is how we would use <code>object</code> to create the bi-directional
+counter at the beginning of this document.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mkCounter</span><span class="hljs-params">()</span> </span>{
+ <span class="hljs-keyword">return</span> object({
+   counter: <span class="hljs-number">0</span>
+ }, {
+   inc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(state)</span> </span>{
+     state.counter += <span class="hljs-number">1</span>;
+     <span class="hljs-keyword">return</span> state.counter;
+   },
+
+   dec: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(state)</span> </span>{
+     state.counter -= <span class="hljs-number">1</span>;
+     <span class="hljs-keyword">return</span> state.counter;
+   },
+ });
+}
+
+<span class="hljs-keyword">var</span> c = mkCounter();
+c(<span class="hljs-string">'inc'</span>); <span class="hljs-comment">// 1</span>
+c(<span class="hljs-string">'dec'</span>); <span class="hljs-comment">//</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

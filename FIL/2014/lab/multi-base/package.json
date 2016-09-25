@@ -1,0 +1,12 @@
+{
+  "name": "multi-draw",
+  "version": "0.0.1",
+  "description": "multi participants canvas",
+  "dependencies": {
+    "express": "4.x",
+    "ws": "0.4.x"
+  }
+  "scripts": {
+    "main": "node server.js"
+  }
+}

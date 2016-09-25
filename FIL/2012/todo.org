@@ -1,0 +1,31 @@
+* DONE Préparer l'examen
+  CLOSED: [2013-01-18 Fri 11:25]
+  - Et le tester
+
+* DONE Étendre les TP, et le 3e cours
+  CLOSED: [2013-01-18 Fri 11:25]
+  Deux pistes:
+  - Parler d'événements, et de futures/promises/deferred
+  - Concepts avancés des objets
+
+  Peut-être préparer les deux au cas où il nous reste du temps
+  ... cela dit comme nous sommes tout le temps dans la même salle, on
+  peut basculer en TP à n'importe quel moment.  Mieux vaut se
+  concentrer sur les TP et garder les cours au minimum.
+
+  Donc: TP événement paraît plus concret.  Possibilité de l'inclure
+  dans Pacmines ?
+
+  Plus généralement, parler d'asynchronisme en JS et dans le browser ?
+
+* DONE Permettre de tester la progression à chaque exercice du TP
+  CLOSED: [2013-01-17 Thu 09:38]
+* DONE Préparer feuille d'émargement
+  CLOSED: [2013-01-14 Mon 10:20]
+  Tout est prévu.
+* DONE Passer les slides en beige
+  CLOSED: [2013-01-17 Thu 10:44]
+* DONE Tenter d'accomoder le code qu'ils ont déjà écrit
+  CLOSED: [2013-01-17 Thu 10:55]
+* Parler de fonctions variadiques en cours ?
+  Ptêt pas

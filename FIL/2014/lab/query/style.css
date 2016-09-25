@@ -1,0 +1,16 @@
+#content {
+  display: flex;
+  flex-direction: row;
+}
+
+#rendero-area {
+  border: 1px solid #ccc;
+  width: 300px;
+  padding: 1rem;
+  margin-left: 1rem;
+}
+
+/* #rendero-area * { */
+/*   font-size: 13pt; */
+/*   font-weight: normal; */
+/* } */

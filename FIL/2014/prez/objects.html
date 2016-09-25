@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+  <meta name="author" content="fmdkdd" />
+  <title>JavaScript: Objects and Prototypes</title>
+  <style type="text/css">code{white-space: pre;}</style>
+<style>
+strong { color: #e74c3c; }
+em { color: #e74c3c; font-style: normal; }
+
+.alert { color: #e74c3c; }
+.tag, .var { color: #e74c3c; }
+.kw { color: #2980b9; }
+.id { color: #27ae60; }
+
+  html { background-color: black; font-size: 21pt; }
+  body { background-color: white; border-radius: 12px}
+  [role="note"] { display: none; }
+  /* A section is a slide. It's size is 800x600, and this will never change */
+  section {
+      font-family: "Alegreya", serif;
+    }
+  address, blockquote, dl, fieldset, form, h1, h2, h3, h4, h5, h6, hr, ol, p, pre, table, ul, dl { padding: 10px 20px 10px 20px; }
+  h1, h2, h3 {
+    text-align: center;
+    margin: 10pt 10pt 10pt 10pt;
+  }
+  ul, ol {
+    margin: 0px 10px 10px 50px;
+  }
+  section.titleslide h1 { margin-top: 8rem; }
+  h1.title { margin-top: 7rem; }
+  h1 { font-size: 160%; }
+  h2 { font-size: 120%; }
+  h3 { font-size: 100%; }
+  q { quotes: "“" "”" "‘" "’"; }
+  blockquote { font-style: italic }
+  /* Figures are displayed full-page, with the caption on
+     top of the image/video */
+  figure {
+    background-color: black;
+  }
+  figcaption {
+    margin: 70px;
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 40px;
+    text-align: right;
+    background-color: #F3F4F8;
+    border-top: 1px solid #CCC;
+  }
+
+  /* Transition effect */
+  /* Feel free to change the transition effect for original
+     animations. See here:
+     https://developer.mozilla.org/en/CSS/CSS_transitions
+     How to use CSS3 Transitions: */
+  section {
+      -moz-transition: left 400ms linear 0s;
+      -webkit-transition: left 400ms linear 0s;
+      -ms-transition: left 400ms linear 0s;
+      transition: left 400ms linear 0s;
+  }
+
+  /* Before */
+  section { left: -150%; }
+  /* Now */
+  section[aria-selected] { left: 0; }
+  /* After */
+  section[aria-selected] ~ section { left: +150%; }
+
+  /* Incremental elements */
+
+  /* By default, visible */
+  .incremental > * { opacity: 1; }
+
+  /* The current item */
+  .incremental > *[aria-selected] { color: red; opacity: 1; }
+
+  /* The items to-be-selected */
+  .incremental > *[aria-selected] ~ * { opacity: 0.2; }
+
+ /* The progressbar, at the bottom of the slides, show the global
+     progress of the presentation. */
+  #progress-bar {
+    height: 2px;
+    background: #AAA;
+  }
+</style>
+</head>
+<body>
+<section class="title">
+  <h1 class="title">JavaScript: Objects and Prototypes</h1>
+  <h2 class="author">fmdkdd</h2>
+  <h3 class="date">Mines Nantes ~ 2014/2015</h3>
+</section>
+<section id="objects" class="titleslide slide level1"><h1>Objects</h1></section><section id="objects-are-bags-of-properties" class="slide level2">
+<h1>Objects are bags of properties</h1>
+<p>No distinction between methods and fields</p>
+<p>Not “instances” of a “class”</p>
+<p>Just a bag, or dictionary</p>
+</section><section id="example-of-object" class="slide level2">
+<h1>Example of object</h1>
+<pre><code>var an_object = {
+  fruta: &quot;frambuesa&quot;,
+  a_number: 2,
+  square: function(x) {
+    return x * x;
+  },
+  another_object: {
+    x: 3,
+    y: 12,
+  },
+}</code></pre>
+</section><section id="objects-are-dynamic" class="slide level2">
+<h1>Objects are dynamic</h1>
+<pre><code>var o = { x: 2 };
+o.x = 12;
+o.y = function() { return 5; };
+delete o.x;
+
+o.x; // undefined
+o.y; // [Function]</code></pre>
+<p>Unknown properties return undefined</p>
+</section>
+<section id="objects-and-prototypes" class="titleslide slide level1"><h1>Objects and Prototypes</h1></section><section id="self-reference" class="slide level2">
+<h1>Self-reference</h1>
+<pre><code>var A = {
+  x: 2,
+  square: function() {
+    return <span class="kw">this</span>.x * <span class="kw">this</span>.x;
+  }
+}
+
+A.square(); // 4</code></pre>
+
+<p><code class="kw">this</code> binds to <code>A</code></p>
+<div role="note">
+<ul>
+<li>Core OO concept</li>
+<li>Keyword is <code>this</code>, needs to be explicit</li>
+<li><code>this</code> binds to A, the receiver</li>
+</ul>
+</div>
+</section><section id="mental-model-of-functions" class="slide level2">
+<h1>Mental model of functions</h1>
+<pre class="tiny">
+                  +-----------------+
+                  |  +-----------+  |
++----+            |  |  bindings |  |
+|<span class="kw">this</span>|----------->|  +-----------+  |
++----+            |                 |
+                  |    function     |
+                  |                 |
++------------+    |   +--------+    |   +-------+
+| arguments  |--->|   |  body  |    |-->|return |
++------------+    |   +--------+    |   |value  |
+                  +-----------------+   +-------+</pre>
+
+<p><code class="kw">this</code> is bound at <strong>call-time</strong> to the receiver</p>
+<div role="note">
+<ul>
+<li><code>this</code>: extra hidden argument</li>
+</ul>
+</div>
+</section><section id="method-stealing" class="slide level2">
+<h1>Method stealing</h1>
+<pre><code>var A = {
+  x: 2,
+  square: function() {
+    return this.x * this.x;
+  }
+}
+
+var B = { x: 10 };
+B.square = A.square;
+B.square(); // 100</code></pre>
+<p><code>B</code> is the receiver, so <code>this</code> is bound to <code>B</code></p>
+</section><section id="behavior-duplication" class="slide level2">
+<h1>Behavior duplication</h1>
+<pre><code>var hare = { x: 0, speed: 2,
+  <span class="alert">step: function() {
+    this.x += this.speed;
+  }</span>
+};
+
+var turtle = { x: 0, speed: 1,
+  <span class="alert">step: function() {
+    this.x += this.speed;
+  }</span>
+};</code></pre>
+
+<div role="note">
+<ul>
+<li>Share behavior between objects</li>
+<li>How to eliminate duplication of <code>step</code>?</li>
+</ul>
+</div>
+
+</section><section id="forwarding-to-avoid-duplication" class="slide level2">
+<h1>Forwarding to avoid duplication</h1>
+<pre><code>var hare = { x: 0, speed: 2,
+  step: function() {
+    this.x += this.speed;
+  }
+};
+
+var turtle = { x: 0, speed: 1,
+  <span class="alert">step: hare.step</span>
+}
+
+hare.step(); hare.x; // 2
+turtle.step(); turtle.x; // 1</code></pre>
+
+</section><section id="forwarding-does-not-scale" class="slide level2">
+<h1>Forwarding does not scale</h1>
+<pre><code>var hare = {
+  step: ..., run: ...
+  sleep: ..., eat: ...
+  ...
+}
+
+var turtle = {
+  step: hare.step, run: hare.run,
+  sleep: hare.sleep, eat: hare.eat,
+  ...
+}</code></pre>
+
+<div role="note">
+<ul>
+<li>How to say it more directly?</li>
+</ul>
+</div>
+
+</section><section id="delegation-with-prototypes" class="slide level2">
+<h1>Delegation with <em>prototypes</em></h1>
+<pre><code class="eval preload">var hare = { x: 0, speed: 2,
+  step: function() {
+    this.x += this.speed;
+  }
+}
+
+var turtle = {
+  <span class="alert">__proto__: hare</span>, x: 0, speed: 1
+}
+
+turtle.step();
+turtle.x; // 1</code></pre>
+
+<div role="note">
+<ul>
+<li>proto special property</li>
+</ul>
+</div>
+
+</section><section id="using-object.create" class="slide level2">
+<h1>Using <code>Object.create</code></h1>
+<p>To assign the prototype at creation time,</p>
+<pre><code>var turtle = Object.create(hare);
+turtle.x = 0;
+turtle.speed = 1;</code></pre>
+<p>is equivalent to,</p>
+<pre><code>var turtle = {
+  __proto__: hare,
+  x: 0,
+  speed: 1,
+};</code></pre>
+</section><section id="mental-model-of-prototypes" class="slide level2">
+<h1>Mental model of prototypes</h1>
+<pre><code>+--------+ __proto__  +--------+ __proto__
+| B      |-----------&gt;| A      |-----------&gt;null
+| y: 3   |            | x: 2   |
++--------+            | y: 5   |
+                      +--------+</code></pre>
+<pre><code>B.x; // 2
+B.y; // 3
+B.z; // undefined</code></pre>
+<p>Properties are looked up along the prototype chain</p>
+<p>The chain should not contain cycles</p>
+</section>
+<section id="constructing-objects" class="titleslide slide level1"><h1>Constructing objects</h1></section><section id="object-literals-encapsulate-state" class="slide level2">
+<h1>Object literals encapsulate state</h1>
+<pre><code>var point1d = {
+  x: 0,
+  move: function(dx) {
+    point1d.x += dx;
+  },
+};
+
+point1d.move(1);
+point1d.x; // 1</code></pre>
+<p>This is great for singleton objects</p>
+</section><section id="tedious-to-create-copies" class="slide level2">
+<h1>Tedious to create copies</h1>
+<pre><code>var duck1 = {
+  size: 12, swim: function() { ... }
+}
+
+var duck2 = {
+  size: 2, swim: function() { ... }
+}
+
+var duck3 = {
+  size: 5, swim: function() { ... }
+}</code></pre>
+</section><section id="cloning" class="slide level2">
+<h1>Cloning</h1>
+<p>There is no generic cloning facility in JavaScript</p>
+<p>So you cannot do,</p>
+<pre><code>var duck2 = Object.clone(duck1);
+var duck3 = Object.clone(duck1);</code></pre>
+<p>Contrarily to other prototypes languages like Self</p>
+<p>Nothing prevents us from rolling our own</p>
+</section><section id="factories-to-the-rescue" class="slide level2">
+<h1><em>Factories</em> to the rescue</h1>
+<pre><code>function duckMaker(size) {
+  return {
+    size: size,
+    swim: function() { ... }
+  };
+}
+
+var donald = duckMaker(12);
+var scrooge = duckMaker(2);
+var louie = duckMaker(5);</code></pre>
+<div role="note">
+<ul>
+<li>swim is still duplicated at runtime, not shared</li>
+<li>swim update needs to happen for each duck</li>
+</ul>
+</div>
+</section><section id="factories-duplicate-methods-at-runtime" class="slide level2">
+<h1>Factories duplicate methods at runtime</h1>
+<p>This is wasteful,</p>
+<pre><code>var donald = duckMaker(12);
+var scrooge = duckMaker(2);
+
+donald.swim === scrooge.swim; // false</code></pre>
+<p>Additionally, cannot update methods for all objects at once</p>
+</section><section id="shared-behavior-using-prototypes" class="slide level2">
+<h1>Shared behavior using prototypes</h1>
+<pre><code>var <span class="alert">protoDuck</span> = { swim: function() { /* */ } };
+
+function duckMaker(size) {
+  return { <span class="alert">__proto__: protoDuck</span>, size: size };
+}
+
+var donald = duckMaker(12);
+var scrooge = duckMaker(2);
+
+donald.swim === scrooge.swim; // true
+
+<span class="alert">protoDuck</span>.eat = function() { this.size += 1; }
+
+donald.eat(); donald.size; // 13
+scrooge.eat(); scrooge.size; // 3</code></pre>
+
+<div role="note">
+<ul>
+<li>Modifications to behavior is shared as well</li>
+</ul>
+</div>
+
+</section><section id="abstracting-factories" class="slide level2">
+<h1>Abstracting factories</h1>
+<pre><code>function createObject(proto, properties) {
+  properties.__proto__ = proto;
+  return properties;
+}
+
+function duckMaker(size) {
+  return createObject(protoDuck, {
+    size: size
+  });
+}
+
+var donald = duckMaker(12);</code></pre>
+<p>equivalent to,</p>
+<pre><code>var donald = createObject(protoDuck, {size: 12});</code></pre>
+</section><section id="the-java-like-way" class="slide level2">
+<h1>The “Java-like” way</h1>
+<pre><code>function Duck(size) {
+  <span class="kw">this</span>.size = size;
+}
+
+<span class="id">Duck.prototype</span>.swim = function(){...};
+<span class="id">Duck.prototype</span>.eat = function(){...};
+
+var donald = <span class="alert">new</span> Duck(12);</code></pre>
+
+<p><code class="alert">new</code> creates an empty object, binds it to <code class="kw">this</code>, and assigns its <code>__proto__</code> to <code class="id">Duck.prototype</code></p>
+<div role="note">
+<ul>
+<li><code>new</code> creates empty object</li>
+<li>binds <code>this</code></li>
+<li>assigns proto to Duck.prototype</li>
+</ul>
+</div>
+</section><section id="all-in-one" class="slide level2">
+<h1>All in one</h1>
+<pre><code>var duck = {
+  <span class="alert">new: function(size) {
+    return {
+      __proto__: this,
+     size: size,
+    };
+  }</span>,
+  eat: function() { this.size += 1; },
+};
+
+var donald = duck.new(12);
+var scrooge = <span class="id">donald.new(5)</span>;</code></pre>
+
+</section><section id="dynamic-prototype-switch" class="slide level2">
+<h1>Dynamic prototype switch</h1>
+<p><code>__proto__</code> is just another property</p>
+<p>It can be changed dynamically</p>
+<p>But you should use <code>Object.setPrototypeOf</code> and <code>Object.getPrototypeOf</code> rather than <code>__proto__</code> directly</p>
+<p>It’s also <strong>not recommended</strong> for performance</p>
+<div role="note">
+<ul>
+<li>Change class of instance at runtime in Java?</li>
+</ul>
+</div>
+</section><section id="dynamic-prototype-switch-1" class="slide level2">
+<h1>Dynamic prototype switch</h1>
+<pre><code>var duck = {
+  swim: function() { ... }
+}
+
+var witch = {
+  burn: function() { ... }
+}
+
+var donald = { __proto__: duck };
+donald.swim();
+<span class="alert">donald.__proto__ = witch;</span>
+donald.burn();</code></pre>
+
+</section><section id="motivation-the-pacman-example" class="slide level2">
+<h1>Motivation: the Pacman example</h1>
+<p><img style="width: 500px; margin-left: 150px; image-rendering: -moz-crisp-edges;" src="img/pacman-logic.png"></p>
+<div role="note">
+<ul>
+<li>Eats fruit, becomes fast, eats ghosts</li>
+<li>Ghosts flee in terror</li>
+</ul>
+</div>
+</section><section id="the-stateful-pacman-object" class="slide level2">
+<h1>The stateful Pacman object</h1>
+<pre class="smaller"><code>var pacman = {
+  x: 0, speed: 1,
+  <span class="alert">hasEatenFruit</span>: false,
+
+  move: function() { this.x += this.speed; },
+
+  collideWithGhost: function() {
+    <span class="kw">if</span> (this.<span class="alert">hasEatenFruit</span>) ghost.die();
+    <span class="kw">else</span> this.die();
+  },
+
+  eatFruit: function() {
+    this.<span class="alert">hasEatenFruit</span> = true;
+    this.<span class="alert">speed</span> = 2;
+    ghost.<span class="alert">flee</span> = true;
+  }
+}
+</code></pre>
+
+<div role="note">
+<ul>
+<li>flags for state, have to use if/else</li>
+<li>scattered behavior</li>
+</ul>
+</div>
+
+</section><section id="the-stateful-ghost" class="slide level2">
+<h1>The stateful ghost</h1>
+<pre><code>
+var ghost = {
+  move: function() {
+    <span class="kw">if</span> (this.<span class="alert">flee</span>)
+      fleePacman();
+    <span class="kw">else</span>
+      huntPacman();
+  }
+}</code></pre>
+
+<div role="note">
+<ul>
+<li>Same thing</li>
+</ul>
+</div>
+
+</section><section id="prototypes-to-hide-the-state" class="slide level2">
+<h1>Prototypes to hide the state</h1>
+<pre class="smaller"><code>var protoPacman = {
+  speed: 1,
+  move: function() { this.x += this.speed; },
+  collideWithGhost: function() { this.die(); },
+  eatFruit: function() {
+    this.<span class="alert">__proto__ = superPacman</span>;
+    ghost.<span class="alert">__proto__ = fleeingGhost</span>; } }
+
+var pacman = { <span class="alert">__proto__: protoPacman</span>, x: 0 };
+
+var superPacman = {
+  <span class="alert">__proto__: protoPacman</span>,
+  speed: 2,
+  collideWithGhost: function() { ghost.die(); } }</code></pre>
+
+<div role="note">
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;One object per state&lt;/li&gt;
+  &lt;li&gt;State pattern by inheritance instead of composition&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</div>
+</section><section id="one-object-per-state" class="slide level2">
+<h1>One object per state</h1>
+<pre class="smaller"><code>
+var protoGhost = {
+  move: function() { huntPacman(); }
+}
+
+var ghost = {
+  <span class="alert">__proto__: protoGhost</span>
+}
+
+var fleeingGhost = {
+  move: function() { fleePacman(); }
+}</code></pre>
+
+</section>
+<section id="conclusion" class="titleslide slide level1"><h1>Conclusion</h1></section><section id="takeaway" class="slide level2">
+<h1>Takeaway</h1>
+<ul>
+<li>Dynamic binding of <code>this</code> for delegation</li>
+<li>Prototypes for shared behavior and state</li>
+<li>Factories for creating similar objects</li>
+<li>Dynamic inheritance for state pattern</li>
+</ul>
+</section><section id="further-reading" class="slide level2">
+<h1>Further reading</h1>
+<p><a href="http://selflanguage.org/documentation/published/organizing-programs.html">Organizing Programs without Classes</a></p>
+<p><a href="http://davidwalsh.name/javascript-objects-deconstruction">JS Objects: De“construct”ion</a></p>
+<p><a href="http://dmitrysoshnikov.com/ecmascript/javascript-the-core/">JavaScript. The core.</a></p>
+</section>
+<section id="fin" class="titleslide slide level1"><h1>FIN</h1></section><section id="extending-built-in-objects" class="slide level2">
+<h1>Extending built-in objects</h1>
+<p>Objects literals have <code>Object.prototype</code> as their <code>__proto__</code></p>
+<pre><code>var o = {};
+o.toString(); // &quot;{}&quot;
+
+Object.prototype.x = 12;
+o.x; // 12</code></pre>
+<p>Modifying <code>Object.prototype</code> adds properties to <strong>all</strong> objects</p>
+</section><section id="functions-inherit-from-function.prototype" class="slide level2">
+<h1>Functions inherit from <code>Function.prototype</code></h1>
+<pre><code>var f = function() { return 2; }
+f.call; // [Function]
+f.call(); // 2</code></pre>
+</section><section id="the-global-object" class="slide level2">
+<h1>The “global” object</h1>
+<pre><code>var x = 12;
+this.x; // 12</code></pre>
+<p>The top level is another object</p>
+<pre><code>function f() { return this.x; }
+f(); // 12</code></pre>
+<p><code>this</code> binds to it for calls without an explicit receiver</p>
+</section><section id="this-explains..." class="slide level2">
+<h1>This explains...</h1>
+<pre><code>var A = {
+  x: 2,
+  square: function() {
+    return this.x * this.x;
+  }
+}
+
+var square = A.square;
+square(); // undefined
+this.x = 8;
+square(); // 64</code></pre>
+</section><section id="specifying-this-to-a-function" class="slide level2">
+<h1>Specifying <code>this</code> to a function</h1>
+<p>You can <strong>override</strong> the value of <code>this</code> with <code>call</code> and <code>apply</code></p>
+<pre><code>var A = {
+  x: 2,
+  square: function() {
+    return this.x * this.x;
+  }
+}
+
+var square = A.square;
+square.call(<span class="alert">A</span>); // 4
+square.call(<span class="alert">{x:12}</span>); // 144</code></pre>
+</section>
+
+</section><section id="binding-this-to-an-object" class="slide level2">
+<h1>Binding <code>this</code> to an object</h1>
+<p>You can also <strong>bind</strong> <code>this</code> to a specific object</p>
+<pre><code>var A = {
+  x: 2,
+  square: function() {
+    return this.x * this.x;
+  }
+}
+
+var square = A.square.<span class="alert">bind</span>(A);
+square(); // 4
+square.call({x:42}); // 4</code></pre>
+
+</section><section id="and-that-leads-to..." class="slide level2">
+<h1>And that leads to...</h1>
+<p>And that leads to...</p>
+<pre class="smaller"><code>var bind = Function.prototype
+  .call.bind(Function.prototype.bind);
+
+bind({x:12}, square)(); // 144
+bind({x:8}, square)(); // 64
+
+// bind(Obj, func) <=> func.bind(Obj)</code></pre>
+
+
+</section>
+<!-- {{{{ dzslides core
+#
+#
+#     __  __  __       .  __   ___  __
+#    |  \  / /__` |    | |  \ |__  /__`
+#    |__/ /_ .__/ |___ | |__/ |___ .__/ core :€
+#
+#
+# The following block of code is not supposed to be edited.
+# But if you want to change the behavior of these slides,
+# feel free to hack it!
+#
+-->
+
+<div id="progress-bar"></div>
+
+<!-- Default Style -->
+<style>
+  * { margin: 0; padding: 0; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+  details { display: none; }
+  body {
+    width: 800px; height: 600px;
+    margin-left: -400px; margin-top: -300px;
+    position: absolute; top: 50%; left: 50%;
+    overflow: hidden;
+  }
+  section {
+    position: absolute;
+    pointer-events: none;
+    width: 100%; height: 100%;
+  }
+  section[aria-selected] { pointer-events: auto; }
+  html { overflow: hidden; }
+  body { display: none; }
+  body.loaded { display: block; }
+  .incremental {visibility: hidden; }
+  .incremental[active] {visibility: visible; }
+  #progress-bar{
+    bottom: 0;
+    position: absolute;
+    -moz-transition: width 400ms linear 0s;
+    -webkit-transition: width 400ms linear 0s;
+    -ms-transition: width 400ms linear 0s;
+    transition: width 400ms linear 0s;
+  }
+  figure {
+    width: 100%;
+    height: 100%;
+  }
+  figure > * {
+    position: absolute;
+  }
+  figure > img, figure > video {
+    width: 100%; height: 100%;
+  }
+</style>
+
+<script>
+  var Dz = {
+    remoteWindows: [],
+    idx: -1,
+    step: 0,
+    slides: null,
+    progressBar : null,
+    params: {
+      autoplay: "1"
+    }
+  };
+
+  Dz.init = function() {
+    document.body.className = "loaded";
+    this.slides = $$("body > section");
+    this.progressBar = $("#progress-bar");
+    this.setupParams();
+    this.onhashchange();
+    this.setupTouchEvents();
+    this.onresize();
+  }
+
+  Dz.setupParams = function() {
+    var p = window.location.search.substr(1).split('&');
+    p.forEach(function(e, i, a) {
+      var keyVal = e.split('=');
+      Dz.params[keyVal[0]] = decodeURIComponent(keyVal[1]);
+    });
+  // Specific params handling
+    if (!+this.params.autoplay)
+      $$.forEach($$("video"), function(v){ v.controls = true });
+  }
+
+  Dz.onkeydown = function(aEvent) {
+    // Don't intercept keyboard shortcuts
+    if (aEvent.altKey
+      || aEvent.ctrlKey
+      || aEvent.metaKey
+      || aEvent.shiftKey) {
+      return;
+    }
+    if ( aEvent.keyCode == 37 // left arrow
+      || aEvent.keyCode == 38 // up arrow
+      || aEvent.keyCode == 33 // page up
+    ) {
+      aEvent.preventDefault();
+      this.back();
+    }
+    if ( aEvent.keyCode == 39 // right arrow
+      || aEvent.keyCode == 40 // down arrow
+      || aEvent.keyCode == 34 // page down
+    ) {
+      aEvent.preventDefault();
+      this.forward();
+    }
+    if (aEvent.keyCode == 35) { // end
+      aEvent.preventDefault();
+      this.goEnd();
+    }
+    if (aEvent.keyCode == 36) { // home
+      aEvent.preventDefault();
+      this.goStart();
+    }
+    if (aEvent.keyCode == 32) { // space
+      aEvent.preventDefault();
+      this.toggleContent();
+    }
+    if (aEvent.keyCode == 70) { // f
+      aEvent.preventDefault();
+      this.goFullscreen();
+    }
+  }
+
+  /* Touch Events */
+
+  Dz.setupTouchEvents = function() {
+    var orgX, newX;
+    var tracking = false;
+
+    var db = document.body;
+    db.addEventListener("touchstart", start.bind(this), false);
+    db.addEventListener("touchmove", move.bind(this), false);
+
+    function start(aEvent) {
+      aEvent.preventDefault();
+      tracking = true;
+      orgX = aEvent.changedTouches[0].pageX;
+    }
+
+    function move(aEvent) {
+      if (!tracking) return;
+      newX = aEvent.changedTouches[0].pageX;
+      if (orgX - newX > 100) {
+        tracking = false;
+        this.forward();
+      } else {
+        if (orgX - newX < -100) {
+          tracking = false;
+          this.back();
+        }
+      }
+    }
+  }
+
+  /* Adapt the size of the slides to the window */
+
+  Dz.onresize = function() {
+    var db = document.body;
+    var sx = db.clientWidth / window.innerWidth;
+    var sy = db.clientHeight / window.innerHeight;
+    var transform = "scale(" + (1/Math.max(sx, sy)) + ")";
+
+    db.style.MozTransform = transform;
+    db.style.WebkitTransform = transform;
+    db.style.OTransform = transform;
+    db.style.msTransform = transform;
+    db.style.transform = transform;
+  }
+
+
+  Dz.getDetails = function(aIdx) {
+    var s = $("section:nth-of-type(" + aIdx + ")");
+    var d = s.$('[role="note"]');
+    return d ? d.innerHTML : "";
+  }
+
+  Dz.onmessage = function(aEvent) {
+    var argv = aEvent.data.split(" "), argc = argv.length;
+    argv.forEach(function(e, i, a) { a[i] = decodeURIComponent(e) });
+    var win = aEvent.source;
+    if (argv[0] === "REGISTER" && argc === 1) {
+      this.remoteWindows.push(win);
+      this.postMsg(win, "REGISTERED", document.title, this.slides.length);
+      this.postMsg(win, "CURSOR", this.idx + "." + this.step);
+      return;
+    }
+    if (argv[0] === "BACK" && argc === 1)
+      this.back();
+    if (argv[0] === "FORWARD" && argc === 1)
+      this.forward();
+    if (argv[0] === "START" && argc === 1)
+      this.goStart();
+    if (argv[0] === "END" && argc === 1)
+      this.goEnd();
+    if (argv[0] === "TOGGLE_CONTENT" && argc === 1)
+      this.toggleContent();
+    if (argv[0] === "SET_CURSOR" && argc === 2)
+      window.location.hash = "#" + argv[1];
+    if (argv[0] === "GET_CURSOR" && argc === 1)
+      this.postMsg(win, "CURSOR", this.idx + "." + this.step);
+    if (argv[0] === "GET_NOTES" && argc === 1)
+      this.postMsg(win, "NOTES", this.getDetails(this.idx));
+  }
+
+  Dz.toggleContent = function() {
+    // If a Video is present in this new slide, play it.
+    // If a Video is present in the previous slide, stop it.
+    var s = $("section[aria-selected]");
+    if (s) {
+      var video = s.$("video");
+      if (video) {
+        if (video.ended || video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    }
+  }
+
+  Dz.setCursor = function(aIdx, aStep) {
+    // If the user change the slide number in the URL bar, jump
+    // to this slide.
+    aStep = (aStep != 0 && typeof aStep !== "undefined") ? "." + aStep : ".0";
+    window.location.hash = "#" + aIdx + aStep;
+  }
+
+  Dz.onhashchange = function() {
+    var cursor = window.location.hash.split("#"),
+        newidx = 1,
+        newstep = 0;
+    if (cursor.length == 2) {
+      newidx = ~~cursor[1].split(".")[0];
+      newstep = ~~cursor[1].split(".")[1];
+      if (newstep > Dz.slides[newidx - 1].$$('.incremental > *').length) {
+        newstep = 0;
+        newidx++;
+      }
+    }
+    this.setProgress(newidx, newstep);
+    if (newidx != this.idx) {
+      this.setSlide(newidx);
+    }
+    if (newstep != this.step) {
+      this.setIncremental(newstep);
+    }
+    for (var i = 0; i < this.remoteWindows.length; i++) {
+      this.postMsg(this.remoteWindows[i], "CURSOR", this.idx + "." + this.step);
+    }
+  }
+
+  Dz.back = function() {
+    if (this.idx == 1 && this.step == 0) {
+      return;
+    }
+    if (this.step == 0) {
+      this.setCursor(this.idx - 1,
+                     this.slides[this.idx - 2].$$('.incremental > *').length);
+    } else {
+      this.setCursor(this.idx, this.step - 1);
+    }
+  }
+
+  Dz.forward = function() {
+    if (this.idx >= this.slides.length &&
+        this.step >= this.slides[this.idx - 1].$$('.incremental > *').length) {
+        return;
+    }
+    if (this.step >= this.slides[this.idx - 1].$$('.incremental > *').length) {
+      this.setCursor(this.idx + 1, 0);
+    } else {
+      this.setCursor(this.idx, this.step + 1);
+    }
+  }
+
+  Dz.goStart = function() {
+    this.setCursor(1, 0);
+  }
+
+  Dz.goEnd = function() {
+    var lastIdx = this.slides.length;
+    var lastStep = this.slides[lastIdx - 1].$$('.incremental > *').length;
+    this.setCursor(lastIdx, lastStep);
+  }
+
+  Dz.setSlide = function(aIdx) {
+    this.idx = aIdx;
+    var old = $("section[aria-selected]");
+    var next = $("section:nth-of-type("+ this.idx +")");
+    if (old) {
+      old.removeAttribute("aria-selected");
+      var video = old.$("video");
+      if (video) {
+        video.pause();
+      }
+    }
+    if (next) {
+      next.setAttribute("aria-selected", "true");
+      var video = next.$("video");
+      if (video && !!+this.params.autoplay) {
+        video.play();
+      }
+    } else {
+      // That should not happen
+      this.idx = -1;
+      // console.warn("Slide doesn't exist.");
+    }
+  }
+
+  Dz.setIncremental = function(aStep) {
+    this.step = aStep;
+    var old = this.slides[this.idx - 1].$('.incremental > *[aria-selected]');
+    if (old) {
+      old.removeAttribute('aria-selected');
+    }
+    var incrementals = $$('.incremental');
+    if (this.step <= 0) {
+      $$.forEach(incrementals, function(aNode) {
+        aNode.removeAttribute('active');
+      });
+      return;
+    }
+    var next = this.slides[this.idx - 1].$$('.incremental > *')[this.step - 1];
+    if (next) {
+      next.setAttribute('aria-selected', true);
+      next.parentNode.setAttribute('active', true);
+      var found = false;
+      $$.forEach(incrementals, function(aNode) {
+        if (aNode != next.parentNode)
+          if (found)
+            aNode.removeAttribute('active');
+          else
+            aNode.setAttribute('active', true);
+        else
+          found = true;
+      });
+    } else {
+      setCursor(this.idx, 0);
+    }
+    return next;
+  }
+
+  Dz.goFullscreen = function() {
+    var html = $('html'),
+        requestFullscreen = html.requestFullscreen || html.requestFullScreen || html.mozRequestFullScreen || html.webkitRequestFullScreen;
+    if (requestFullscreen) {
+      requestFullscreen.apply(html);
+    }
+  }
+
+  Dz.setProgress = function(aIdx, aStep) {
+    var slide = $("section:nth-of-type("+ aIdx +")");
+    if (!slide)
+      return;
+    var steps = slide.$$('.incremental > *').length + 1,
+        slideSize = 100 / (this.slides.length - 1),
+        stepSize = slideSize / steps;
+    this.progressBar.style.width = ((aIdx - 1) * slideSize + aStep * stepSize) + '%';
+  }
+
+  Dz.postMsg = function(aWin, aMsg) { // [arg0, [arg1...]]
+    aMsg = [aMsg];
+    for (var i = 2; i < arguments.length; i++)
+      aMsg.push(encodeURIComponent(arguments[i]));
+    aWin.postMessage(aMsg.join(" "), "*");
+  }
+
+  function init() {
+    Dz.init();
+    window.onkeydown = Dz.onkeydown.bind(Dz);
+    window.onresize = Dz.onresize.bind(Dz);
+    window.onhashchange = Dz.onhashchange.bind(Dz);
+    window.onmessage = Dz.onmessage.bind(Dz);
+  }
+
+  window.onload = init;
+</script>
+
+
+<script> // Helpers
+  if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
+
+      // closest thing possible to the ECMAScript 5 internal IsCallable
+      // function
+      if (typeof this !== "function")
+      throw new TypeError(
+        "Function.prototype.bind - what is trying to be fBound is not callable"
+      );
+
+      var aArgs = Array.prototype.slice.call(arguments, 1),
+          fToBind = this,
+          fNOP = function () {},
+          fBound = function () {
+            return fToBind.apply( this instanceof fNOP ? this : oThis || window,
+                   aArgs.concat(Array.prototype.slice.call(arguments)));
+          };
+
+      fNOP.prototype = this.prototype;
+      fBound.prototype = new fNOP();
+
+      return fBound;
+    };
+  }
+
+  var $ = (HTMLElement.prototype.$ = function(aQuery) {
+    return this.querySelector(aQuery);
+  }).bind(document);
+
+  var $$ = (HTMLElement.prototype.$$ = function(aQuery) {
+    return this.querySelectorAll(aQuery);
+  }).bind(document);
+
+  $$.forEach = function(nodeList, fun) {
+    Array.prototype.forEach.call(nodeList, fun);
+  }
+
+</script>
+<!-- vim: set fdm=marker: }}} -->
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>  <html> <head>   <title>basics.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               basics.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h2>Préliminaires</h2>
+
+<p>Vous pouvez effectuer tous les exercices de ce TP dans la console
+interactive de votre navigateur.  Pour la faire apparaître sous
+Chrome, le raccourci est <code>Ctrl+Maj+j</code>, ou bien Menu -> Outils ->
+Console JavaScript.</p>
+
+<p>Dans cette console vous pouvez taper du code JavaScript et
+l'envoyer à l'interpréteur (touche <code>Entrée</code>) qui vous affiche la
+valeur de retour de votre expression.</p>
+
+<p>Pour écrire une expression sur plusieurs lignes, utilisez
+<code>Shift+Entrée</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Test rapide, combien vaut cette expression ?</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="mi">1</span> <span class="o">*</span> <span class="mf">2.12</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">4</span><span class="nx">e3</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">+</span> <span class="s1">&#39;6&#39;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>Tour de chauffe</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Le premier mot clé à maîtriser est <code>var</code> pour déclarer une
+variable.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p><strong>Déclarez</strong> plusieurs variables dans la console, et assignez-leur
+les valeurs qui vous chantent.  Des nombres, des chaînes de
+caractères, d'autres variables ...
+Vous pouvez aussi les déclarer puis changer leur valeur dans un
+second temps.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2>Func-fu</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Les variables c'est bien utile, mais les fonctions encore plus !</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">square</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span><span class="o">*</span><span class="nx">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">square</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p><strong>Écrivez</strong> les fonctions suivantes, puis <strong>testez</strong>-les.</p>
+
+<ul>
+<li>x → x³</li>
+<li>n → Fib(n)</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Encore plus utile qu'une fonction : une fonction d'ordre supérieur.
+<strong>Complétez</strong> la définition de la fonction <code>compose</code> qui implémente
+<code>f ∘ g</code> (on suppose que <code>g</code> prend un seul argument).</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">g</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="nx">compose</span><span class="p">(</span><span class="nx">square</span><span class="p">,</span> <span class="nx">fibo</span><span class="p">)(</span><span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="nx">square</span><span class="p">(</span><span class="nx">fibo</span><span class="p">(</span><span class="mi">8</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h2>[T,a,b,l,e,a,u,x]</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Voici un tableau vide.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>On peut s'en servir comme une liste, et y ajouter des éléments (par
+la queue).</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>... et en retirer.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">array</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Son attribut <code>length</code> reflète toujours sa longueur.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>La fonction <code>accum</code> prend comme argument une fonction <code>fun</code> et un
+entier <code>n</code>, et renvoie le tableau <code>[fun(0), fun(1), ..., fun(n)]</code>.
+<strong>Écrivez</strong> cette fonction.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">accum</span><span class="p">(</span><span class="nx">fun</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="nx">accum</span><span class="p">(</span><span class="nx">compose</span><span class="p">(</span><span class="nx">square</span><span class="p">,</span> <span class="nx">fibo</span><span class="p">),</span> <span class="mi">10</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h2>{{{O}{{b}}}{j}{{e,t}{s}}}</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Lorsqu'un tableau ne suffit plus à modéliser vos besoin, il y a
+l'objet.  Un objet associe des identifiants à des valeurs.  Les
+valeurs peuvent être des nombres, chaînes, variables, tableaux,
+mais aussi des fonctions, et bien sûr des objets.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">truth</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">Ce</span><span class="o">:</span> <span class="s1">&#39;premier&#39;</span><span class="p">,</span>
+  <span class="nx">cours</span><span class="o">:</span> <span class="p">{</span><span class="nx">de</span><span class="o">:</span> <span class="s1">&#39;JavaScript&#39;</span><span class="p">},</span>
+  <span class="nx">est</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;vraiment&#39;</span><span class="p">,</span> <span class="s1">&#39;trop&#39;</span><span class="p">],</span>
+  <span class="nx">une</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wait_for_it</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">wait_for_it</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">puissance</span><span class="o">:</span> <span class="mi">9000</span>
+<span class="p">};</span>
+
+<span class="nx">flatten</span><span class="p">(</span><span class="nx">truth</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Un objet peut être vu comme un tableau associatif, ou <em>map</em> en
+anglais; une collection de pairs <code>(clé, valeur)</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">heroes</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;Tintin&#39;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">creator</span><span class="o">:</span> <span class="s1">&#39;Hergé&#39;</span><span class="p">,</span>
+    <span class="nx">likes</span><span class="o">:</span> <span class="s1">&#39;Milou&#39;</span>
+  <span class="p">},</span>
+  <span class="s1">&#39;Scrooge McDuck&#39;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">creator</span><span class="o">:</span> <span class="s1">&#39;Carl Barks&#39;</span><span class="p">,</span>
+    <span class="nx">likes</span><span class="o">:</span> <span class="s1">&#39;Money&#39;</span>
+  <span class="p">},</span>
+  <span class="s1">&#39;Batman&#39;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">creator</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Bob Kane&#39;</span><span class="p">,</span> <span class="s1">&#39;Bill Finger&#39;</span><span class="p">],</span>
+    <span class="nx">likes</span><span class="o">:</span> <span class="s1">&#39;Robin&#39;</span>
+  <span class="p">}</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Une fonction peut référencer l'objet sur lequel elle est appelée
+avec le mot-clé <code>this</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">getFact</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">fact</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">][</span><span class="nx">fact</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="nx">heroes</span><span class="p">.</span><span class="nx">getFact</span> <span class="o">=</span> <span class="nx">getFact</span><span class="p">;</span>
+<span class="nx">heroes</span><span class="p">.</span><span class="nx">getFact</span><span class="p">(</span><span class="s1">&#39;Batman&#39;</span><span class="p">,</span> <span class="s1">&#39;likes&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Robin&#39;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p><strong>Écrivez</strong> la fonction <code>setFact</code>, ajoutez-la à l'objet
+<code>heroes</code> et testez-la.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">setFact</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">fact</span><span class="p">,</span> <span class="nx">newFact</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>Les objets recèlent encore plus de surprises qui seront dévoilées au
+prochain cours.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <h2>Bonus</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>Félicitations !  Vous êtes arrivés au bout de ce premier TP.
+Quelques questions à creuser avant de partir :</p>
+
+<ul>
+<li>Avez-vous écrit la fonction qui calcule les nombres de Fibonacci
+récursivement <em>et</em> itérativement ?</li>
+<li>Même question pour la fonction <code>accum</code>.</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>Vous pouvez aussi tenter de décortiquer la fonction <code>flatten</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">flatten</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">obj</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">obj</span> <span class="o">==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">obj</span><span class="p">(</span><span class="s1">&#39;tuerie&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">obj</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">flat</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">flat</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">prop</span><span class="p">);</span>
+      <span class="nx">flat</span> <span class="o">=</span> <span class="nx">flat</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">flatten</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">prop</span><span class="p">]));</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">flat</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

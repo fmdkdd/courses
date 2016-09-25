@@ -1,0 +1,226 @@
+#+Title: Quiz JavaScript
+#+Date: 25 janvier 2013
+#+Author: Langages de nouvelle génération A2/FIL
+#+Language: fr
+#+Options: toc:nil
+
+#+LATEX_CMD: lualatex
+#+LATEX_CLASS_OPTIONS: [a4paper, 12pt]
+
+#+LATEX_HEADER: \addtolength{\topmargin}{-.8in}
+#+LATEX_HEADER: \addtolength{\textheight}{1.6in}
+
+## Font selection
+#+Latex_Header: \setmainfont[Mapping=tex-text]{Liberation Serif}
+#+Latex_Header: \newfontfamily\progfont[Scale=MatchLowercase]{Ubuntu Mono}
+#+Latex_Header: \usepackage{wasysym}
+
+#+Latex_Header: \newcommand{\choice}[1]{\Square\hspace{2pt} #1\hspace{5pt}}
+#+Latex_Header: \newcommand{\choicec}[1]{\Square\hspace{2pt} \lstinline{#1}\hspace{5pt}}
+
+## Listings
+#+Latex_Header: \usepackage{listings}
+#+Latex_Header: \lstset{basicstyle=\progfont}
+#+Latex_Header: \lstset{tabsize=3, columns=fullflexible, keepspaces=true}
+#+Latex_Header: \lstset{breaklines=false, showstringspaces=false}
+#+Latex_Header: \lstset{frame=leftline, framerule=1pt}
+#+Latex_Header: \lstset{framesep=2pt}
+#+Latex_Header: \lstdefinelanguage{JavaScript}{
+#+Latex_Header:   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+#+Latex_Header:   keywordstyle=\bfseries,
+#+Latex_Header:   ndkeywords={class, export, boolean, throw, implements, import, this},
+#+Latex_Header:   ndkeywordstyle=\bfseries,
+#+Latex_Header:   identifierstyle=,
+#+Latex_Header:   sensitive=false,
+#+Latex_Header:   comment=[l]{//},
+#+Latex_Header:   morecomment=[s]{/*}{*/},
+#+Latex_Header:   morestring=[b]',
+#+Latex_Header:   morestring=[b]"
+#+Latex_Header: }
+
+*Nom* :
+
+Sans machine ni document.
+
+Durée : 20 minutes.
+
+Cocher la bonne réponse (il peut y en avoir plusieurs).
+
+1)
+	#+begin_src javascript
+		  var a = 02;
+	#+end_src
+
+  Que vaut \lstinline{a} ?
+
+  \choicec{2} \choicec{"a"} \choicec{4} \choicec{undefined} \choice{Obiwan Kenobi}
+
+2)
+	#+begin_src javascript
+		 var f = function (x) {
+			 return x;
+		 }
+	#+end_src
+
+	\lstinline{f(f("f"))} retourne la chaîne \lstinline{f}
+
+   \choice{Vrai} \choice{Faux}
+
+3)
+  #+begin_src javascript
+		function A(x) {
+			return function(y) {
+				return x + y;
+			}
+		}
+  #+end_src
+
+  Que vaut \lstinline{A(3)(2)} ?
+
+  \choicec{3} \choicec{2} \choicec{5} \choicec{undefined}
+  \choice{\lstinline{A(3)(2)} génère une erreur}
+
+4)
+  #+begin_src javascript
+		function B(f) {
+			return function(x) {
+				return x(f);
+			}
+		}
+  #+end_src
+
+  Que vaut \lstinline{B(3)(A)(3)}, \lstinline{A} étant la fonction de
+    la question 3 ?
+
+  \choicec{9} \choicec{6} \choicec{3} \choicec{undefined}
+  \choice{\lstinline{B(3)(A)(3)} génère une boucle infinie}
+
+5)
+  #+begin_src javascript
+		var tab = [0];
+		tab.push(2);
+		tab.push(3);
+		tab.push(1);
+  #+end_src
+
+  Que vaut \lstinline{tab.length} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{4} \choicec{undefined}
+
+  Que vaut \lstinline{tab[1]} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{4} \choicec{undefined}
+
+  Que vaut \lstinline{tab[tab[2]]} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{4} \choicec{undefined}
+
+7) Un tableau contient uniquement des éléments homogènes.
+
+   \choice{Vrai} \choice{Faux}
+
+8) Un objet peut contenir des fonctions.
+
+   \choice{Vrai} \choice{Faux}
+
+9)
+  #+begin_src javascript
+    var O = {
+       a: 3,
+       x: "x"
+    };
+    M = Object.create(O);
+    M.x = 2;
+  #+end_src
+
+  Que vaut \lstinline{M.x} ?
+
+  \choicec{2} \choicec{3} \choicec{"x"} \choicec{undefined}
+
+  Que vaut \lstinline{O.x} ?
+
+  \choicec{2} \choicec{3} \choicec{"x"} \choicec{undefined}
+
+10)
+	#+begin_src javascript
+     var O = {
+        a: 3,
+        x: "x"
+     };
+     M = Object.create(O);
+     O.a = O.x;
+	#+end_src
+
+	Que vaut \lstinline{M.a} ?
+
+   \choicec{"x"} \choicec{3} \choicec{"a"} \choicec{undefined}
+
+	Que vaut \lstinline{O.a} ?
+
+   \choicec{"x"} \choicec{3} \choicec{"a"} \choicec{undefined}
+
+11)
+	#+begin_src javascript
+     var O = {
+        x: 3,
+        f: function() {
+           x = x + 3;
+        }
+     };
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f()} ?
+
+   \choicec{3} \choicec{6} \choicec{undefined}
+   \choice{\lstinline{O.f()} génère une erreur}
+
+12)
+	#+begin_src javascript
+     var O = {
+        x: 3,
+        f: function(x) {
+           x = x + 3;
+        }
+     };
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f(2)} ?
+
+   \choicec{2} \choicec{3} \choicec{5} \choicec{6} \choicec{undefined}
+   \choice{\lstinline{O.f(2)} génère une erreur}
+
+13)
+	#+begin_src javascript
+     var O = {
+        x: 3,
+        f: function() {
+           this.x = this.x + 3;
+        }
+     };
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f(2)} ?
+
+   \choicec{2} \choicec{3} \choicec{5} \choicec{6} \choicec{undefined}
+   \choice{\lstinline{O.f(2)} génère une erreur}
+
+14)
+	#+begin_src javascript
+     var O = {
+        x: 3,
+        f: function(x) {
+           this.x = x + 3;
+        }
+     };
+	#+end_src
+
+	Que vaut \lstinline{O.x} après l'appel \lstinline{O.f(2)} ?
+
+   \choicec{2} \choicec{3} \choicec{5} \choicec{6} \choicec{undefined}
+   \choice{\lstinline{O.f(2)} génère une erreur}
+
+15) Écrire la fonction \lstinline{filter(pred, list)} qui prend une
+    fonction \lstinline{pred} et un tableau \lstinline{list} en
+    arguments, puis renvoie un nouveau tableau qui contient les
+    éléments de \lstinline{list} pour lesquels \lstinline{pred}
+    retourne vrai.

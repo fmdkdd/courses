@@ -1,0 +1,37 @@
+Syntax is inherited from Java but without the types
+
+#+BEGIN_SRC js :results verbatim
+  var subject = 'FIL';
+
+  function greetSubject(greeting) {
+    return greeting + ' ' + subject;
+  }
+
+  console.log(['Hello', 'Bonjour', 'こんにちは', '⠓⠑⠇⠇⠕', 'ଶୁଣିବେ']
+              .map(greetSubject).join('\n'));
+#+END_SRC
+
+#+RESULTS:
+: Hello FIL
+: Bonjour FIL
+: こんにちは FIL
+: ⠓⠑⠇⠇⠕ FIL
+: ଶୁଣିବେ FIL
+: undefined
+
+// ## Numbers
+// Numbers are always doubles (64-bit IEEE 754)
+1 / 2;
+
+// Not suited for big-integer arithmetic
+9007199254740992 + 1;
+
+// Scientific, hexadecimal and octal notations
+1e6;
+
+0x10;
+
+010;
+
+// Infinities, and NaN
+1 / 0;

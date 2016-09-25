@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>JavaScript &mdash; Introduction</title>
+
+		<meta name="description" content="Introduction à JavaScript">
+		<meta name="author" content="fmdkdd">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/solarized_light.css">
+
+      <style>
+      html.node-bg body {
+			background: url("images/nodejs-1440x900.png");
+			background-position: center;
+			background-size: 100%;
+      }
+
+      .reveal .slides section .fragment.sweep-in {
+			-webkit-transform: translateY(-200px);
+			-moz-transform: translateY(-200px);
+			-o-transform: translateY(-200px);
+			-ms-transform: translateY(-200px);
+			transform: translateY(-200px);
+
+			-webkit-transition:all 600ms ease;
+			-moz-transition:all 600ms ease;
+			-o-transition:all 600ms ease;
+			-ms-transition:all 600ms ease;
+			transition:all 600ms ease;
+      }
+
+		.reveal .slides section .fragment.sweep-in.visible {
+			-webkit-transform: translateY(0px);
+			-moz-transform: translateY(0px);
+			-o-transform: translateY(0px);
+			-ms-transform: translateY(0px);
+			transform: translateY(0px);
+		}
+
+		.reveal .slides img.raw {
+			border: none;
+			background: none;
+			box-shadow: none;
+		}
+      </style>
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h1>JavaScript</h1>
+					<h2>Introduction</h2>
+				</section>
+
+            <section>
+              <h2>Qu'est-ce ?</h2>
+              <p>Le langage de script du web</p>
+            </section>
+
+            <section>
+              <section>
+                <h2>Pourquoi JavaScript ?</h2>
+                <ul>
+                  <li>Web 2.0</li>
+                  <li><em>Cloud computing</em></li>
+                  <li>Jeux multi-joueurs en temp réel</li>
+                  <li>Widgets</li>
+                  <li>&hellip;</li>
+                </ul>
+              </section>
+
+              <section>
+                <h2>Démonstrations</h2>
+                <p><a href="http://localhost:12345/play/#test" target="blank">Sparkets</a></p>
+              </section>
+
+            </section>
+
+            <section>
+              <h2>Un langage populaire</h2>
+              <p>Unique langage de script pour les navigateurs</p>
+              <img src="images/github-languages.png" />
+              <p>Popularité sur <a href="http://www.github.com/languages">Github</a></p>
+            </section>
+
+            <section>
+              <section>
+                <h2>Une plateforme universelle</h2>
+                <p>Le navigateur comme machine virtuelle</p>
+                <p>JavaScript comme <em>lingua franca</em></p>
+              </section>
+
+              <section>
+                <h2>Chrome OS</h2>
+                <img src="images/chromebook.jpg" />
+
+                <aside data-markdown class="notes">
+                  Focus sur applis web en JS/HTML/CSS
+                </aside>
+              </section>
+
+              <section>
+                <h2>Firefox OS</h2>
+                <img src="images/firefoxos.jpg" />
+
+                <aside data-markdown class="notes">
+                  OS pour smartphones, plateforme Gecko
+
+                  - Apps en JS/HTML/CSS
+                  - Menu aussi
+                </aside>
+              </section>
+
+              <section>
+                <h2>Windows 8</h2>
+                <img src="images/windows8.jpg" />
+
+                <aside data-markdown class="notes">
+                  - Apps en JS/HTML/CSS
+                </aside>
+              </section>
+            </section>
+
+            <section>
+              <section>
+                <h2>Standalone JavaScript</h2>
+                <p>Pas seulement pour le navigateur</p>
+              </section>
+
+                <aside data-markdown class="notes">
+                  JS initialement pour les navigateurs
+
+                  - Mais possible de l'exécuter ailleurs
+                </aside>
+
+              <section data-state="node-bg">
+              </section>
+
+              <section>
+                <h2>Serveur HTTP</h2>
+                <pre><code class="language-javascript">var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+}).listen(1337, '127.0.0.1');
+console.log('Server running at http://127.0.0.1:1337/');</code></pre>
+
+                <aside data-markdown class="notes">
+                  Un serveur HTTP en 5 lignes
+                </aside>
+              </section>
+
+            <section>
+              <h2>Mais aussi ...</h2>
+              <ul>
+                <li>Google V8</li>
+                <li>Rhino</li>
+                <li>SpiderMonkey</li>
+              </ul>
+                <aside data-markdown class="notes">
+                  Exécuter du JS côté serveur ou client en dehors d'un browser
+
+                  - V8: moteur JS en C++, rapide, derrière node
+                  - Rhino: JS en Java, pour combiner les deux
+                  - SpiderMonkey: JS de FF en C/C++
+                </aside>
+            </section>
+            </section>
+
+            <section>
+              <h1>Historique</h1>
+            </section>
+
+            <section>
+              <h2>Netscape, 1994</h2>
+              <blockquote>
+                JS had to "look like Java" only less so, be Java's
+                dumb kid brother or boy-hostage sidekick. Plus, I had
+                to be done in ten days or something worse than JS
+                would have happened.
+              </blockquote>
+              <p>Brendan Eich</p>
+
+              <aside data-markdown class="notes">
+                - Rapprochement Sun - syntaxe C/Java
+                - Dix jours: d'où les défauts
+                - Contexte: représentation des nombres
+              </aside>
+            </section>
+
+            <section>
+              <h2>Inspirations</h2>
+              <p>Self, Scheme</p>
+
+              <aside data-markdown class="notes">
+                Syntaxe Java mais plus proche de Self et Scheme
+                pour le prototype, et le fonctionnel
+              </aside>
+            </section>
+
+            <section>
+              <h2>Standard ECMAScript</h2>
+              <ul>
+                <li>1997 &mdash; ECMAScript 1</li>
+                <li>1998 &mdash; ECMAScript 2</li>
+                <li>1999 &mdash; ECMAScript 3</li>
+                <li>2009 &mdash; ECMAScript 5</li>
+                <li>201? &mdash; ECMAScript 6</li>
+              </ul>
+              <aside data-markdown class="notes">
+                - 4 drop en 2008 (classes, modules, namespaces, types)
+                - rétro-compatibilité fail
+                - Harmony reprend l'idée, OneJS
+                - ECMA 6 pour 2014 ?
+              </aside>
+            </section>
+
+            <section>
+              <h2>ECMAScript Harmony</h2>
+              <ul>
+                <li>Modules</li>
+                <li>Isolation</li>
+                <li>Proxy</li>
+                <li>Générateurs</li>
+                <li>Nouvelles structures</li>
+              </ul>
+
+              <aside data-markdown class="notes">
+                - Comité TC39 actif, langage évolue vite
+                - Les implémentations précèdent le standard (first to
+                ship wins)
+                - Vers un JS plus maintenable, optimisable
+              </aside>
+            </section>
+
+            <section>
+              <h1>Écosystème</h1>
+            </section>
+
+            <section>
+              <section>
+                <h2>JavaScript est ...</h2>
+                <ul>
+                  <li>un langage de script</li>
+                  <li>dynamique</li>
+                  <li>non typé</li>
+                  <li>asynchrone</li>
+                  <li>fonctionnel</li>
+                  <li><em>object-based</em></li>
+                </ul>
+              </section>
+
+            <section>
+              <h2>Langage de script ?</h2>
+              <p>Bash, Python, Lua, &hellip;</p>
+              <p>Utiles pour</p>
+              <ul>
+                <li>automatiser des tâches</li>
+                <li>étendre un programme (add-on, mod)</li>
+              </ul>
+            </section>
+
+            <section data-class="soothe">
+              <h2>Langages de script ?</h2>
+              <p>Légers, peu de friction</p>
+              <ul>
+                <li>syntaxe simple</li>
+                <li>expressifs</li>
+                <li>prototypage rapide</li>
+              </ul>
+            </section>
+
+            <section data-class="alert">
+              <h2>Langage de script ?</h2>
+              <p>Complexité d'un large projet ingérable</p>
+              <ul>
+                <li>absence de structure</li>
+                <li>non typés</li>
+                <li>erreurs dynamiques et silencieuses</li>
+              </ul>
+
+              <aside data-markdown class="notes">
+                Fautes de frappe difficile à détecter.
+              </aside>
+            </section>
+
+              <section>
+                <h2>Exemple</h2>
+                <pre><code class="eval language-javascript">var subject = 'FIL';
+
+function greetSubject(greeting) {
+   return greeting + ' ' + subject;
+}
+
+['Hello', 'Bonjour', 'こんにちは', '⠓⠑⠇⠇⠕', 'ଶୁଣିବେ']
+   .map(greetSubject).join('\n');
+</code></pre>
+                <pre><code class="echo"> </code></pre>
+              </section>
+            </section>
+
+            <section>
+              <h2>Navigateur</h2>
+              <img src="images/firefox-arch.jpg" />
+
+              <aside data-markdown class="notes">
+                Debugger et autres outils de dev intégrés + extensions
+              </aside>
+            </section>
+
+            <section>
+              <h2>Document Object Model</h2>
+              <p>Représentation arborescente des documents HTML</p>
+
+              <aside data-markdown class="notes">
+                - Ouvrir la visu du DOM
+                - JS peut manipuler tout ça dynamiquement
+              </aside>
+            </section>
+
+            <section>
+              <section>
+                <img src="images/HTML5 Logo.svg" class="raw" width="400"/>
+              </section>
+
+              <section>
+                <h2>HTML5 APIs</h2>
+                <ul>
+                  <li><code><a href="http://mrdoob.com/144/magic_dust">&lt;canvas&gt;</a></code></li>
+                  <li>Web storage</li>
+                  <li>Géolocalisation</li>
+                  <li><a href="http://questionpark.com/electro-theremin/">Audio API</a></li>
+                  <li>WebSocket</li>
+                  <li><a href="http://apprtc.appspot.com/">WebRTC</a></li>
+                  <li>...</li>
+                </ul>
+
+                <aside data-markdown class="notes">
+                  API exploitables en JS
+
+                  - Nouvelles possibilités pour le navigateur
+                </aside>
+              </section>
+            </section>
+
+            <section>
+              <h2>Bibliothèques</h2>
+              <p><a href="http://tympanus.net/Tutorials/BubbleNavigation/">jQuery</a>,
+                Backbone,
+                underscore,
+                <a href="http://raphaeljs.com/analytics.html">raphael</a>,
+                <a href="http://boydgreenfield.com/quakes/">d3</a>,
+                <a href="http://mrdoob.com/lab/javascript/threejs/css3d/periodictable/">three.js</a>,
+                socket.io,
+                <a href="http://editor.method.ac/">&hellip;</a>
+              </p>
+
+              <aside data-markdown class="notes">
+                - jQuery: simple manipulation et AJAX
+                - Backbone: structurer des applis web complexes (modèle, vues)
+                - underscore: lib fonctionnelle
+                - d3: visu de données
+                - raphael: manipuler du SVG
+                - socket.io: bidi tween browser/serveur
+              </aside>
+            </section>
+
+            <section>
+
+              <section>
+                <h2>Variantes</h2>
+                <p><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Langages qui compilent vers JavaScript</a></p>
+              </section>
+
+              <section>
+                <h2>CoffeeScript</h2>
+                <p>Sucre syntaxique</p>
+                <pre><code class="language-coffeescript">list = [1..4]
+square = (x) -> x * x
+list.map square
+</code></pre>
+                <pre><code class="language-coffeescript">1,4,9,16
+</code></pre>
+              </section>
+
+              <section>
+                <h2>CoffeeScript</h2>
+                <p>Classe(s) !</p>
+                <pre><code class="language-coffeescript">class Animal
+  constructor: (@name) ->
+
+  move: (meters) ->
+    alert @name + " moved #{meters}m."
+
+class Snake extends Animal
+  move: ->
+    alert "Slithering..."
+    super 5
+
+class Horse extends Animal
+  move: ->
+    alert "Galloping..."
+    super 45
+</code></pre>
+              </section>
+
+              <section>
+                <h2>TypeScript</h2>
+                <p>JavaScript + types</p>
+                <pre><code class="language-typescript">class Greeter {
+   greeting: string;
+   constructor (message: string) {
+      this.greeting = message;
+   }
+   greet() {
+      return "Hello, " + this.greeting;
+   }
+}
+</code></pre>
+              </section>
+
+              <section>
+                <h2>TypeScript</h2>
+                <p>Auto-complétion !</p>
+                <img src="images/typescript-magic.png" />
+              </section>
+
+              <section>
+                <h2>Dart</h2>
+                <p>Le futur de JavaScript (d'après Google)</p>
+                <pre><code class="language-dart">makeAdder(num x) {
+  return (num y) => x + y;
+}
+
+main() {
+  var add2 = makeAdder(2);
+  assert(add2(3) == 5);
+}
+</code></pre>
+              </section>
+
+              <section>
+                <h2>Emscripten</h2>
+                <p>Bitcode LLVM vers JavaScript</p>
+                <p><a href="http://play-ttd.com/play/">Play TTD</a>
+              </section>
+
+              <section>
+                <h2>LLJS</h2>
+                <p>Nostalgiques du C</p>
+                <pre><code class="language-lljs">let int x = 42;
+let int *y = &x;
+let int **z = &y;
+trace(x);
+*y = 1;
+trace(x);
+**z = 12;
+trace(x);
+**z = ***(&z);
+</code></pre>
+                <pre class="fragment sweep-in"><code class="language-javascript">const $M = require('memory');
+$M.set_memcheck(false);
+const $I4 = $M.I4, $U4 = $M.U4;
+const $SP = $U4[1] -= 6;
+var _ = $I4[$SP] = 42;
+var _$1 = $U4[$SP + 2] = $SP;
+var _$2 = $U4[$SP + 4] = $SP + 2;
+trace($I4[$SP]);
+$I4[$U4[$SP + 2]] = 1;
+trace($I4[$SP]);
+$I4[$U4[$U4[$SP + 4]]] = 12;
+trace($I4[$SP]);
+$I4[$U4[$U4[$SP + 4]]] = $I4[$U4[$U4[$SP + 4]]];
+$U4[1] += 6;
+</code></pre>
+              </section>
+
+            </section>
+
+            <section>
+              <h2>Quand utiliser JavaScript ?</h2>
+              <ul>
+                <li>manipulation du DOM</li>
+                <li>exploiter les API HTML5</li>
+                <li>AJAX: communication en arrière plan</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>Quand ne pas utiliser JavaScript ?</h2>
+              <ul>
+                <li>animations (CSS)</li>
+                <li>variante plus adaptée (côté client)</li>
+                <li>langage plus adapté (côté serveur)</li>
+              </ul>
+            </section>
+
+            <section>
+              <h1>Et nous ?</h1>
+
+              <aside data-markdown class="notes">
+                - JS: le langage plutôt que bibliothèques
+                - Syntaxe, prototype, fonctionnel, événement
+                - Avec un exemple fil rouge
+              </aside>
+            </section>
+
+            <section>
+              <h2>Pacmines</h2>
+    <pre id="map" style="display:none;">
+/------------\/------------\
+|............||............|
+|./--\./---\.||./---\./--\.|
+|.|  |.|   |.||.|   |.|  |.|
+|.l--;.l---;.l;.l---;.l--;.|
+|..........................|
+|./--\./\./------\./\./--\.|
+|.l--;.||.l--\/--;.||.l--;.|
+|......||....||....||......|
+l----\.|l--\ || /--;|./----;
+     |.|/--; l; l--\|.|     <!--  -->
+     |.||          ||.|     <!--  -->
+     |.|| /--  --\ ||.|     <!--  -->
+-----;.l; |......| l;.l-----
+      .   |......|   .      <!--  -->
+-----\./\ |......| /\./-----
+     |.|| l------; ||.|     <!--  -->
+     |.||          ||.|     <!--  -->
+     |.|| /------\ ||.|     <!--  -->
+/----;.l; l--\/--; l;.l----\
+|............||............|
+|./--\./---\.||./---\./--\.|
+|.l-\|.l---;.l;.l---;.|/-;.|
+|...||.......@........||...|
+l-\.||./\./------\./\.||./-;
+/-;.l;.||.l--\/--;.||.l;.l-\
+|......||....||....||......|
+|./----;l--\.||./--;l----\.|
+|.l--------;.l;.l--------;.|
+|..........................|
+l--------------------------;
+</pre>
+    <canvas id="canvas" height="576" width="448">
+      Canvas not supported by your browser.  It may be time to update.
+    </canvas>
+              <aside data-markdown class="notes">
+                - Peu de temps: lire du code et comprendre
+                - Assimiler les idiomes du JS pour être confortable
+              </aside>
+            </section>
+
+            <section>
+              <h2>Le plan</h2>
+              <p><a href="../basics/index.html">bases</a>,
+                <a href="../advanced/index.html">prototypes</a></p>
+            </section>
+
+</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+			center: true,
+				transition: 'linear',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+               { src: 'plugin/repl/repl.js', condition: function() { return !!document.querySelector('code.echo'); } },
+			{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+         { src: '/socket.io/socket.io.js', async: true },
+         { src: 'plugin/notes-server/client.js', async: true },
+
+         { src: 'plugin/pacmines/pacmines-core.js', async: true },
+         { src: 'plugin/pacmines/pacmines.js', async: true },
+
+         // { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

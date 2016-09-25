@@ -1,0 +1,588 @@
+* Objects as associative arrays
+We can think of objects in JavaScript as associative arrays, or
+dictionaries.  A dictionary is a versatile data structure with many
+applications.  JavaScript objects, helped by their lightweight syntax,
+are one of the pillar of the language.
+
+** Creating objects
+We create objects using the literal syntax ={}=.
+
+#+BEGIN_SRC js
+  var an_object = {
+    fruta: "frambuesa",
+    a_number: 2,
+    square: function(x) {
+      return x * x;
+    },
+    another_object: {
+      x: 3,
+      y: 12,
+    },
+  }
+#+END_SRC
+
+An object is a list of /properties/, where each property is a couple
+(name, value).  A name can be any string, but you might need
+additional quotations (=""=) in object literals; e.g. the following is
+a syntax error because of the space in the property name:
+
+#+BEGIN_SRC js
+ var obj = { Eleanor Rigby: "all the lonely people" };
+#+END_SRC
+
+Thus we need to quote the name since it is not a valid identifier:
+
+#+BEGIN_SRC js
+ var obj = { "Eleanor Rigby": "all the lonely people" };
+#+END_SRC
+
+Values can be any JavaScript value (anything one can put in a
+variable): numbers, strings, arrays, objects, functions, =null=,
+=undefined=, ...
+
+** Accessing objects properties
+There are two ways to directly retrieve a value from objects:
+1. Using the familiar dot notation: =obj.name=
+2. Using brackets when the property name is inside a variable:
+   =obj[name]=
+
+Accessing unknown properties will return =undefined=.
+
+Here is an example contrasting both notations:
+
+#+BEGIN_SRC js
+  var fruta = {
+    name: "frambuesa",
+    howMany: 2,
+  };
+
+  fruta.name; // "frambuesa"
+  fruta.howMany; // 2
+
+  fruta["name"]; // "frambuesa"
+  fruta["howMany"]; // 2
+
+  var property = "name";
+  fruta[property]; // "frambuesa"
+
+  fruta.property; // undefined
+#+END_SRC
+
+Note that if we pass an object to the brackets instead of a string,
+the object =toString= function is called in order to produce a
+property name.  If the object does not have a =toString= function (and
+does not inherit one from Object.prototype), you will get a
+“TypeError: Cannot convert object to primitive value”.
+
+#+BEGIN_SRC js
+  var fruta = {
+    name: "frambuesa",
+    howMany: 2,
+  };
+
+  var lookup = {
+    toString: function() {
+      return "name";
+    },
+  };
+
+  fruta[lookup]; // "frambuesa"
+#+END_SRC
+
+#+RESULTS:
+: 42
+: undefined
+
+Here the object =lookup= contains only one property, the function
+=toString=.  Trying to access the property =lookup= on =fruta= calls
+this =toString= function, and the return value as the name of the
+property to retrieve from =fruta=.
+
+** Iterating over object properties
+Sometimes we need to enumerate all properties of a given object.  This
+can be done in a few different ways.
+
+First, using a =for in= loop.  Here we convert an object into a list
+of name-value couples.
+
+#+BEGIN_SRC js
+  var o = {a: 1, b: 'b', c: {}};
+  var items = [];
+  for (var prop in o)
+    items.push([prop, o[prop]]);
+  console.log(items);
+#+END_SRC
+#+RESULTS:
+| a | 1  |
+| b | b  |
+| c | {} |
+
+Note that this is an example of [[Accessing%20objects%20properties][bracketed access]]’s usefulness.
+
+Be aware that inherited enumerable properties will also show up in
+=for in=.  See [[Iteration and inherited properties]] for a solution.
+
+*** Enumerable and non-enumerable properties
+For the second way, we need to distinguish between enumerable and
+non-enumerable properties.
+
+All properties of an object have an internal “enumerable” flag which
+indicates whether the property is enumerable or not.  An enumerable
+property will show up in =for in= loops.  But be aware that the
+properties that show up in =for in= loops for an object are not just
+its enumerable properties (see [[Iteration and inherited properties]]).
+We can tell if a property is enumerable using the method
+=propertyIsEnumerable=.
+
+For these examples we will use arrays (which are also objects), as
+the =length= property is non-enumerable.
+
+#+BEGIN_SRC js
+  var o = [1,2,3];
+  o.propertyIsEnumerable('0'); // true
+  o.propertyIsEnumerable('length') // false
+#+END_SRC
+
+Alternatively, we can list all enumerable properties of an object
+using =Object.keys=.  This gives a second way to iterate over the
+properties of an object.
+
+#+BEGIN_SRC js
+  var o = [1,2,3]
+  var keys = Object.keys(o);
+  var items = [];
+  for (var i=0; i < keys.length; ++i)
+    items.push([keys[i], o[keys[i]]]);
+  console.log(items);
+#+END_SRC
+
+#+RESULTS:
+| 0 | 1 |
+| 1 | 2 |
+| 2 | 3 |
+
+If, on the other hand, we also want to get the non-enumerable
+properties, we can use =Object.getOwnPropertyNames=.
+
+#+BEGIN_SRC js
+  var o = [1,2,3];
+  var names = Object.getOwnPropertyNames(o);
+  var items = [];
+  for (var i=0; i < names.length; ++i)
+    items.push([names[i], o[names[i]]]);
+  console.log(items);
+#+END_SRC
+
+#+RESULTS:
+|      0 | 1 |
+|      1 | 2 |
+|      2 | 3 |
+| length | 3 |
+
+*** Iteration and inherited properties
+Using =for in= to iterate over the enumerable properties of an object
+will also include the enumerable properties of this object’s
+prototype.
+
+#+BEGIN_SRC js
+  var o = Object.create({a: 1});
+  o.b = 2;
+  var items = [];
+  for (var prop in o)
+    items.push([prop, o[prop]]);
+  console.log(items);
+#+END_SRC
+#+RESULTS:
+| b | 2 |
+| a | 1 |
+
+Compare this to using =Object.keys()= or =Object.getOwnPropertyNames=,
+which both include only an object’s /own/ properties.
+
+#+BEGIN_SRC js
+  var o = Object.create({a: 1});
+  o.b = 2;
+  Object.keys(o); // [ 'b' ]
+  Object.getOwnPropertyNames(o);  // [ 'b' ]
+#+END_SRC
+
+Be aware that =propertyIsEnumerable= is defined only for an object’s
+own properties.  It will return false for inherited enumerable
+properties.
+
+Lastly, you can check if a property is inherited or not using
+=hasOwnProperty=.
+
+#+BEGIN_SRC js
+  var o = Object.create({a: 1});
+  o.b = 2;
+  o.hasOwnProperty('a'); // false
+  o.hasOwnProperty('b'); // true
+#+END_SRC
+
+If for some reason you need to iterate on an object’s own enumerable
+properties with =for in= (if you do not have access to =Object.keys=),
+then the common idiom is:
+
+#+BEGIN_SRC js
+  var o = Object.create({a: 1});
+  o.b = 2;
+  var items = [];
+  for (var prop in o)
+    if (o.hasOwnProperty(prop))
+      items.push([prop, o[prop]]);
+  console.log(items);
+#+END_SRC
+#+RESULTS:
+| b | 2 |
+
+** Properties are dynamic
+An object is a mutable dictionary.
+- All property values can be changed at any point after the object
+  creation.
+- Any property can be added or deleted at any point after the object
+  creation.
+
+Thus, there is no need to provide all the properties an object will
+contain when creating it.  We could have written the previous fruit
+object as:
+
+#+BEGIN_SRC js
+  var fruta = {}; // create an empty object
+  fruta.name = "frambuesa";
+  fruta.howMany = 2;
+#+END_SRC
+
+Or even
+
+#+BEGIN_SRC js
+  var fruta = {
+    name: "frambuesa";
+  };
+
+  // much later in the program
+
+  fruta.howMany = 2;
+#+END_SRC
+
+This flexibility is quite convenient for extending object during their
+lifetime.  Say, in some part of our program we want to compute the
+price of the fruit.  Instead of having a separate price table for all
+fruits, we can add prices to individual fruit objects:
+
+#+BEGIN_SRC js
+  fruta.price = 0.65;
+#+END_SRC
+
+Of course, if you choose to extend the object dynamically, you must
+take care that new properties are always defined before you try to
+access them, otherwise you will get =undefined= and potentially
+propagate a silent error through your program.  For example, if we
+call =totalPrice= before adding the price property on strawberries, we
+get =NaN= (because of the multiplication with =undefined=).
+
+#+BEGIN_SRC js
+  var fruta = {
+    name: "frambuesa",
+    howMany: 2,
+  };
+
+  function totalPrice(fruit) { return fruit.howMany * fruit.price; }
+
+  totalPrice(fruta); // NaN
+#+END_SRC
+
+A safe way to deal with dynamic properties is to always provide
+default values when creating the object.  In our case, if we do not
+know what the price should be at creation time, we can at least set the
+property to the correct expected type with the number zero.
+
+#+BEGIN_SRC js
+  var fruta = {
+    name: "frambuesa",
+    howMany: 2,
+    price: 0,
+  };
+#+END_SRC
+
+** Objects for grouping variables
+Objects are useful for bundling related variables under a common
+header.  For the fruit example, we could have used separate
+variables.
+
+#+BEGIN_SRC js
+  var fruta_name = "frambuesa";
+  var fruta_howMany = 2;
+  var fruta_price = 0.60;
+#+END_SRC
+
+Even if we tolerate the redundancy of the =fruta_= prefix, there is
+the issue of using such variables, for example when computing the
+total price of the fruit.
+
+#+BEGIN_SRC js
+  function totalPrice(pieces, unitPrice) { return pieces * unitPrice; }
+
+  totalPrice(fruta_howMany, fruta_price);
+#+END_SRC
+
+Each variable needed by the function should be passed as an argument.
+In this example we only use two variables, but is it easy to imagine
+using 10 or 15 such variables.  A function with 10 arguments is
+very tedious to use, and error-prone.
+
+Lastly, we have no way of iterating over these related variables.
+What are the attributes of =fruta=?  We must define such list
+ourselves.
+
+: var fruta_keys = [fruta_name, fruta_howMany, fruta_price];
+
+Compare this approach to using objects.
+
+#+BEGIN_SRC js
+  var fruta = {
+    name: "frambuesa",
+    howMany: 2,
+    price: 0.60,
+  };
+
+  function totalPrice(fruit) { return fruit.howMany * fruit.price; }
+
+  totalPrice(fruta);
+#+END_SRC
+
+The function =totalPrice= only takes one argument, not matter how many
+properties of =fruta= it uses.
+
+** Objects as maps
+Since objects are dictionaries, we can use them to store mappings.
+For instance, grouping books by their ISBN:
+
+#+BEGIN_SRC js
+  var books = {
+    '1-4493-6072-6': {
+      title: 'Functional JavaScript',
+      author: 'Michael Fogus',
+      publisher: 'O’Reilly Media',
+    },
+    '0-321-81218-2': {
+      title: 'Effective JavaScript',
+      author: 'David Herman',
+      publisher: 'Addision-Wesley Professional',
+    },
+  };
+#+END_SRC
+
+Such mapping has the advantage, over lists, that retrieval of an item
+by its key is a constant-time operation.  We not need to loop over all
+the books to find one book when we know its ISBN.
+
+: books['0-321-81218-2'].title === 'Effective JavaScript';
+
+*** Objects as pure maps
+However, there are two restrictions to be aware when using objects as
+maps.
+1. The keys can only be strings (not numbers, objects, functions).
+   See [[Creating objects]].
+2. Some keys cannot be used because they are inherited.
+
+If you need to use objects or functions as keys, prefer the
+(EcmaScript 6 only, not supported everywhere yet) [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map][Map]] object.
+
+The second restriction is a consequence of object literals inheriting
+from =Object.prototype=.  Hence, a newly created object is not truly
+empty: some properties have values, even though they are not defined
+on the object itself.
+
+#+BEGIN_SRC js
+  var obj = {};
+  obj['toString']; // function toString()
+  obj['constructor']; // function Object()
+  obj['__proto__']; // Object { ... }
+#+END_SRC
+
+The safe way to create a dictionary object then is to create an object
+without a prototype.
+
+#+BEGIN_SRC js
+  var obj = Object.create(null);
+  obj['toString']; // undefined
+  obj['constructor']; // undefined
+  obj['__proto__']; // undefined
+#+END_SRC
+
+** Serializing objects
+Serializing objects in JavaScript is easily done by calling
+=JSON.stringify=, which takes an object and returns a JSON string.
+
+#+BEGIN_SRC js :results output
+  var books = {
+    '1-4493-6072-6': {
+      title: 'Functional JavaScript',
+      author: 'Michael Fogus',
+      publisher: 'O’Reilly Media',
+      price: 32.99,
+    },
+    '0-321-81218-2': {
+      title: 'Effective JavaScript',
+      author: 'David Herman',
+      publisher: 'Addision-Wesley Professional',
+      price: 31.99,
+    },
+  };
+
+  console.log(JSON.stringify(books));
+#+END_SRC
+
+#+RESULTS:
+: {"1-4493-6072-6":{"title":"Functional JavaScript","author":"Michael Fogus","publisher":"O’Reilly Media","price":32.99},"0-321-81218-2":{"title":"Effective JavaScript","author":"David Herman","publisher":"Addision-Wesley Professional","price":31.99}}
+
+To reconstruct a JavaScript object from a JSON string, use
+=JSON.parse=.
+
+#+BEGIN_SRC js :results output
+  var books = JSON.parse('{"1-4493-6072-6":{"title":"Functional JavaScript","author":"Michael Fogus","publisher":"O’Reilly Media","price":32.99},"0-321-81218-2":{"title":"Effective JavaScript","author":"David Herman","publisher":"Addision-Wesley Professional","price":31.99}}');
+
+  console.log(books["0-321-81218-2"].title);
+#+END_SRC
+
+#+RESULTS:
+: Effective JavaScript
+
+Serialization using the JSON format is very convenient when
+exchanging information between two endpoints.  You can even save
+JavaScript data as JSON in database, and recreate the objects at a
+later point.
+
+*** Serialization of cyclic structures and functions
+There are two things to keep in mind when serializing with JSON:
+1. =JSON.stringify= will not work on cyclic objects (the JSON
+   representation would be infinite).
+
+   #+BEGIN_SRC js
+     var o = {};
+     o.o = o;
+     JSON.stringify(o);
+   #+END_SRC
+
+   This raises a “TypeError: Converting circular structure to JSON”.
+2. Serialization ignores functions.
+
+   #+BEGIN_SRC js :results output
+     var o = {f: function() { return 42; }};
+     console.log(JSON.stringify(o));
+   #+END_SRC
+
+   #+RESULTS:
+   : {}
+
+** Objects for namespacing
+In [[Objects for grouping properties]], we see that objects can serve as a
+convenient container of related values.  Sometimes, we want to group
+related functions together also.  A simple object suffices.  Here for
+instance, an =utils= object groups commonly-used vector functions.
+
+#+BEGIN_SRC js :results output
+  var utils = {
+    distanceBetween: function(p1, p2) {
+      return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x)
+                       + (p1.y - p2.y) * (p1.y - p2.y));
+    },
+
+    angleBetween: function(p1, p2) {
+      return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    },
+  };
+
+  console.log(utils.distanceBetween({x:12, y:1}, {x:0, y:0}));
+#+END_SRC
+
+#+RESULTS:
+: 12.041594578792296
+
+*** Useful built-in functions
+All built-in objects, like =Math= above, exhibit utility functions.
+Since these objects also serve as constructors, we can think of these
+utility functions as Java static methods.
+
+#+BEGIN_SRC js
+  Number.MAX_VALUE;    // useful constants can also be added
+  Number.isNaN(NaN);   // the only way to check for NaN-ness
+  Array.isArray([]);   // better than `typeof []`
+  Object.create(null); // create new object with given prototype
+  Object.freeze({});   // make the object immutable
+  ...
+#+END_SRC
+
+and much more, see [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object][Object on MDN]].
+
+** Changing internal properties of objects
+enumerable
+
+configurable
+
+writable
+
+* Objects for self-contained behavior
+When we start mixing attributes and behaviors inside objects, the
+need to create objects of the same behavior soon arise.  The
+mechanisms to create object templates are simple, but the syntax can
+sometimes unnecessarily complicates the situation.
+
+Here we present the concepts of self-reference, factories, prototypes
+and illustrate how they can simulate a class-based model.
+
+** Objects encapsulate state
+Here is a simple 1-dimensional point that can move.
+
+#+BEGIN_SRC js
+  var point1d = {
+    x: 0,
+    move: function(dx) {
+      point1d.x += dx;
+    },
+  };
+
+  point1d.move(1);
+  point1d.x; // 1
+#+END_SRC
+
+It has an attribute, =x=, and a ‘method’, =move=.  Using the dot
+notation, we can both access the attribute and call the method.
+
+This object serves as a useful abstraction for a 1-dimensional point,
+as it encapsulate its state.  We can pass the object around, and its
+interface is clear.
+
+However, it is only one point; a singleton object.  What can we do if
+we want another
+
+
+** Factory functions
+```
+function mkPoint() {
+  var point = {
+    x: 0,
+    move: function(dx) {
+    point1d.x += dx;
+    },
+  };
+
+  return point;
+}
+
+var p1 = mkPoint();
+p1.move(1);
+var p2 = mkPoint();
+```
+
+
+
+
+* Delegation using prototypes
+
+
+Hierarchy of built-in objects
+- Object (toString, hasOwnProperty, ...)
+- Function (call, apply, bind, ...)
+- Array (length, map, filter, ...)

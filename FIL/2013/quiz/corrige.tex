@@ -1,0 +1,264 @@
+% Created 2012-12-11 Tue 07:56
+\documentclass[a4paper, 12pt]{article}
+\usepackage{fontspec}
+\usepackage{luatextra}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\addtolength{\topmargin}{-.8in}
+\addtolength{\textheight}{1.6in}
+\setmainfont[Mapping=tex-text]{Liberation Serif}
+\newfontfamily\progfont[Scale=MatchLowercase]{Ubuntu Mono}
+\usepackage{wasysym}
+\usepackage[usenames, dvipsnames]{xcolor}
+\newcommand{\fullpoint}[1]{\textcolor{RubineRed}{#1}}
+\newcommand{\halfpoint}[1]{\textcolor{SkyBlue}{#1}}
+\newcommand{\jedipoint}[1]{\textcolor{SeaGreen}{#1}}
+\newcommand{\choice}[1]{\Square\hspace{2pt} #1\hspace{5pt}}
+\newcommand{\choicec}[1]{\Square\hspace{2pt} \lstinline{#1}\hspace{5pt}}
+\newcommand{\choiceg}[1]{\fullpoint{\XBox\hspace{2pt} #1\hspace{5pt}}}
+\newcommand{\choicecg}[1]{\fullpoint{\XBox\hspace{2pt} \lstinline{#1}\hspace{5pt}}}
+\newcommand{\choicegh}[1]{\halfpoint{\XBox\hspace{2pt} #1\hspace{5pt}}}
+\newcommand{\choicecgh}[1]{\halfpoint{\XBox\hspace{2pt} \lstinline{#1}\hspace{5pt}}}
+\usepackage{listings}
+\lstset{basicstyle=\progfont}
+\lstset{tabsize=3, columns=fullflexible, keepspaces=true}
+\lstset{breaklines=false, showstringspaces=false}
+\lstset{frame=leftline, framerule=1pt}
+\lstset{framesep=2pt}
+\lstdefinelanguage{JavaScript}{
+keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+keywordstyle=\bfseries,
+ndkeywords={class, export, boolean, throw, implements, import, this},
+ndkeywordstyle=\bfseries,
+identifierstyle=,
+sensitive=false,
+comment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]',
+morestring=[b]"
+}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Quiz JavaScript (correction)}
+\author{Programmer le web avec JavaScript A2/FIL}
+\date{7 février 2014}
+
+\begin{document}
+
+\maketitle
+
+%% 3: proto DONE
+%% 3: `this` semantics (late binding) DONE
+%% 1: first-class functions
+%% 1: dynamic typing
+%% 1: dynamic objects DONE
+%% 1: closures DONE
+%% 1: `new` DONE
+%% 1: variadic functions DONE
+%% 1: [] vs . DONE
+%% 1: cloning (or lack of)
+
+%% \textbf{Nom} :
+
+Sans machine ni document.
+
+Durée : 10 minutes.
+
+%% Cocher la bonne réponse (il peut y en avoir plusieurs).
+
+\begin{center}
+\begin{tabular}{lll}
+ \fullpoint{1 point}  &  \halfpoint{½ point}  &  \jedipoint{1 point D.U.C.K}  \\
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var a = 2 + 3;
+\end{lstlisting}
+
+  Que vaut \lstinline{a} ?
+
+  \choicecg{5} \choicec{"a"} \choicec{undefined} \jedipoint{\choice{Donald Duck}}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var f = function (x) {
+   return x;
+}
+\end{lstlisting}
+
+   Que vaut \lstinline{f()} ?
+
+   \choicec{1} \choicec{2} \choicecgh{undefined}
+
+   Que vaut \lstinline{f(1,2)} ?
+
+   \choicecgh{1} \choicec{2} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var x = 5;
+function plus(y) {
+  return x + y;
+}
+\end{lstlisting}
+
+  Que vaut \lstinline{plus(3)} ?
+
+  \choicec{3} \choicec{5} \choicecg{8} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var obj = {
+  x: 12
+};
+obj.y = 5 + obj.x;
+delete obj.x;
+obj.z = obj.x;
+obj.x = 6;
+\end{lstlisting}
+
+  Que vaut \lstinline{obj.x} ?
+
+  \choicec{12} \choicec{5} \choicec{17} \choicecgh{6} \choicec{undefined}
+
+  Que vaut \lstinline{obj.y} ?
+
+  \choicec{12} \choicec{5} \choicecgh{17} \choicec{6} \choicec{undefined}
+
+  Que vaut \lstinline{obj.z} ?
+
+  \choicec{12} \choicec{5} \choicec{17} \choicec{6} \choicecgh{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var pacman = {
+  x: 0,
+  move: function(dx) {
+    this.x += dx;
+  }
+};
+var f = pacman.move;
+\end{lstlisting}
+
+  Le mot-clé \lstinline{this} de la fonction \lstinline{move} est lié
+  à l'objet \lstinline{pacman} lors de la définition de l'objet.
+
+  \choice{Vrai} \choiceg{Faux}
+
+  Que vaut \lstinline{pacman.x} après l'appel
+  \lstinline{pacman.move(3)} ?
+
+  \choicecg{3} \choicec{0} \choicec{6} \choicec{undefined}
+
+  Que vaut \lstinline{pacman.x} après l'appel \lstinline{f(3)} ?
+
+  \choicecg{3} \choicec{0} \choicec{6} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var obj = {
+  x: "b",
+  b: 2
+};
+\end{lstlisting}
+
+  Que vaut \lstinline{obj.x} ?
+
+  \choicec{2} \choicecg{"b"} \choicec{obj} \choicec{undefined}
+
+  Que vaut \lstinline{obj["b"]} ?
+
+  \choicecg{2} \choicec{"b"} \choicec{obj} \choicec{undefined}
+
+  Que vaut \lstinline{obj[obj.x]} ?
+
+  \choicecg{2} \choicec{"b"} \choicec{obj} \choicec{undefined}
+\item Une fonction est un objet.
+
+   \choiceg{Vrai} \choice{Faux}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var P = {
+   x: 2,
+   a: "a"
+};
+var M = {};
+\end{lstlisting}
+
+  Que vaut \lstinline{M.x} ?
+
+  \choicec{2} \choicec{3} \choicec{"a"} \choicecg{undefined}
+
+  Que vaut \lstinline{P.x} ?
+
+  \choicecg{2} \choicec{3} \choicec{"a"} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var P = {
+   x: 2,
+   a: "a"
+};
+var M = {
+  __proto__: P,
+};
+\end{lstlisting}
+
+  Que vaut \lstinline{M.x} ?
+
+  \choicecg{2} \choicec{3} \choicec{"a"} \choicec{undefined}
+
+  Que vaut \lstinline{P.x} ?
+
+  \choicecg{2} \choicec{3} \choicec{"a"} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+var P = {
+   x: 2,
+   a: "a"
+};
+var M = {
+  __proto__: P,
+  x: 3
+};
+var J = {
+  __proto__: M
+};
+\end{lstlisting}
+
+  Que vaut \lstinline{M.x} ?
+
+  \choicec{2} \choicecg{3} \choicec{"a"} \choicec{undefined}
+
+  Que vaut \lstinline{J.x} ?
+
+  \choicec{2} \choicecg{3} \choicec{"a"} \choicec{undefined}
+
+  Que vaut \lstinline{J.a} ?
+
+  \choicec{2} \choicec{3} \choicecg{"a"} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+function flag(value) {
+  this.value = value;
+}
+
+flag.prototype.toggle = function() { this.value = !this.value; }
+
+var t = new flag(true);
+t.toggle();
+\end{lstlisting}
+
+  L'objet \lstinline{t} a pour prototype l'objet
+  \lstinline{flag.prototype}.
+
+  \choicegh{Vrai} \choice{Faux}
+
+  Que vaut \lstinline{t.value} ?
+
+  \choicec{true} \choicecgh{false} \choicec{undefined}
+
+  Que vaut \lstinline{flag.value} ?
+
+  \choicec{true} \choicec{false} \choicecgh{undefined}
+\item (Optionnel) Dessinez un mouton.
+\end{enumerate}
+
+\end{document}

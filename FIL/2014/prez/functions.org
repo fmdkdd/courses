@@ -1,0 +1,26 @@
+## Function syntax
+```
+function add(x, y) {
+   return x + y;
+}
+```
+
+## Functions can be anonymous
+```
+function(x,y) {
+  return x + y;
+}
+```
+
+## Functions are first-class values
+- Can return them
+- Can pass them as arguments
+- Can combine
+
+## Function arity does not matter
+- Can be called with any number of args
+- If < arity, rest is undefined
+- If > arity, surplus is dropped
+- f(a) and f(a,b) are the same functions
+
+## Functions

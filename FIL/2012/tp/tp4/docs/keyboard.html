@@ -1,0 +1,180 @@
+<!DOCTYPE html>  <html> <head>   <title>keyboard.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               keyboard.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h2>Let there be sound</h2>
+
+<p>Ce code dessine un piano uniquement en HTML et CSS.  Les touches
+sont créées dynamiquement en JavaScript, puis tout le style est
+spécifié dans <code>events.css</code>.  À quoi ça sert ?  Pour l'instant, pas
+grand chose !  On souhaite justement que le piano puisse émettre
+des sons en utilisant l'<a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html">API audio</a>
+de Webkit.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Le code qui permet d'émettre des sons est déjà écrit: c'est la fonction
+<code>playNote</code> qui s'en charge.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">playNote</span><span class="p">(</span><span class="nx">frequency</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">osc</span> <span class="o">=</span> <span class="nx">audioContext</span><span class="p">.</span><span class="nx">createOscillator</span><span class="p">();</span>
+    <span class="nx">osc</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Square wave, retro sound!</span>
+    <span class="nx">osc</span><span class="p">.</span><span class="nx">frequency</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">frequency</span><span class="p">;</span>
+    <span class="nx">osc</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">volume</span><span class="p">);</span>
+    <span class="nx">osc</span><span class="p">.</span><span class="nx">noteOn</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Callback pour arrêter la note.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">osc</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">();</span>
+    <span class="p">};</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Ici on énumère les notes qui vont être attribuées aux touches du
+piano.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">notes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;C♯&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;D♯&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;F♯&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;G♯&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A♯&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">octaves</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Puis on crée le piano dans l'élément HTML spécifié.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">keyboard</span> <span class="o">=</span> <span class="nx">Keyboard</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#board&#39;</span><span class="p">),</span>
+                  <span class="nx">zip</span><span class="p">(</span><span class="nx">octaves</span><span class="p">,</span> <span class="nx">notes</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="nx">o</span><span class="p">;</span> <span class="p">}),</span>
+                  <span class="nx">keyShortcuts</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>On voudrait que le clavier émette des événements personnalisés
+pour signaler qu'une touche du piano est enfoncée ou relâchée.
+Suivant l'événement, la note est jouée ou cesse de l'être.
+Mais pour l'instant, le clavier <em>n'émet pas</em> ces événements.  Ce
+sera justement votre rôle.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">keyboard</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;pianoKeyDown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">;</span>
+    <span class="nx">key</span><span class="p">.</span><span class="nx">stop</span> <span class="o">=</span> <span class="nx">playNote</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">frequency</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">keyboard</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;pianoKeyUp&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">;</span>
+    <span class="nx">key</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+  <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Le contexte audio qui nous permet de manipuler des sons et de
+les jouer en JavaScript.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">audioContext</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">webkitAudioContext</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Toutes les notes passent par ce nœud qui contrôle le volume
+du son en sortie.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">volume</span> <span class="o">=</span> <span class="nx">audioContext</span><span class="p">.</span><span class="nx">createGainNode</span><span class="p">();</span>
+  <span class="nx">volume</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">audioContext</span><span class="p">.</span><span class="nx">destination</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Ce volume est ensuite contrôlé par un slider dans la page, grâce
+à l'événement <code>change</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">volumeControl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#volume&#39;</span><span class="p">);</span>
+  <span class="kd">function</span> <span class="nx">setVolume</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">volume</span><span class="p">.</span><span class="nx">gain</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">volumeControl</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">volumeControl</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">volumeControl</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">setVolume</span><span class="p">);</span>
+  <span class="nx">setVolume</span><span class="p">();</span>
+<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h2>Le clavier</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Un clavier reçoit l'élément dans lequel il s'incruste, les notes
+que doivent jouer les touches, et d'éventuels raccourcis
+claviers qui permettront de transformer le clavier de
+l'ordinateur en synthé.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">createKeyboard</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">notes</span><span class="p">,</span> <span class="nx">keyCodes</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p><code>{}</code> remplace <code>keyCodes</code> si l'argument n'est pas spécifié
+lors de l'appel.  L'opérateur <code>||</code> utilisé de cette façon
+permet donc de définir des arguments optionnels.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">keyCodes</span> <span class="o">=</span> <span class="nx">keyCodes</span> <span class="o">||</span> <span class="p">{};</span>
+
+    <span class="nx">notes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">createKey</span><span class="p">(</span><span class="nx">note</span><span class="p">,</span> <span class="nx">keyCodes</span><span class="p">[</span><span class="nx">note</span><span class="p">]));</span>
+    <span class="p">});</span>
+
+    <span class="kd">var</span> <span class="nx">dummy</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+    <span class="nx">dummy</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="s1">&#39;dummy&#39;</span><span class="p">;</span>
+    <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">dummy</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nx">parent</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>La fonction de création d'une touche du piano prend en arguments
+la note qu'elle doit jouer, et un tableau de <code>keyCode</code> qui
+permettent d'identifier les touches du clavier de l'ordinateur.
+Si une de ces touches est enfoncée, le piano est censé jouer la
+note correspondante.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">createKey</span><span class="p">(</span><span class="nx">note</span><span class="p">,</span> <span class="nx">keyCodes</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">keyCodes</span> <span class="o">=</span> <span class="nx">ensureArray</span><span class="p">(</span><span class="nx">keyCodes</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">keyColor</span> <span class="o">=</span> <span class="nx">note</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">3</span> <span class="o">?</span> <span class="s1">&#39;blackKey&#39;</span> <span class="o">:</span> <span class="s1">&#39;whiteKey&#39;</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">frequency</span> <span class="o">=</span> <span class="nx">frequencyFromNote</span><span class="p">(</span><span class="nx">note</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+    <span class="nx">div</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">keyColor</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>L'objet qui sera passé dans les événements envoyés par la
+touche pour signaler qu'elle est enfoncée ou relâchée.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">note</span><span class="o">:</span> <span class="nx">note</span><span class="p">,</span>
+      <span class="nx">frequency</span><span class="o">:</span> <span class="nx">frequency</span><span class="p">,</span>
+      <span class="nx">color</span><span class="o">:</span> <span class="nx">keyColor</span><span class="p">,</span>
+    <span class="p">};</span>
+
+    <span class="nx">registerEvents</span><span class="p">(</span><span class="nx">div</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">keyCodes</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nx">div</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h2>Objectifs</h2>
+
+<p>C'est ici que vous intervenez.  La fonction <code>registerEvents</code> se
+charge de capturer les événements souris et clavier, puis
+détermine, en fonction de ces événements, si la touche doit être
+enfoncée ou bien relâchée.  Pour ce faire, elle utilise la
+fonction <code>dispatchEvent</code> qui envoie un événement personnalisé
+dans le DOM.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">registerEvents</span><span class="p">(</span><span class="nx">noteElem</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">keyCodes</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Deux types d'événements sont attendus: <code>pianoKeyDown</code> et
+<code>pianoKeyUp</code>.  Suivant l'événement voulu, il faut appeler
+cette fonction avec la chaîne de caractères correspondante.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">function</span> <span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">eventType</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">noteElem</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="k">new</span> <span class="nx">CustomEvent</span><span class="p">(</span><span class="nx">eventType</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">detail</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span>
+        <span class="nx">bubbles</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="p">}));</span>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Voici un exemple.  Lorsque l'événement <code>keydown</code> est
+déclenché dans la fenêtre (une touche du clavier est
+enfoncée, mais pas encore relevée), si la touche du clavier
+(<code>event.which</code>) fait partie du tableau <code>keyCodes</code>, alors
+envoyer l'événement <code>pianoKeyDown</code> pour signaler que la note
+doit être jouée.  En vous inspirant de cet exemple,
+<strong>ajoutez</strong> les autres événements.  En particulier, on veut
+pouvoir:</p>
+
+<ul>
+<li>Jouer les notes sur le clavier de l'ordinateur (évènements
+<code>keydown</code> et <code>keyup</code>).</li>
+<li>Jouer les notes en cliquant sur les touches du piano avec
+la souris (<code>mousedown</code> et <code>mouseup</code>).  Mais aussi, si la
+souris est déjà enfoncée, on doit pouvoir jouer d'autres
+notes sans relâcher le bouton (<code>mouseover</code> et <code>mouseout</code>).</li>
+<li>Visualiser les notes jouées.  La feuille de style prévoit
+une couleur spéciale pour les touches dont une des classes
+HTML est <code>down</code> (en train d'être jouée).</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">keyCodes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">which</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nx">dispatchEvent</span><span class="p">(</span><span class="s1">&#39;pianoKeyDown&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="cm">/* ... */</span>
+
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Obtention de la fréquence correspondant à une note, pour pouvoir
+la jouer !  La formule est de
+<a href="https://en.wikipedia.org/wiki/Piano_key_frequencies">Wikipédia</a>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">frequencyFromNote</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">scale</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A♯&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;C♯&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;D♯&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;F♯&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;G♯&#39;</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">octave</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">octave</span> <span class="o">=</span> <span class="nx">note</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="nx">octave</span> <span class="o">=</span> <span class="nx">note</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+      <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">keyNumber</span> <span class="o">=</span> <span class="nx">scale</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">keyNumber</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">keyNumber</span> <span class="o">=</span> <span class="nx">keyNumber</span> <span class="o">+</span> <span class="mi">12</span> <span class="o">+</span> <span class="p">((</span><span class="nx">octave</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="nx">keyNumber</span> <span class="o">=</span> <span class="nx">keyNumber</span> <span class="o">+</span> <span class="p">((</span><span class="nx">octave</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="k">return</span> <span class="mi">440</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="nx">keyNumber</span><span class="o">-</span> <span class="mi">49</span><span class="p">)</span> <span class="o">/</span> <span class="mi">12</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Export de la fonction dans le contexte global, pour d'autres
+scripts.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nb">window</span><span class="p">.</span><span class="nx">Keyboard</span> <span class="o">=</span> <span class="nx">createKeyboard</span><span class="p">;</span>
+
+<span class="p">}(</span><span class="nb">window</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>Raccourcis Azerty pour les virtuoses.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">keyShortcuts</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;C4&#39;</span><span class="o">:</span> <span class="mi">81</span><span class="p">,</span>
+  <span class="s1">&#39;C♯4&#39;</span><span class="o">:</span> <span class="mi">90</span><span class="p">,</span>
+  <span class="s1">&#39;D4&#39;</span><span class="o">:</span> <span class="mi">83</span><span class="p">,</span>
+  <span class="s1">&#39;D♯4&#39;</span><span class="o">:</span> <span class="mi">69</span><span class="p">,</span>
+  <span class="s1">&#39;E4&#39;</span><span class="o">:</span> <span class="mi">68</span><span class="p">,</span>
+  <span class="s1">&#39;F4&#39;</span><span class="o">:</span> <span class="mi">70</span><span class="p">,</span>
+  <span class="s1">&#39;F♯4&#39;</span><span class="o">:</span> <span class="mi">84</span><span class="p">,</span>
+  <span class="s1">&#39;G4&#39;</span><span class="o">:</span> <span class="mi">71</span><span class="p">,</span>
+  <span class="s1">&#39;G♯4&#39;</span><span class="o">:</span> <span class="mi">89</span><span class="p">,</span>
+  <span class="s1">&#39;A4&#39;</span><span class="o">:</span> <span class="mi">72</span><span class="p">,</span>
+  <span class="s1">&#39;A♯4&#39;</span><span class="o">:</span> <span class="mi">85</span><span class="p">,</span>
+  <span class="s1">&#39;B4&#39;</span><span class="o">:</span> <span class="mi">74</span><span class="p">,</span>
+
+  <span class="s1">&#39;C5&#39;</span><span class="o">:</span> <span class="mi">75</span><span class="p">,</span>
+  <span class="s1">&#39;C♯5&#39;</span><span class="o">:</span> <span class="mi">79</span><span class="p">,</span>
+  <span class="s1">&#39;D5&#39;</span><span class="o">:</span> <span class="mi">76</span><span class="p">,</span>
+  <span class="s1">&#39;D♯5&#39;</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+  <span class="s1">&#39;E5&#39;</span><span class="o">:</span> <span class="mi">77</span><span class="p">,</span>
+  <span class="s1">&#39;F5&#39;</span><span class="o">:</span> <span class="mi">222</span><span class="p">,</span>
+  <span class="s1">&#39;F♯5&#39;</span><span class="o">:</span> <span class="mi">52</span><span class="p">,</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <h2>Utilitaires</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p><code>[a] -&gt; [b] -&gt; [combine(a, b)]</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">zip</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">combine</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">flatten</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">b</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">combine</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}));</span>
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p><code>[[a], [b], ...] -&gt; [a, b, ...]</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">flatten</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p><code>[a] -&gt; [a]</code> et <code>a -&gt; [a]</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">ensureArray</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nx">n</span><span class="p">];</span>
+  <span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

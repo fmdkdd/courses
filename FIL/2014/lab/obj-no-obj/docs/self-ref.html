@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Object-Oriented programming without objects (2)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="object-oriented-programming-without-objects-2-">Object-Oriented programming without objects (2)</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="self-reference">Self reference</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Let’s add another method to the point object, the method
+‘rightmost’ which takes another point as argument and returns the
+point with the higher x coordinate.  What value should we return
+for the current object?  <strong>Complete</strong> this definition.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">point</span><span class="hljs-params">(x)</span> </span>{
+  <span class="hljs-keyword">var</span> methods = {
+    x: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> x; },
+    setX: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v)</span> </span>{ x = v; } ,
+    equals: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> </span>{
+      <span class="hljs-keyword">return</span> p(<span class="hljs-string">'x'</span>) === x;
+    },
+    rightmost: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> </span>{
+      <span class="hljs-keyword">return</span> p(<span class="hljs-string">'x'</span>) &gt; x ? p : ???;
+    }
+  };
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (methods[msg])
+      <span class="hljs-keyword">return</span> methods[msg](arg);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}
+
+<span class="hljs-keyword">var</span> p1 = point(<span class="hljs-number">1</span>);
+<span class="hljs-keyword">var</span> p2 = point(<span class="hljs-number">0</span>);
+p2(<span class="hljs-string">'rightmost'</span>, p1) === p1; <span class="hljs-comment">// true</span>
+p1(<span class="hljs-string">'rightmost'</span>, p2) === p1; <span class="hljs-comment">// true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Can we try to add this self-reference to the <code>object</code> function?
+<strong>Modify</strong> this definition to handle self-references.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">object</span><span class="hljs-params">(state, methods)</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg, arg)</span> </span>{
+    <span class="hljs-keyword">if</span> (methods[msg])
+      <span class="hljs-keyword">return</span> methods[msg](state, arg);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Message not understood'</span>;
+  };
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Using this function saves us a bit of typing effort.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mkPoint</span><span class="hljs-params">(x)</span> </span>{
+ <span class="hljs-keyword">return</span> object({x:x}, {
+   x: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self)</span> </span>{ <span class="hljs-keyword">return</span> self.x; },
+   setX: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, v)</span> </span>{ self.x = v; },
+   equals: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, p)</span> </span>{
+     <span class="hljs-keyword">return</span> p(<span class="hljs-string">'x'</span>) === self(<span class="hljs-string">'x'</span>);
+   },
+   rightmost: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, p)</span> </span>{
+     <span class="hljs-keyword">return</span> self(<span class="hljs-string">'x'</span>) &gt; p(<span class="hljs-string">'x'</span>) ? self : p;
+   },
+ });
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="forwarding">Forwarding</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Let’s say we want to define a two-dimensional point.  Since we
+already have a one-dimensional one, we would like to reuse its
+functionality for the x coordinate.  How to write such a point?
+<strong>Complete</strong> the definition by forwarding calls to <code>x</code>, <code>setX</code> and
+<code>rightmost</code> to the <code>point1d</code> object that is part of the state.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mkPoint2d</span><span class="hljs-params">(x,y)</span> </span>{
+  <span class="hljs-keyword">return</span> object({
+    y: y,
+    point1d: mkPoint(x),
+  }, {
+    x: <span class="hljs-comment">/* ... */</span>
+    setX: <span class="hljs-comment">/* ... */</span>
+    y: <span class="hljs-comment">/* ... */</span>
+    setY: <span class="hljs-comment">/* ... */</span>
+    equals: <span class="hljs-comment">/* ... */</span>
+    rightmost: <span class="hljs-comment">/* ... */</span>
+  });
+}
+
+<span class="hljs-keyword">var</span> p1 = mkPoint2d(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>);
+<span class="hljs-keyword">var</span> p2 = mkPoint2d(<span class="hljs-number">3</span>,<span class="hljs-number">5</span>);
+p1(<span class="hljs-string">'x'</span>); <span class="hljs-comment">// 1</span>
+p1(<span class="hljs-string">'y'</span>); <span class="hljs-comment">// 2</span>
+p1(<span class="hljs-string">'rightmost'</span>, p2) === p2; <span class="hljs-comment">// true</span>
+p1(<span class="hljs-string">'setX'</span>, <span class="hljs-number">3</span>);
+p1(<span class="hljs-string">'setY'</span>, <span class="hljs-number">5</span>);
+p1(<span class="hljs-string">'equals'</span>, p2); <span class="hljs-comment">// true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>We have effectively forwarded the messages we did not want to
+handle on the internal <code>point1d</code>.  Though we have to be exhaustive
+in <code>mkPoint2d</code>: every message that we want to forward must be
+explicitly specified as such.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="delegation">Delegation</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>What if we could define a handler object for all messages we do not
+wish to capture?  In <code>point2d</code>, if a message is unknown, it
+<em>delegates</em> the message to <code>point1d</code>.</p>
+<p>The <code>objectWithDelegate</code> function takes an additional argument, the
+<code>delegate</code> object, and when the method is not found in the current
+object, it let the delegate object try to answer it.  <strong>Complete</strong>
+this definition.  You should start from the <code>object</code> function that
+handles self-reference.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">objectWithDelegate</span><span class="hljs-params">(state, methods, delegate)</span> </span>{
+  <span class="hljs-comment">/* ... */</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mkPoint2d</span><span class="hljs-params">(x,y)</span> </span>{
+  <span class="hljs-keyword">return</span> objectWithDelegate({y: y}, {
+    y: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self)</span> </span>{ <span class="hljs-keyword">return</span> self.y; },
+    setY: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, v)</span> </span>{ self.y = v; },
+    equals: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, p)</span> </span>{
+      <span class="hljs-keyword">return</span> p(<span class="hljs-string">'x'</span>) === self(<span class="hljs-string">'x'</span>) &amp;&amp; p(<span class="hljs-string">'y'</span>) === self(<span class="hljs-string">'y'</span>);
+    },
+  }, mkPoint(x));
+}
+
+<span class="hljs-keyword">var</span> p1 = mkPoint2d(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>);
+<span class="hljs-keyword">var</span> p2 = mkPoint2d(<span class="hljs-number">5</span>,<span class="hljs-number">5</span>);
+p1(<span class="hljs-string">'x'</span>); <span class="hljs-comment">// 1</span>
+p1(<span class="hljs-string">'y'</span>); <span class="hljs-comment">// 2</span>
+p1(<span class="hljs-string">'setX'</span>, <span class="hljs-number">30</span>);
+p1(<span class="hljs-string">'x'</span>); <span class="hljs-comment">// 30</span>
+p1(<span class="hljs-string">'rightmost'</span>, p2) === p1; <span class="hljs-comment">// you tell me</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>The call to ‘rightmost’ is interesting.  You have to decide first
+what it should output.  Then you have to find out what it gives
+with your version of <code>objectWithDelegate</code>.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h2 id="getting-back-to-javascript">Getting back to JavaScript</h2>
+<p>How does all of this relate to JavaScript objects?  As it turns
+out, JavaScript objects can delegate their property lookup using
+prototypes.  As already stated, <code>self</code> is <code>this</code>, and JavaScript
+functions can automatically receive <code>this</code> as an extra argument.
+There is nothing more to objects and prototypes in JavaScript that
+what we’ve implemented here.</p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+* TP événement trop rapide
+  Besoin de l'éclater carrément pour leur permettre de manipuler du
+  DOM, l'API audio et les événements.  Sinon ils ne comprennent pas
+  vraiment d'où viennent les fonctions, comment elles sont appelées
+  ... et quand ils sont perdus ils sont démotivés.
+
+  Ce TP s'incluerait parfaitement dans un cours de JavaScript plus
+  long, avec une présentation détaillée du DOM et des API qui
+  gravitent autour.  Ça les forme à regarder de la doc, manipuler des
+  events, ... mais avec l'optique de leur faire écrire du code bien
+  architecturé et modulable.  La combinaison d'événements en
+  particulier est un point en lien direct avec ce que fait l'équipe,
+  et les utilisations de construction langagière type promesses
+  concernent l'expressivité.
+
+* Confusion __proto__ et prototype
+  Peut-être il faudrait mieux manipuler ces deux concepts
+  explicitement pour qu'ils absorbent la différence ?
+
+  Un visualiseur de prototype dynamique peut aider.

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>chat.solution.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>chat.solution.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* eslint-env node */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Chat server
+A small chat server written for vanilla nodejs.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Documentation: <a href="http://devdocs.io/node/net">http://devdocs.io/node/net</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> net = <span class="hljs-built_in">require</span>(<span class="hljs-string">'net'</span>);
+
+<span class="hljs-keyword">var</span> port = <span class="hljs-number">6667</span>;
+<span class="hljs-keyword">var</span> server = net.createServer();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>The Client object as an abstraction for the socket.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> Client = {
+  <span class="hljs-keyword">new</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(socket)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Necessary to treat all data as utf8-encoded strings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    socket.setEncoding(<span class="hljs-string">'utf8'</span>);
+
+    <span class="hljs-keyword">return</span> {
+      __proto__: <span class="hljs-keyword">this</span>,
+      socket: socket,
+    };
+  },
+
+  tell: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+    <span class="hljs-keyword">this</span>.socket.write(msg);
+  },
+
+  join: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    clients.broadcast(<span class="hljs-string">'*** '</span> + <span class="hljs-keyword">this</span>.name + <span class="hljs-string">' joined\n'</span>);
+  },
+
+  leave: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    clients.broadcast(<span class="hljs-string">'*** '</span> + <span class="hljs-keyword">this</span>.name + <span class="hljs-string">' left\n'</span>);
+  },
+
+  says: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>First message we receive from the client will be its name</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.name == <span class="hljs-literal">null</span>) {
+      <span class="hljs-keyword">this</span>.name = data.replace(<span class="hljs-regexp">/\n/</span>,<span class="hljs-string">''</span>);
+      <span class="hljs-keyword">this</span>.tell(<span class="hljs-string">'Welcome, '</span> + <span class="hljs-keyword">this</span>.name + <span class="hljs-string">'\n'</span>);
+      <span class="hljs-keyword">this</span>.join();
+      <span class="hljs-keyword">this</span>.tell(<span class="hljs-string">'Users: '</span> + clients.list().join(<span class="hljs-string">', '</span>) + <span class="hljs-string">'\n'</span>);
+    }
+    <span class="hljs-keyword">else</span>
+      clients.broadcast(<span class="hljs-keyword">this</span>.name + <span class="hljs-string">'&gt; '</span> + data);
+  },
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>The list of connected clients.  Used to broadcast messages to all.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> clients = {
+  clients: [],
+
+  add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(client)</span> </span>{
+    <span class="hljs-keyword">this</span>.clients.push(client);
+    <span class="hljs-keyword">return</span> client;
+  },
+
+  remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(client)</span> </span>{
+    <span class="hljs-keyword">var</span> idx = <span class="hljs-keyword">this</span>.clients.indexOf(client);
+    <span class="hljs-keyword">if</span> (idx !== -<span class="hljs-number">1</span>)
+      <span class="hljs-keyword">this</span>.clients.splice(idx, <span class="hljs-number">1</span>);
+  },
+
+  broadcast: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> </span>{
+    <span class="hljs-keyword">this</span>.clients.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> </span>{
+      c.tell(msg);
+    });
+  },
+
+  list: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.clients.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> </span>{
+      <span class="hljs-keyword">return</span> c.name;
+    });
+  },
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Creates a socket when a connection is made.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.on(<span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(socket)</span> </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'new socket'</span>, socket.address());
+
+  <span class="hljs-keyword">var</span> client = clients.add(Client.new(socket));
+  client.tell(<span class="hljs-string">'Enter your name\n'</span>);
+
+  socket.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'data'</span>, data);
+    client.says(data);
+  });
+
+  socket.on(<span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error);
+  });
+
+  socket.on(<span class="hljs-string">'close'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Client left'</span>, error);
+    clients.remove(client);
+    client.leave();
+  });
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>When the server is ready</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.on(<span class="hljs-string">'listening'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'server started on port'</span>, port);
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Start the server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.listen(port);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>JavaScript &mdash; Prototypes</title>
+
+		<meta name="description" content="Introduction à JavaScript">
+		<meta name="author" content="fmdkdd">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/solarized_light.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h1>JavaScript</h1>
+					<h2>Avancé</h2>
+				</section>
+
+				<section>
+					<h1>Prototypes</h1>
+				</section>
+
+				<section>
+				  <h2>Exemple</h2>
+              <pre><code class="eval language-javascript" contenteditable>var A = { x:2 };
+A.x;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                Un objet A tout simple
+
+                - Ici A.x vaut 2
+                - Et A.{y,z,bonbon} est indéfini
+              </aside>
+				</section>
+
+				<section>
+				  <h2>Exemple</h2>
+              <pre><code class="eval language-javascript" contenteditable>var A = { x:2 };
+var B = { y:3 };
+Object.setPrototypeOf(A, B);
+A.x;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                Un nouvel objet B
+
+                - Ici A.x vaut toujours 2
+                - B.y vaut bien 3
+                - Mais A.y vaut 3 aussi
+                - Et B.x est indéfini
+              </aside>
+				</section>
+
+            <section>
+              <h2>Explication</h2>
+              <pre>+--------+  prototype  	+--------+
+| B      |-------------&gt;| A      |
+| y: 3   |              | x: 2   |
++--------+              +--------+
+</pre>
+              <aside data-markdown class="notes">
+                Objet == boîte de propriétés.
+
+                - Propriété de l'objet: valeur
+                - Propriété indéfinie: on regarde le prototype
+                - Etc., jusqu'à l'ancêtre
+                - `Object` est prototype par défaut
+              </aside>
+            </section>
+
+				<section>
+				  <h2>Exemple</h2>
+              <pre><code class="eval language-javascript" contenteditable>var A = { x:2 };
+var B = { y:3 };
+Object.setPrototypeOf(A, B);
+A.y = 4;
+A.y;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                Que vaut B.y ?
+
+                `A.x` et `A.y` définis pour A: valeurs indépendantes de B
+              </aside>
+				</section>
+
+            <section>
+              <h2>Explication</h2>
+              <pre>+--------+  prototype  	+--------+
+| B      |-------------&gt;| A      |
+| y: 3   |              | x: 2   |
++--------+              | y: 4   |
+                        +--------+
+</pre>
+              <aside data-markdown class="notes">
+                Que vaut B.y ?
+              </aside>
+            </section>
+
+				<section>
+				  <h2>Exemple</h2>
+              <pre><code class="eval language-javascript" contenteditable>var A = { x:2 };
+var B = { y:3 };
+Object.setPrototypeOf(A, B);
+A.z;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                `A.z` indéfini
+
+                - Rajoute `B.z = 4`, que vaut `A.z` ?
+                - Ajoute C avec B comme prototype.  `C.z` vaut 4 aussi
+                - Change `B.z = 5`, `A.z` et `C.z` suivent
+                - Ajoute D avec A comme proto ... etc.
+              </aside>
+				</section>
+
+            <section>
+              <h2>Assigner un prototype</h2>
+              <p>À la création avec Object.create</p>
+              <pre><code class="eval language-javascript" contenteditable>var B = { y:3 };
+var A = Object.create(B);
+A.__proto__ == B;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                Object.create renvoie un objet vide qui pour proto l'argument
+                - `A.y` vaut 3
+                - `A.y = 2`, maintenant il vaut 2
+                - Et `B.y` reste inchangé
+              </aside>
+            </section>
+
+            <section>
+              <h2>Assigner un prototype</h2>
+              <p>À la volée avec <code>__proto__</code></p>
+              <pre><code class="eval language-javascript" contenteditable>var B = { y:3 };
+var A = {};
+A.__proto__ = B;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                Non standard
+
+                - Détecte les cycles
+              </aside>
+            </section>
+
+            <section>
+              <h2>Assigner un prototype</h2>
+              <p>Avec un constructeur et l'opérateur <code>new</code></p>
+              <pre><code class="eval language-javascript" contenteditable>var A = function () { this.x = 2; };
+A.prototype.y = 3;
+var a = new A();
+a.__proto__ == A.prototype;
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                `new` bind le proto de A à celui de B.
+
+                - `A.x` vaut 2
+                - `B.x` indéfini
+                - `A.y` est `B.y` donc 3
+              </aside>
+            </section>
+
+            <section>
+
+              <section>
+                <h2>Ambiguïtés de notation</h2>
+                <p><code>prototype</code> et <code>__proto__</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {};
+O.__proto__ === Object.prototype;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Deux prototypes ?
+                  Tous les objets ont un __proto__, mais seules les fonctions ont prototype
+                </aside>
+              </section>
+
+              <section>
+                <h2>Ambiguïtés de notation</h2>
+                <p>Prototype d'instance</p>
+                <pre><code class="eval language-javascript" contenteditable>var f = function () {};
+f.__proto__ == f.prototype;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  != f.__proto__
+                  Pour les instances, oui
+                </aside>
+              </section>
+
+            </section>
+
+            <section>
+              <section>
+                <h2>Prototype et itération</h2>
+                <p><code>(for .. in ..)</code> suit le prototype</p>
+                <pre><code class="eval language-javascript" contenteditable>var B = { y: 3 };
+var A = Object.create(B);
+A.x = 2;
+var C = {};
+for (var x in A)
+   C[x] = A[x];
+C;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Toutes propriétés énumérables
+                </aside>
+              </section>
+
+              <section>
+                <h2>Prototype et itération</h2>
+                <p>Test de propriétés propres à un objet</p>
+                <pre><code class="eval language-javascript" contenteditable>var B = { y: 3 };
+var A = Object.create(B);
+A.x = 2;
+var C = {};
+for (var x in A) {
+   if (A.hasOwnProperty(x))
+      C[x] = A[x];
+}
+C;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+              </section>
+
+            </section>
+
+            <section>
+              <section>
+                <h2>Prototypes prédéfinis</h2>
+                <pre><code class="eval language-javascript" contenteditable>var A = { x: 2 };
+A.__proto__ == Object.prototype;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Donc toString, etc.
+                </aside>
+              </section>
+
+              <section>
+                <h2>Prototypes prédéfinis</h2>
+                <pre><code class="eval language-javascript" contenteditable>var tab = [1,"2",3];
+tab.__proto__ == Array.prototype;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Et Array.prototype.__proto__ == Object.prototype;
+
+                  - Donc indexOf, forEach, map, ...
+                </aside>
+              </section>
+
+              <section>
+                <h2>Prototypes prédéfinis</h2>
+                <pre><code class="eval language-javascript" contenteditable>var f = function () {};
+f.__proto__ == Function.prototype;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Et Function.prototype.__proto__ == Object.prototype;
+
+                  - Donc bind, call, ...
+                </aside>
+              </section>
+            </section>
+
+            <section>
+              <h2>Prototype vide</h2>
+              <pre><code class="eval language-javascript" contenteditable>var B = Object.create(null);
+B.__proto__ == null;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Aucune propriétés prédéfinie (à part __proto__ qui est spécial)
+
+                  - Pas de toString
+                </aside>
+            </section>
+
+            <section>
+              <h2>Prototype et fonctions</h2>
+              <pre><code class="eval language-javascript" contenteditable>var B = {
+  x: 2,
+  square: function() {
+     return this.x * this.x;
+  }
+};
+var A = Object.create(B);
+B.square();
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                Fonctions sont des propriétés, donc héritées
+
+                - `B.square()`: this.x 2 donc 4
+                - `A.square()`: this.x undefined donc proto.x donc 4
+                - `A.x = 3` alors `A.square()` 9
+              </aside>
+            </section>
+
+            <section>
+              <h2>Pas de méthodes</h2>
+              <pre><code class="eval language-javascript" contenteditable>var B = {
+  x: 2,
+  getX: function() {
+     return this.x;
+  }
+};
+var f = B.getX;
+f();
+</code></pre>
+              <pre><code class="echo language-javascript"> </code></pre>
+
+              <aside data-markdown class="notes">
+                `this` fait référence à l'objet qui appelle la méthode
+
+                - `f()` undefined
+                - Si j'ajoute 'x' en global, `f()` donne sa valeur
+                - Inversement je peux ajouter n'importe quelle fonction à `B`
+              </aside>
+            </section>
+
+            <section>
+              <h2>Au pays de Java &hellip;</h2>
+              <p>Classes, interfaces, instances</p>
+              <pre><code class="language-java" contenteditable>class A implements B {
+  protected int x = 2;
+
+  public int getX() {
+     return x;
+  }
+}
+A a = new A();
+a.getX();
+</code></pre>
+
+             <aside data-markdown class="notes">
+               Pas de distinction classe/instance en JS: objets
+
+               - Classe statique / instance dynamique: objet dynamique
+               - Pas d'interface statique non plus (TypeScript, Dart, ...)
+             </aside>
+            </section>
+
+            <section>
+
+              <section>
+                <h2>Prototype : intérêt ?</h2>
+                <p>Plus général qu'un modèle à classes</p>
+              </section>
+
+              <section>
+                <h2>Prototype : intérêt ?</h2>
+                <p>Plus flexible (changement dynamique du prototype)</p>
+              </section>
+
+              <section>
+                <h2>Prototype : désavantages</h2>
+                <p>Aucune détection statique d'incohérences</p>
+
+                <aside data-markdown class="notes">
+                  Attention aux fautes de frappe, à écraser des propriétés existantes ...
+
+                  - Java-like possible, mais variante plus adaptées
+                </aside>
+              </section>
+            </section>
+
+            <section>
+              <h1>Objets avancés</h1>
+            </section>
+
+            <section>
+
+              <section>
+                <h2>Objets avancés</h2>
+                <p>Attributs des propriétés</p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.getOwnPropertyDescriptor(O, 'a');
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+              </section>
+
+              <section>
+                <h2>Attribut de propriété</h2>
+                <p><code>writable</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.defineProperty(O, 'a', { writable: true });
+Object.getOwnPropertyDescriptor(O, 'a');
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  O.a = 12; O; -- toujours 2 !  Pas d'erreurs
+                  writable: true -- ça marche
+                </aside>
+              </section>
+
+              <section>
+                <h2>Attribut de propriété</h2>
+                <p><code>enumerable</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.defineProperty(O, 'a', { enumerable: true });
+Object.keys(O);
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  false: plus de a
+                  Marche pour `for ... in`
+                </aside>
+              </section>
+
+              <section>
+                <h2>Attribut de propriété</h2>
+                <p><code>configurable</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.defineProperty(O, 'a', { configurable: true });
+Object.defineProperty(O, 'a', { enumerable: false });
+Object.getOwnPropertyDescriptor(O, 'a');
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Peut pas `delete O.a` non plus
+                </aside>
+              </section>
+
+            </section>
+
+            <section>
+
+              <section>
+                <h2>Restrictions sur objets</h2>
+                <p>Trois moyens de restreindre les modifications dynamiques</p>
+              </section>
+
+              <section>
+                <h2>Création de propriétés</h2>
+                <p><code>Object.preventExtensions</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.preventExtensions(O);
+O.b = 3;
+O;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Pas d'erreurs
+                </aside>
+              </section>
+
+              <section>
+                <h2>Suppression de propriétés</h2>
+                <p><code>Object.seal</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.seal(O);
+delete O.a;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Pas de delete non plus
+                </aside>
+              </section>
+
+              <section>
+                <h2>Modification des propriétés</h2>
+                <p><code>Object.freeze</code></p>
+                <pre><code class="eval language-javascript" contenteditable>var O = {
+  a: 2,
+  z: 4
+};
+Object.freeze(O);
+O.a = 3;
+O;
+</code></pre>
+                <pre><code class="echo language-javascript"> </code></pre>
+
+                <aside data-markdown class="notes">
+                  Pas de modification des valeurs
+                  Subtilité: valeurs héritées changeables, freeze non récursif
+                </aside>
+              </section>
+
+            </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+			center: true,
+				transition: 'linear',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() {return !document.body.classList; } },
+               { src: 'plugin/repl/repl.js', condition: function() { return !!document.querySelector('code.eval'); } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+         { src: '/socket.io/socket.io.js', async: true },
+         { src: 'plugin/notes-server/client.js', async: true }
+         // { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
