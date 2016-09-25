@@ -1,0 +1,80 @@
+/* Police pour toute la page.  Sélecteur: html */
+html {
+  font-size: 13pt;
+  font-family: "Times New Roman", sans-serif;
+  color: #666;
+}
+
+/* Centre le contenu horizontalement.
+   Sélecteur: body */
+body {
+  width: 800px;
+  margin: auto;
+
+  text-align: center;
+}
+
+h1 {
+  text-align: left;
+}
+
+/* Cette règle s'applique à tout le tableau */
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* Là on veut aligner les heures */
+thead th {
+  text-align: left;
+}
+
+/* Ici on aligne les jours, et on laisse un peu d'espace avant le
+   tableau */
+tbody th {
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+/* Là on centre le contenu des cellules du tableau et on leur donne
+   une taille fixe et une bordure */
+tbody td {
+  text-align: center;
+  height: 2rem;
+  width: 3rem;
+  border: 1px solid #ddd;
+}
+
+/* On peut aussi sélectionner par attribut.
+   Ici on fait de la place autour du premier champs texte. */
+input[name="event-name"] {
+  /* Décommentez les marges */
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* Faites de même pour le bouton de validation */
+input[type="submit"] {
+  margin-top: 3rem;
+  width: 6rem;
+  height: 3rem;
+  font-size: 110%;
+}
+
+/* Décommentez le reste pour l'exercice 3 */
+
+td.checked {
+  background-color: #e67e22;
+}
+
+td:hover {
+  background-color: #f1c40f;
+}
+
+td:active {
+  background-color: #f39c12;
+}
+
+.selected {
+  color: #f1c40f;
+}

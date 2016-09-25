@@ -1,0 +1,6 @@
+<nav class="friendlist">
+  <h2>Friends</h2>
+  <input name="filter-friends" type="text" placeholder="Search" />
+  <ul class='users'>
+  {% include "fragments/users.html" with users=friends %}
+  </ul>

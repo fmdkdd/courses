@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Create event</title>
+
+    <script src="proto.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Create event</h1>
+
+    <form>
+
+      <label>Event name
+      <!-- CHECK: id and name, duplication? -->
+      <input type="text" name="event-name" title="Name for this event"
+             autofocus required />
+      </label>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>8h</th>
+            <th>9h</th>
+            <th>10h</th>
+            <th>11h</th>
+            <th>12h</th>
+            <th>13h</th>
+            <th>14h</th>
+            <th>15h</th>
+            <th>16h</th>
+            <th>17h</th>
+            <th>18h</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Lundi</th>
+            <!-- TODO: dates should be in ISO format -->
+            <td><input type="checkbox" name="lundi-8h"/></td>
+            <td><input type="checkbox" name="lundi-9h"/></td>
+            <td><input type="checkbox" name="lundi-10h"/></td>
+            <td><input type="checkbox" name="lundi-11h"/></td>
+            <td><input type="checkbox" name="lundi-12h"/></td>
+            <td><input type="checkbox" name="lundi-13h"/></td>
+            <td><input type="checkbox" name="lundi-14h"/></td>
+            <td><input type="checkbox" name="lundi-15h"/></td>
+            <td><input type="checkbox" name="lundi-16h"/></td>
+            <td><input type="checkbox" name="lundi-17h"/></td>
+            <td><input type="checkbox" name="lundi-18h"/></td>
+          </tr>
+          <tr>
+            <th>Mardi</th>
+            <td><input type="checkbox" name="mardi-8h"/></td>
+            <td><input type="checkbox" name="mardi-9h"/></td>
+            <td><input type="checkbox" name="mardi-10h"/></td>
+            <td><input type="checkbox" name="mardi-11h"/></td>
+            <td><input type="checkbox" name="mardi-12h"/></td>
+            <td><input type="checkbox" name="mardi-13h"/></td>
+            <td><input type="checkbox" name="mardi-14h"/></td>
+            <td><input type="checkbox" name="mardi-15h"/></td>
+            <td><input type="checkbox" name="mardi-16h"/></td>
+            <td><input type="checkbox" name="mardi-17h"/></td>
+            <td><input type="checkbox" name="mardi-18h"/></td>
+          </tr>
+          <tr>
+            <th>Mercredi</th>
+            <td><input type="checkbox" name="mercredi-8h"/></td>
+            <td><input type="checkbox" name="mercredi-9h"/></td>
+            <td><input type="checkbox" name="mercredi-10h"/></td>
+            <td><input type="checkbox" name="mercredi-11h"/></td>
+            <td><input type="checkbox" name="mercredi-12h"/></td>
+            <td><input type="checkbox" name="mercredi-13h"/></td>
+            <td><input type="checkbox" name="mercredi-14h"/></td>
+            <td><input type="checkbox" name="mercredi-15h"/></td>
+            <td><input type="checkbox" name="mercredi-16h"/></td>
+            <td><input type="checkbox" name="mercredi-17h"/></td>
+            <td><input type="checkbox" name="mercredi-18h"/></td>
+          </tr>
+          <tr>
+            <th>Jeudi</th>
+            <td><input type="checkbox" name="jeudi-8h"/></td>
+            <td><input type="checkbox" name="jeudi-9h"/></td>
+            <td><input type="checkbox" name="jeudi-10h"/></td>
+            <td><input type="checkbox" name="jeudi-11h"/></td>
+            <td><input type="checkbox" name="jeudi-12h"/></td>
+            <td><input type="checkbox" name="jeudi-13h"/></td>
+            <td><input type="checkbox" name="jeudi-14h"/></td>
+            <td><input type="checkbox" name="jeudi-15h"/></td>
+            <td><input type="checkbox" name="jeudi-16h"/></td>
+            <td><input type="checkbox" name="jeudi-17h"/></td>
+            <td><input type="checkbox" name="jeudi-18h"/></td>
+          </tr>
+          <tr>
+            <th>Vendredi</th>
+            <td><input type="checkbox" name="vendredi-8h"/></td>
+            <td><input type="checkbox" name="vendredi-9h"/></td>
+            <td><input type="checkbox" name="vendredi-10h"/></td>
+            <td><input type="checkbox" name="vendredi-11h"/></td>
+            <td><input type="checkbox" name="vendredi-12h"/></td>
+            <td><input type="checkbox" name="vendredi-13h"/></td>
+            <td><input type="checkbox" name="vendredi-14h"/></td>
+            <td><input type="checkbox" name="vendredi-15h"/></td>
+            <td><input type="checkbox" name="vendredi-16h"/></td>
+            <td><input type="checkbox" name="vendredi-17h"/></td>
+            <td><input type="checkbox" name="vendredi-18h"/></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <input type="submit" value="Submit" />
+
+    </form>
+
+  </body>
+</html>

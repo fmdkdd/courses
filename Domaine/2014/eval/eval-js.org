@@ -1,0 +1,109 @@
+* Questions
+** Variante A
+*** (HTML) À quoi sert l’élément ‘div’ en HTML ?
+1. À regrouper des éléments HTML.
+2. À appliquer du style aux éléments contenus ou au conteneur.
+
+*** (CSS) Quelle propriété CSS ordonne l’espace entre le contenu d’un élément et sa bordure ?
+padding
+
+e.g.: padding: 3px;
+
+*** (CSS) Écrivez la règle CSS qui colore ‘Pim’ et ‘Pam’ en rouge, et ‘Spam’ en vert (sans modifier le code HTML)
+#+BEGIN_SRC html
+<ul>
+  <li>
+    <span>Pim</span>
+  </li>
+  <li>
+    <span>Pam</span>
+  </li>
+</ul>
+<span>Spam</span>
+#+END_SRC
+
+#+BEGIN_SRC CSS
+span { color: green; }
+ul span { color: red; }
+#+END_SRC
+
+*** (JS) À quoi sert JavaScript dans une application web ?  Donnez deux exemples d’utilisation en français (pas en code).
+- Ajouter/supprimer des éléments dynamiquement
+- Modifier des attributs d’éléments
+- Réagir aux événements de l’utilisateur
+- Exécuter des requêtes asynchrones
+- ...
+
+*** (JS) Qu’est ce que le ‘callback’ d’un événement en JavaScript ?
+Une fonction appelée [de façon asynchrone] en réponse à un événement
+(clic de souris, réponse AJAX, ...)
+
+*** (AJAX) Décrivez le principe de fonctionnement d’une requête AJAX
+1. Le client émet une requête au serveur en utilisant du code
+   JavaScript/XMLHttpRequest/jQuery.ajax
+2. Le serveur reçoit, traite la requête et émet une réponse (en
+   JSON/XML/autre)
+3. Le client reçoit la réponse, et effectue un traitement (affichage,
+   modification du DOM, ...)
+
+OU
+
+C’est une requête HTTP créée et envoyée par du code JavaScript.  Du
+code JavaScript traite la réponse.  Elle est asynchrone, donc ne
+bloque pas l’interaction avec la page par l’utilisateur.
+
+** Variante B
+*** (HTML) À quoi sert l’attribut ‘id’ d’un élément HTML ?
+1. À identifier uniqument un élément dans la page pour des sélecteurs
+   CSS ou JavaScript.
+2. Deux éléments distincts ne peuvent avoir le même identifiant.
+
+*** (CSS) Quelle propriété CSS ordonne l’espace à l’extérieur de la bordure d’un élément ?
+margin
+
+e.g.: margin: 3px;
+
+*** (CSS) Écrivez la règle CSS qui colore ‘Pim’ et ‘Pam’ en rouge, et ‘Spam’ en vert (sans modifier le code HTML)
+#+BEGIN_SRC html
+<div>
+  <p>
+    <span>Pim</span>
+  </p>
+  <p>
+    <span>Pam</span>
+  </p>
+</div>
+<div>
+  <span>Spam</span>
+</div>
+#+END_SRC
+
+#+BEGIN_SRC CSS
+span { color: green; }
+p span { color: red; }
+#+END_SRC
+
+*** (JS) À quoi sert JavaScript dans une application web ?  Donnez deux exemples d’utilisation en français (pas en code).
+- Ajouter/supprimer des éléments dynamiquement
+- Modifier des attributs d’éléments
+- Réagir aux événements de l’utilisateur
+- Exécuter des requêtes asynchrones
+- ...
+
+*** (JS) Qu’est ce que le ‘handler’ d’un événement en JavaScript ?
+Une fonction appelée [de façon asynchrone] en réponse à un événement
+(clic de souris, réponse AJAX, ...)
+
+*** (AJAX) Décrivez le principe de fonctionnement d’une requête AJAX
+1. Le client émet une requête au serveur en utilisant du code
+   JavaScript/XMLHttpRequest/jQuery.ajax
+2. Le serveur reçoit, traite la requête et émet une réponse (en
+   JSON/XML/autre)
+3. Le client reçoit la réponse, et effectue un traitement (affichage,
+   modification du DOM, ...)
+
+OU
+
+C’est une requête HTTP créée et envoyée par du code JavaScript.  Du
+code JavaScript traite la réponse.  Elle est asynchrone, donc ne
+bloque pas l’interaction avec la page par l’utilisateur.

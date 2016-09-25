@@ -1,0 +1,51 @@
+In =views.py=, add a view for the list of users fragment:
+
+#+BEGIN_SRC python
+def friends(req, user):
+    # When no used is specified, return all users
+    if user is None:
+        users =  load_users()
+    # Otherwise, only return users whose name contain the parameter
+    else:
+        users = [u for u in load_users() if user in u.name]
+
+    # Render only the list of users using the fragment template
+    return render(req, "fragments/users.html", {"users" : users})
+#+END_SRC
+
+Add an URL for this view in =urls.py=:
+
+#+BEGIN_SRC python
+    # Request URL with a parameter that is passed to the view.
+    # See https://docs.djangoproject.com/en/1.7/topics/http/urls/#named-groups
+    url(r'^friends/(?P<user>\w+)?', views.friends, name="friends"),
+#+END_SRC
+
+Somewhere in your =index.html= template, add (and copy Zepto from exercise 3 to
+your static folder):
+
+#+BEGIN_SRC html
+  <script src="{% static 'zepto.min.js' %}"></script>
+  <script src="{% static 'interact.js' %}"></script>
+#+END_SRC
+
+In the file =interact.js=:
+
+#+BEGIN_SRC js
+$(init)
+
+function init() {
+  // On change of input in the friendlist filter.
+  $('[name=filter-friends]').on('input', refreshFriendlist)
+}
+
+// Replace the `ul` containing the list of friends with the HTML from the
+// fragment template.
+function refreshFriendlist() {
+  var $input = $(this)
+  var $ul = $input.siblings('.users')
+  $.get('/friends/' + $input.val(), function(users) {
+    $ul.html(users)
+  })
+}
+#+END_SRC

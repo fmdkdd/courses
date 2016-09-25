@@ -1,0 +1,120 @@
+html {
+  font-size: 15pt;
+  font-family: serif;
+  color: #666;
+}
+
+body {
+  width: 900px;
+  margin: auto;
+}
+
+#overview-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#overview-content > div {
+  flex: 0 1 auto;
+}
+
+#overview-content > div + div {
+  margin-left: 3rem;
+}
+
+#scores {
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#scores thead {
+  border-bottom: 1px solid #666;
+}
+
+#scores th {
+  text-align: left;
+}
+
+#scores td {
+  padding: .3rem .5rem;
+}
+
+#scores th:first-child,
+#scores td:first-child {
+  padding-right: 2rem;
+}
+
+#scores td, #scores th {
+  text-align: right;
+}
+
+#scores tr {
+  border-bottom: 1px dotted #ccc;
+}
+
+#all-matches {
+  margin-top: 4rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13pt;
+  width: 30rem;
+}
+
+#all-matches thead td {
+  transform: rotate(-60deg);
+}
+
+.inactive {
+  opacity: 0.2;
+}
+
+.square {
+  text-align: center;
+}
+
+/* From http://colorbrewer2.org/ */
+.q0 { background-color: #d53e4f; color: #eee; }
+.q1 { background-color: #f46d43; color: white; }
+.q2 { background-color: #fdae61; color: white; }
+.q3 { background-color: #fee08b; color: #aaa; }
+.q4 { background-color: #ffffbf; color: #aaa; }
+.q5 { background-color: #e6f598; color: #aaa; }
+.q6 { background-color: #abdda4; color: white; }
+.q7 { background-color: #66c2a5; color: #eee; }
+.q8 { background-color: #3288bd; color: #eee; }
+
+/* .q0 { background-color: #8f100d; color: white; } */
+/* .q1 { background-color: #b52a26; color: white; } */
+/* .q2 { background-color: #f57773; color: white; } */
+/* .q3 { background-color: #ffa5a3; color: white; } */
+/* .q4 { background-color: rgb(247,251,247); color: #666; } */
+/* .q5 { background-color: #77b6b9; color: white; } */
+/* .q6 { background-color: #469194; color: white; } */
+/* .q7 { background-color: #18696d; color: white; } */
+/* .q8 { background-color: #085357; color: white; } */
+
+#player1, #player2 {
+  width: 8rem;
+}
+
+#results {
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+
+#results tbody {
+  font-size: 13pt;
+}
+
+#results td {
+  padding: .2rem;
+}
+
+#results td, #results td + td {
+  text-align: right;
+}
+
+#results td + td + td, #results td + td + td + td {
+  text-align: left;
+}

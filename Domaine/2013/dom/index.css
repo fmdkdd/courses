@@ -1,0 +1,25 @@
+body {
+   font-family: sans;
+   color: #333;
+   background: #eee;
+}
+
+#input {
+   font-size: 20px;
+}
+
+#fakeDomSource {
+   font-size: 16px;
+   font-family: monospace;
+   background: #fff;
+}
+
+.highlight {
+	 animation: flash 2s ease-in;
+   outline: 3px dashed pink;
+}
+
+@keyframes flash {
+	 from { background: pink; }
+	 to { background: transparent; }
+}

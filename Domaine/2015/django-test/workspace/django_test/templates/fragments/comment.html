@@ -1,0 +1,10 @@
+  {% load staticfiles %}
+<article class="comment">
+  <header>
+    <img class="avatar" alt="Avatar for user Peach" src="{% static 'img/peach.png' %}"/>
+    <a href="/users/Peach" rel="author">{{ c.user.name }}</a>
+    <time>wednesday</time>
+  </header>
+
+  <p>{{ c.content }}</p>
+</article>

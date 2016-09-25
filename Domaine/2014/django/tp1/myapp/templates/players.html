@@ -1,0 +1,12 @@
+<table border=1 style='color:red'>
+ <thead>
+  <tr><th>
+  Name
+  </th></tr>
+ </thead>
+ <tbody>
+  {% for p in players  %}
+  <tr><td>{{p.name}}</td></tr>
+  {% endfor %}
+ </tbody>
+</table>

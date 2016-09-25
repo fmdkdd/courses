@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="style.solution.css">
+
+    <title>UV Domaine &mdash; Exercice HTML</title>
+  </head>
+  <body>
+
+    <section>
+      <h2>Ranking</h2>
+
+      <input type="text" id="filter-scores" placeholder="Filter by name">
+
+      <table id="scores">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>W.</th>
+            <th>N.</th>
+            <th>D.</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Tracy</td>
+            <td>177</td>
+            <td>83</td>
+            <td>143</td>
+            <td>614</td>
+          </tr>
+          <tr>
+            <td>Quentin</td>
+            <td>172</td>
+            <td>85</td>
+            <td>143</td>
+            <td>601</td>
+          </tr>
+          <tr>
+            <td>Béatrice</td>
+            <td>170</td>
+            <td>69</td>
+            <td>172</td>
+            <td>579</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <section>
+      <h2>Find a match</h2>
+      <input type="text" id="player1" placeholder="Player 1">
+      <input type="text" id="player2" placeholder="Player 2">
+      <button id="search-match">Search match</button>
+
+      <table id="results">
+        <tbody>
+          <tr>
+            <td class="player1">Tracy</td>
+            <td class="score1">3</td>
+            <td>—</td>
+            <td class="score2">3</td>
+            <td class="player2">Quentin</td>
+          </tr>
+          <tr>
+            <td class="player1">Quentin</td>
+            <td class="score1">3</td>
+            <td>—</td>
+            <td class="score2">3</td>
+            <td class="player2">Tracy</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </body>
+</html>

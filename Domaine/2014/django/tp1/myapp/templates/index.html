@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static "style.css" %}">
+
+    <script src="{% static "interface.solution.js" %}"></script>
+
+    <title>UV Domaine &mdash; Exercice AJAX</title>
+  </head>
+  <body>
+
+    <section>
+      <h2>Ranking</h2>
+
+      <input type="text" id="filter-players" placeholder="Filter by name">
+
+      <table id="players">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Age</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+      </table>
+
+    </section>
+
+  </body>
+</html>

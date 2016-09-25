@@ -1,0 +1,13 @@
+
+==================
+= All Posts      =
+==================
+
+{% for x in posts %}
+* {{ x.title }}
+** Author
+{{x.user.name}}
+** Content
+{{ x.content }}
+
+{% endfor %}

@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Luigi's corner</title>
+
+    <script src="zepto.min.js"></script>
+
+    <script>
+     $(init);
+
+     function init() {
+       $('.fold-icon').on('click', foldComments);
+     }
+
+     function foldComments(e) {
+       $(this).closest('.comments').toggleClass('closed');
+     }
+    </script>
+
+    <link href="style.css" rel="stylesheet"/>
+
+    <style>
+     .fold-icon { transition: transform 100ms }
+     .comments.closed .fold-icon { transform: rotate(-90deg) }
+     .comments.closed .comment { padding: 0 }
+     .comments.closed .comment * { display: none }
+    </style>
+
+  </head>
+  <body>
+    <h1 class="title">Luigi's corner</h1>
+
+    <article class="post">
+      <header>
+        <h2>Killed 937 goombas today</h2>
+        <img class="avatar" alt="Avatar for user Luigi" src="img/luigi.png"/>
+        <a href="/users/Luigi" rel="author">Luigi</a>
+        <time>wednesday</time>
+      </header>
+
+      <p>
+        Today was a good day.  Jumped a lot.  Cleaned a few pipes.  Found a fire
+        flower for Daisy.
+      </p>
+
+      <p>
+        Tomorrow, I'll bring some of the skins to Toad, and we'll make goomba hats.
+      </p>
+
+      <section class="comments">
+        <header>
+          <button class="fold-icon">▼</button>
+          <h3>Comments</h3>
+        </header>
+
+        <article class="comment">
+          <header>
+            <img class="avatar" alt="Avatar for user Peach" src="img/peach.png"/>
+            <a href="/users/Peach" rel="author">Peach</a>
+            <time>wednesday</time>
+          </header>
+
+          <p>First!</p>
+        </article>
+
+        <article class="comment">
+          <header>
+            <img class="avatar" alt="Avatar for user Mario" src="img/mario.png"/>
+            <a href="/users/Mario" rel="author">Mario</a>
+            <time>28 minutes ago</time>
+          </header>
+
+          <p>Gooda job, brother!  Death to the goombas!</p>
+        </article>
+
+        <article class="comment">
+          <header>
+            <img class="avatar" alt="Avatar for user Waluigi" src="img/waluigi.png"/>
+            <a href="/users/Waluigi" rel="author">Waluigi</a>
+            <time>2 minutes ago</time>
+          </header>
+
+          <p>Noob.  Koopa shells are far superior hat material.</p>
+        </article>
+
+        <button id="add-comment">Add comment</button>
+      </section>
+
+    </article>
+
+    <article class="post">
+      <header>
+        <h2>Where do mushrooms come from, exactly?</h2>
+        <img class="avatar" alt="Avatar for user Luigi" src="img/luigi.png"/>
+        <a href="/users/Luigi" rel="author">Luigi</a>
+        <time>friday</time>
+      </header>
+
+      <p>
+        I always seem to find them in boxes with interrogation points.  But do
+        they come from <em>inside</em> the box?  Or does someone put them in?
+      </p>
+
+      <p>
+        Hmmm...?
+      </p>
+
+      <section class="comments">
+        <header>
+          <button class="fold-icon">▼</button>
+          <h3>Comments</h3>
+        </header>
+
+        <article class="comment">
+          <header>
+            <img class="avatar" alt="Avatar for user Peach" src="img/peach.png"/>
+            <a href="/users/Peach" rel="author">Peach</a>
+            <time>friday</time>
+          </header>
+
+          <p>First!</p>
+        </article>
+
+        <article class="comment">
+          <header>
+            <img class="avatar" alt="Avatar for user Mario" src="img/mario.png"/>
+            <a href="/users/Mario" rel="author">Mario</a>
+            <time>monday</time>
+          </header>
+
+          <p>Good a question!  You should a probably ask Toad.</p>
+        </article>
+
+        <article class="comment">
+          <header>
+            <img class="avatar" alt="Avatar for user Waluigi" src="img/waluigi.png"/>
+            <a href="/users/Waluigi" rel="author">Waluigi</a>
+            <time>3 minutes ago</time>
+          </header>
+
+          <p>Whatever.  Why wonder, as long as you know where to find them?</p>
+        </article>
+
+        <button id="add-comment">Add comment</button>
+      </section>
+
+    </article>
+
+    <nav class="friendlist">
+      <h2>Friends</h2>
+      <input name="filter-friends" type="text" placeholder="Search"/>
+      <ul>
+        <li><a href="/users/Daisy">Daisy</a></li>
+        <li><a href="/users/Peach">Peach</a></li>
+        <li><a href="/users/Mario">Mario</a></li>
+        <li><a href="/users/Toad">Toad</a></li>
+        <li><a href="/users/Toadette">Toadette</a></li>
+        <li><a href="/users/Wario">Wario</a></li>
+        <li><a href="/users/Yoshi">Yoshi</a></li>
+        <li><a href="/users/DonkeyKong">Donkey Kong</a></li>
+      </ul>
+    </nav>
+
+    <footer class="page-footer">
+      <a rel="license"
+         href="http://creativecommons.org/publicdomain/zero/1.0/">
+        <img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0" />
+      </a>
+    </footer>
+  </body>
+</html>

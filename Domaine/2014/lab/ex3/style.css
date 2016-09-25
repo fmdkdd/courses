@@ -1,0 +1,42 @@
+html {
+  font-size: 15pt;
+  font-family: serif;
+  color: #666;
+}
+
+body {
+  width: 900px;
+  margin: auto;
+}
+
+#players {
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#players thead {
+  border-bottom: 1px solid #666;
+}
+
+#players td {
+  padding: .3rem 0 .3rem 1rem;
+}
+
+#players th:first-child,
+#players td:first-child {
+  padding-right: 1rem;
+}
+
+#players td, #players th {
+  text-align: right;
+}
+
+#players tr {
+  border-bottom: 1px dotted #ccc;
+}
+
+#player1, #player2 {
+  width: 6rem;
+  padding: .1rem;
+  border: 1px solid #ccc;
+}

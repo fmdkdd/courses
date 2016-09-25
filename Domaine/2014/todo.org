@@ -1,0 +1,19 @@
+* Partie HTML et CSS
+- Plus d’exemples, plus d’exemples !
+
+- Page d’accueil avec résumé des scores
+
+- Montrer un exemple de bar chart en D3 (ou biblio spécifique aux
+  charts en D3?)
+
+* Partie AJAX
+- Plus d’exemples !
+
+- Page d’accueil avec résumé des scores + input de recherche en AJAX
+
+- Montrer la différence entre une version du framework qui renvoit des
+  templates, et une qui renvoit du JSON.
+
+  + Construire une version du framework qui renvoit du JSON
+  + Construire un client en ligne de commande (Python?) qui exploite
+    le JSON et une version JavaScript: deux vues pour un même modèle.

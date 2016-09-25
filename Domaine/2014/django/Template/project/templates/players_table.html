@@ -1,0 +1,8 @@
+{% for p in players  %}
+<tr>
+  <td>{{p.name}}</td>
+  <td>{{p.age}}</td>
+  <!-- Generate dynamic link -->
+  <td><a href="{% url 'playerDetails' p.name  %}">Matchs <span class="badge">{{ p.participation_set.count}}</span></a></td>
+</tr>
+{% endfor %}

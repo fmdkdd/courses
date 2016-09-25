@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>UV Domaine &mdash; Exercice HTML</title>
+  </head>
+  <body>
+
+    <section>
+      <h2>Ranking</h2>
+
+      <input type="text" id="filter-scores" placeholder="Filter by name">
+
+      <table id="scores" style="border-collapse: collapse;">
+        <thead style="border-bottom: 1px solid black;">
+          <tr>
+            <th>Player</th>
+            <th>W.</th>
+            <th>N.</th>
+            <th>D.</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Tracy</td>
+            <td>177</td>
+            <td>83</td>
+            <td>143</td>
+            <td>614</td>
+          </tr>
+          <tr>
+            <td>Quentin</td>
+            <td>172</td>
+            <td>85</td>
+            <td>143</td>
+            <td>601</td>
+          </tr>
+          <tr>
+            <td>Béatrice</td>
+            <td>170</td>
+            <td>69</td>
+            <td>172</td>
+            <td>579</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <section>
+      <h2>Find a match</h2>
+      <input type="text" id="player1" placeholder="Player 1">
+      <input type="text" id="player2" placeholder="Player 2">
+      <button id="search-match">Search match</button>
+
+      <table id="results">
+        <tbody>
+          <tr>
+            <td>Tracy</td><td>3</td><td>—</td><td>3</td><td>Quentin</td>
+          </tr>
+          <tr>
+            <td>Quentin</td><td>3</td><td>—</td><td>3</td><td>Tracy</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </body>
+</html>

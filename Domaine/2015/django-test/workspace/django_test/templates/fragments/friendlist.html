@@ -1,0 +1,11 @@
+<nav class="friendlist">
+  <h2>Friends</h2>
+  <input name="filter-friends" type="text" placeholder="Search" onInput=" 
+      var oReq = new XMLHttpRequest();
+      var self = this;
+      oReq.onload = function(res) { self.parentNode.querySelector('.users').innerHTML = this.response; }; 
+      oReq.open('get', '/friends/' + this.value, true);
+      oReq.send(); "/>
+  <ul class='users'>
+  {% include "fragments/users.html" with users=friends %}
+  </ul>

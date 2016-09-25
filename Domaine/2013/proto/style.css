@@ -1,0 +1,79 @@
+html {
+  font-size: 13pt;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #666;
+}
+
+body {
+  width: 800px;
+  margin: auto;
+}
+
+form {
+  text-align: center;
+}
+
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+}
+
+tbody th {
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+tbody td {
+  text-align: center;
+  height: 2rem;
+  width: 3rem;
+}
+
+tbody td {
+  border: 1px solid #ddd;
+}
+
+tbody td:hover, tbody td.checked:hover {
+  background-color: #f1c40f;
+}
+
+tbody td:active, tbody td.checked:active {
+  background-color: #f39c12;
+}
+
+tbody td.checked {
+  background-color: #e67e22;
+}
+
+input[name="event-name"] {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+form input[type="submit"] {
+  margin-top: 3rem;
+  font-size: 110%;
+  width: 6rem;
+  height: 2rem;
+}
+
+form input[type="submit"] {
+  border: 1px solid #2980b9;
+  background-color: #3498db;
+  color: white;
+}
+
+form input[type="submit"]:hover {
+  background-color: #4fafef;
+}
+
+form input[type="submit"]:active {
+  background-color: #3990c9;
+  position: relative;
+  top: 2px;
+  left: 2px;
+}

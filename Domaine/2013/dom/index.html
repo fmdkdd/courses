@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>The DOM</title>
+
+    <script src="jquery-2.0.3.js"></script>
+    <script src="dom.js"></script>
+
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <div class="columns">
+      <div id="fakeDom">
+        <div>
+          <h1><em>Hello DOM!</em></h1>
+          <section id="empty"></section>
+          <section>
+            <ul>
+              <li>List item #0</li>
+              <li>List item #1</li>
+              <li>List item #2</li>
+              <li>List item #3</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <div id="fakeDomSource"></div>
+    </div>
+
+    <textarea id="input">$('div h1 em')</textarea>
+  </body>
+</html>

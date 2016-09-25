@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="zepto.min.js"></script>
+    <script src="mock-base.js"></script>
+    <script src="interface.js"></script>
+
+    <script src="d3/d3.min.js" charset="utf-8"></script>
+    <title>UV Domaine Proto JS</title>
+  </head>
+  <body>
+
+    <section>
+      <h2>Overview</h2>
+
+      <div id="overview-content">
+        <div>
+          <h3>Ranking</h3>
+          <input type="text" id="filter-scores" placeholder="Filter by name">
+
+          <table id="scores">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>W.</th>
+                <th>N.</th>
+                <th>D.</th>
+                <th>Pts</th>
+              </tr>
+            </thead>
+
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div>
+          <h3>Matches breakdown</h3>
+          <table id="all-matches"></table>
+        </div>
+      </div>
+
+    </section>
+
+    <section>
+      <h2>Find a match</h2>
+      <form>
+        <input type="text" id="player1" placeholder="Player 1" required>
+        <input type="text" id="player2" placeholder="Player 2" required>
+        <button id="search-match" type="submit">Search match</button>
+      </form>
+
+      <table id="results">
+        <tbody></tbody>
+      </table>
+    </section>
+
+  </body>
+</html>

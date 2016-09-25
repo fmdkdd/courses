@@ -1,0 +1,193 @@
+* Ideas
+** DOM
+Using jQuery or Voyeur.js.  A visualization like the demo from the
+main page of Voyeur.js would be great to understand what's going on.
+
+Better than Voyeur -> http://nbubna.github.io/HTML/
+
+http://joshduck.com/periodic-table.html
+
+** AJAX
+Interact with REST API in JSON, transform results, construct view...
+
+* Cours
+** DOM
+*** Lecture
+Why?  Because you’ll need to understand HTML, CSS and JS to do the
+Play project correctly.
+
+Present the holy trinity of client web dev: HTML, CSS and JS.
+
+- HTML & CSS :: content and styling
+- JS :: behavior
+
+**** HTML
+This is HTML 101.
+
+- Content of a page (HyperText Markup Language)
+- Tree of elements
+- Tag-based “language”
+  + tags have different semantic meanings (containers vs. content vs. metadata)
+  + tags may have attributes (src, href, class, id, ...)
+  + detail some tags
+    - html/head/body
+    - div
+    - h1,h2, ..., p
+    - mention table, input
+- Comments.  Use them!
+- Some restrictions are in order (no div inside p, etc.)
+  + doctype validation is best for your browser (standard/quirks mode)
+    - only <!doctype html>
+
+The future of webapps are HTML components.  Bundle HTML+JS+some CSS
+and you get a plug-and-play widget.
+
+Our exercise:
+- build the HTML for the event page
+  + need more details on table, inputs (<- Cheatsheet could be
+    helpful)
+- Take a screenshot of the page (without CSS), add the tag names
+  around each element, let them write the HTML.
+- We should not waste time on that
+
+BTW: you’ll want to write a program that generates the table for you.
+HTML is rarely written by hand nowadays.
+
+Links: http://diveintohtml5.info/, https://developer.mozilla.org/en-US/docs/Web/HTML
+
+**** CSS
+- Add style to your pages (Cascading StyleSheets)
+- Change fonts, colors, sizes, margins and even layout
+- Can change layout for different screen sizes / media
+- “Cascading” because they can be composed (latest rules override the
+  previous ones)
+- HTML elements are targeted using *selectors*
+  + lightweight grammar (by tag name/id/class and ancestor should
+    suffice)
+
+Example: http://www.csszengarden.com/ is striking
+
+Exercise:
+- default HTML is quite ugly.  Give the page a nicer structure, invite
+  people to use it!
+  + might be useful to add pseudo-elements like :hover
+
+Color inspiration: http://flatuicolors.com/, http://www.colourlovers.com/palettes
+
+Links: https://developer.mozilla.org/en-US/docs/Web/CSS
+
+**** JS
+CSS is powerful for styling, but otherwise pretty limited.  Enhance
+the page functionality with JS.
+
+Common uses:
+- Capture user actions (events)
+- Traverse & manipulate the DOM
+- Communicate with server/peers and work asynchronously
+- Any advanced interactivity mechanism, really
+
+Syntax:
+- var
+- functions
+- if, for
+- arrays
+
+DOM interaction
+- element.addEventListener
+- document.querySelector / document.querySelectorAll
+  (not an array ... grrr)
+
+Links: https://developer.mozilla.org/en-US/docs/Web/JavaScript,
+[[http://devdocs.io/][Devdocs]]
+
+*** Lab
+Build the “create an event” page of the shared agenda.
+
+This contains:
+- an “event name” field
+- a day/timeslot table where each timeslot can be clicked
+- a submit button to send the whole form out back to the server
+
+  (Since we have no server at this point, I wonder if there’s any
+  pedagogical value in having the submit button.)
+
+*** Evaluation
+
+- Finish the event page with validation (up to tuesday night, drop on campus)
+- Take the quiz on campus (up to monday night)
+
+The quiz needs to assert they got:
+- what HTML is about, what’s a tag, what’s an attribute ...
+- what CSS is about, what a selector will do ...
+- what JS is about (on the surface)
+
+This is mandatory, will account in the final grade ...
+
+Give badges!
+
+
+**** Tools
+- [[http://devdocs.io/][Devdocs]]
+- Inspector in Firefox / DevTools in WebKit
+
+** TODO AJAX & REST
+
+*** Lecture
+**** Previously
+- quick refresh on important points from last lecture
+- go over the [[file:rendus/notes.org::*Notable%20errors][Notable errors]] from the assignment
+
+**** AJAX
+- asynchronous request
+  + lightweight (not full page reload)
+  + non-blocking (can interact with the page while the request is processed)
+- what you can do with it (Battlefield loby)
+- JSON format
+- how to send a request
+- how to handle a response (with a callback)
+- error handling
+- what YOU can do with it
+  + asynchronous interface (smoother UX)
+  + auto-refresh of event list
+
+- hands-on: background asynchronous event listing
+
+**** REST
+- think of “website for machine consumption”
+  + easier to program
+  + clean separation of model and view
+- Roy Fielding’s Thesis
+- use HTTP verbs on URIs
+- how to design one
+  - verbs orthogonal to URIs
+  - example for events
+    GET /events -> list events
+    GET /events/12 -> specific event
+    GET /events?name=bla -> query event
+    DELETE /events/12 -> delete specific event
+    POST /events -> create new event
+    UPDATE ...
+  - relevant HTTP error codes
+- what I’m not saying
+  - authentication
+  - caching
+  - HATEOS
+- best practices are fuzzy (look at good examples)
+  + http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+  + [[http://developer.github.com/v3/][Github API]]
+
+- hands-on: build new controller for CRUD actions
+  - test with curl / Postman / browser / [[http://marketplace.eclipse.org/content/rest-client][Eclipse plugin]]
+
+- Go further: link REST actions with asynchronous UI
+  Go make wonderful modern applications!
+
+**** Plug JS frameworks and JS course
+- Must know JS for modern web dev (not only client-side !)
+- Multiple contender frameworks, Angular on the rise
+- In any case, a deeper knowledge of JS will be a great help
+- Join the course on Campus!
+* Amelioration
+Without using a framework, here’s a way to leverage custom events and
+custom attributes to decouple view and model:
+https://medium.com/objects-in-space/9b8a9dd7bfe3

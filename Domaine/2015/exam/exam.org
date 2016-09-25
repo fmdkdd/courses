@@ -1,0 +1,104 @@
+* Questions
+** Version A
+*** Question 1
+Indiquez, dans le fragment HTML suivant, les /éléments/ et les /attributs/.
+
+  #+BEGIN_SRC html
+<html lang="en">
+  <body>
+    <p class="first">
+      <a href="#">A link</a>
+      <img src="i.png" alt="I" />
+    </p>
+  </body>
+</html>
+  #+END_SRC
+
+*** Réponse
+Éléments: html, body, p, a, img
+Attributs: lang, class, href, src, alt
+
+*** Question 2
+Cochez les sélecteurs CSS qui s’appliquent à au moins un élément du fragment
+HTML qui précède.
+
+- [ ] ~body~
+- [ ] ~#a~
+- [ ] ~p a img~
+
+*** Réponse
+- [X] ~body~
+- [ ] ~#a~
+- [ ] ~p a img~
+
+*** Question 3
+À quoi sert JavaScript dans une application web?  Donnez 3 exemples en français
+(pas en code).
+
+*** Réponse
+- Ajouter/supprimer des éléments dynamiquement
+- Modifier des attributs d’éléments
+- Réagir aux événements de l’utilisateur
+- Exécuter des requêtes asynchrones
+- ...
+
+*** Question 4
+Décrivez, en une ligne, ce que fait le code JavaScript suivant:
+
+: $('a').on('click', moe)
+
+*** Réponse
+Lors d’un clic de souris sur n’importe quel élément ‘a’ de la page, la fonction
+‘moe’ sera appelée.
+
+** Version B
+*** Question 1
+Indiquez, dans le fragment HTML suivant, les /éléments/ et les /attributs/.
+
+  #+BEGIN_SRC html
+<html lang="en">
+  <body>
+    <div class="top">
+      <img src="i.png" alt="I" />
+      <input name="first" type="text" />
+    </div>
+  </body>
+</html>
+  #+END_SRC
+
+*** Réponse
+Éléments: html, body, div, img, input
+Attributs: lang, class, src, alt, name, type
+
+*** Question 2
+Cochez les sélecteurs CSS qui s’appliquent à au moins un élément du fragment
+HTML qui précède.
+
+- [ ] ~p~
+- [ ] ~.top~
+- [ ] ~div .top img~
+
+*** Réponse
+- [ ] ~p~
+- [X] ~.top~
+- [ ] ~div .top img~
+
+*** Question 3
+À quoi sert JavaScript dans une application web?  Donnez 3 exemples en français
+(pas en code).
+
+*** Réponse
+- Ajouter/supprimer des éléments dynamiquement
+- Modifier des attributs d’éléments
+- Réagir aux événements de l’utilisateur
+- Exécuter des requêtes asynchrones
+- ...
+
+*** Question 4
+Décrivez, en une ligne, ce que fait le code JavaScript suivant:
+
+: $('form').on('input', moe)
+
+*** Réponse
+Lors d’un changement de valeur dans n’importe quel élément ‘form’ de la page, la
+fonction ‘moe’ sera appelée.

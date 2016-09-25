@@ -1,0 +1,39 @@
+/* Useful properties:
+   - width, height (for sizing boxes)
+   - margin (and, margin-top, margin-left, etc.)
+   - padding (and padding-top, ...)
+   - border (and border-top, ...)
+   - color, background-color
+   - text-align
+   - font-size, font-family
+ */
+
+html {
+  font-size: 15pt;
+  font-family: serif;
+  color: #666;
+}
+
+body {
+  width: 900px;
+  margin: auto;
+}
+
+#scores {
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#player1, #player2 {
+  width: 6rem;
+  padding: .1rem;
+  border: 1px solid #ccc;
+}
+
+#search-match:hover {
+  background-color: #2980b9;
+}
+
+#search-match:focus {
+  border-color: #e67e22;
+}

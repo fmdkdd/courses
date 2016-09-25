@@ -1,0 +1,86 @@
+/*
+ * Layout
+ */
+
+body { margin: 0; }
+
+.title { padding: 0.5rem; height: 3rem; margin: 0; }
+.post {
+  width: 30rem;
+  margin: auto;
+  margin-top: 2rem;
+}
+.post > header { margin-bottom: 1rem; }
+.post > * { padding: .5rem 1rem; margin: 0; }
+
+header .avatar {
+  height: 32px; width: 32px;
+  vertical-align: middle;
+  border-radius: 100%;
+  margin-right: 0.25rem;
+}
+header time { margin-left: 0.25rem; }
+
+.comments { padding: 0; margin: 0; margin-top: 2rem; }
+.comments > header > h3 { margin: 0.5rem; }
+.comment { padding: 0.5rem; }
+
+#add-comment { padding: .5rem 1rem; display: block; margin: auto; }
+
+.friendlist {
+  position: absolute;
+  top: 6rem;
+  right: 0;
+  width: 10rem;
+  padding: .5rem;
+}
+.friendlist ul { list-style: none; padding-left: 0; }
+
+.page-footer { margin-top: 5rem; text-align: center; }
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Fonts
+ */
+
+html { font-size: 16px; font-family: monospace; }
+
+h1,h2,h3 { font-family: sans-serif; }
+
+header { font-family: sans-serif; font-size: 90%; }
+.post > header > h2 { font-size: 1.8rem; }
+.comments > header > h3 { font-size: 1rem; }
+
+.comments { font-size: 90%; }
+
+.friendlist { font-family: sans-serif; font-size: 90%; }
+.friendlist h2 { font-size: 1rem; }
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Colors and borders
+ */
+
+html { background-color: #eee; color: #333; }
+
+.title { background-color: #333; color: white; }
+.post { background-color: #fff; }
+
+header time { color: #666; }
+header .avatar { box-shadow: 1px 1px 2px #aaa; }
+
+.comments {
+  background-color: #ccc;
+  border-top: 4px solid #aaa;
+  border-left: 6px solid #eee;
+  border-right: 6px solid #eee;
+}
+.comment {
+  background-color: #ddd;
+  border-top: 2px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  border-left: 6px solid #eee;
+  border-right: 6px solid #eee;
+}
+
+.friendlist { background-color: #fff; }

@@ -1,0 +1,77 @@
+html {
+  font-size: 15pt;
+  font-family: serif;
+  color: #666;
+}
+
+body {
+  width: 900px;
+  margin: auto;
+}
+
+#scores {
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#scores thead {
+  border-bottom: 1px solid #666;
+}
+
+#scores td {
+  padding: .3rem 0 .3rem 1rem;
+}
+
+#scores th:first-child,
+#scores td:first-child {
+  padding-right: 1rem;
+}
+
+#scores td, #scores th {
+  text-align: right;
+}
+
+#scores tr {
+  border-bottom: 1px dotted #ccc;
+}
+
+#player1, #player2 {
+  width: 6rem;
+  padding: .1rem;
+  border: 1px solid #ccc;
+}
+
+#search-match {
+  border: 1px solid #2980b9;
+  padding: .2rem;
+  color: white;
+  background-color: #3498db;
+}
+
+#search-match:hover {
+  background-color: #2980b9;
+}
+
+#search-match:focus {
+  border-color: #e67e22;
+}
+
+#results {
+  margin-top: 1rem;
+}
+
+#results tbody {
+  font-size: 13pt;
+}
+
+#results td {
+  padding: .2rem;
+}
+
+.player1, .score1 {
+  text-align: right;
+}
+
+.player2, .score2 {
+  text-align: left;
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+
+  {% load staticfiles %}
+  <script src="{% static 'zepto.min.js' %}"></script>
+  <script src="{% static 'interact.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <meta charset="utf-8">
+  <title>All Posts</title>
+
+  </head>
+<body>
+  <h1 class="title">All Posts</h1>
+
+
+  {% for x in posts %}
+    <article class="post">
+      <header>
+        <h2>{{ x.title }}</h2>
+        <img class="avatar" alt="Avatar for user Luigi" src="{% static 'img/luigi.png' %}"/>
+        <a href="/users/Luigi" rel="author">{{ x.user.name }}</a>
+        <time>wednesday</time>
+      </header>
+
+      <p> {{ x.content }} </p>
+
+      <section class="comments">
+        <header>
+          <h3>Comments</h3>
+        </header>
+
+        {% for c in x.comments %}
+          {% include "fragments/comment.html" with c=c %}
+        {% endfor %}
+
+        <button id="add-comment">Add comment</button>
+      </section>
+    </article>
+
+  {% endfor %}
+
+  {% include "fragments/friendlist_filter.html" with friends=users%}
+
+
+  <footer class="page-footer">
+    <a rel="license"
+       href="http://creativecommons.org/publicdomain/zero/1.0/">
+      <img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0" />
+    </a>
+  </footer>
+
+</body>
+</html>
