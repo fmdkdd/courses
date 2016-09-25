@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>JavaScript &mdash; L'essentiel</title>
+
+    <meta name="description" content="L'essentiel de JavaScript">
+    <meta name="author" content="fmdkdd">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/solarized_light.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+	<section>
+	  <h1>JavaScript</h1>
+	  <h2>L'essentiel</h2>
+	</section>
+
+        <section>
+          <section>
+            <h2>Syntaxe</h2>
+            <p>Héritée de Java</p>
+            <p>&hellip; mais sans les types</p>
+          </section>
+
+          <section>
+            <h2>Exemple</h2>
+            <pre><code class="eval language-javascript" contenteditable>var subject = 'FIL;
+
+function greetSubject(greeting) {
+  return greeting + ' ' + subject;
+}
+
+['Hello', 'Bonjour', 'こんにちは', '⠓⠑⠇⠇⠕', 'ଶୁଣିବେ']
+  .map(greetSubject).join('\n');</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Égalité</h2>
+            <p>Équivalence <code>==</code></p>
+            <pre><code class="eval language-javascript" contenteditable>0 == 0 && 'String' == 'String';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Égalité</h2>
+            <p>Conversion implicite</p>
+            <pre><code class="eval language-javascript" contenteditable>0 == 0 && 0 == '0';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Égalité</h2>
+            <p>Équivalence non transitive</p>
+            <pre><code class="eval language-javascript" contenteditable>0 == ' ' && 0 == '\n' && ' ' != '\n';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Égalité</h2>
+            <p>Égalité stricte <code>===</code></p>
+            <pre><code class="eval language-javascript" contenteditable>0 === 0 && 0 !== '0';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Égalité</h2>
+            <p>Égalité entre chaînes par caractères</p>
+            <pre><code class="eval language-javascript" contenteditable>'String' === 'String';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Égalité</h2>
+            <p>Égalité par référence entre tableaux</p>
+            <pre><code class="eval language-javascript" contenteditable>[1,2,3] === [1,2,3];</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Opérateurs</h2>
+            <p>Arithmétique</p>
+            <code>+ - * / % ++ --</code>
+          </section>
+
+          <section>
+            <h2>Opérateurs</h2>
+            <p>Booléens</p>
+            <code>&& || !</code>
+          </section>
+
+          <section>
+            <h2>Opérateurs</h2>
+            <p>Relationnel</p>
+            <code>== === != !== &gt; &gt;= &lt; &lt;=</code>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Strings</h2>
+            <p>Simple ou double apostrophe</p>
+            <pre><code class="eval language-javascript" contenteditable>'hello' === "hello";</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Strings</h2>
+            <p>Longueur d’une chaîne</p>
+            <pre><code class="eval language-javascript" contenteditable>'hello'.length;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Strings</h2>
+            <p>Accès à un caractère avec les crochets []</p>
+            <pre><code class="eval language-javascript" contenteditable>'hello'[2];</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Strings</h2>
+            <p>Concaténation avec l’opérateur +</p>
+            <pre><code class="eval language-javascript" contenteditable>'hello' + ' goodbye';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Strings</h2>
+            <p>Concaténation avec l’opérateur +</p>
+            <pre><code class="eval language-javascript" contenteditable>'hello' + ' goodbye';</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Strings</h2>
+            <p>String to Number</p>
+            <pre><code class="eval language-javascript" contenteditable>parseInt('012', 10);</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h2>Nombres</h2>
+            <p>Nombres flottants IEEE 754 64-bit</p>
+            <pre><code class="eval language-javascript" contenteditable>1 / 2;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Nombres</h2>
+            <p>Notations décimales, octales et hexadécimales</p>
+            <pre><code class="eval language-javascript" contenteditable>16 === 020 && 16 === 0x10;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Nombres</h2>
+            <p>Notation flottantes</p>
+            <pre><code class="eval language-javascript" contenteditable>1e6;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Nombres</h2>
+            <p>Représentation large &hellip;</p>
+            <pre><code class="eval language-javascript" contenteditable>[Number.MIN_VALUE, Number.MAX_VALUE];</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Nombres</h2>
+            <p>&hellip; mais imprécise</p>
+            <pre><code class="eval language-javascript" contenteditable>9007199254740992 + 1 == 9007199254740992;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Nombres</h2>
+            <p>Valeurs spéciales</p>
+            <pre><code class="eval language-javascript" contenteditable>1 / 0;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+
+            <aside data-markdown class="notes">
+              - 1/0, 1/-0, 0/0
+            </aside>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Variables</h2>
+            <p>Déclaration</p>
+            <pre><code class="eval language-javascript" contenteditable>var a;
+a;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Variables</h2>
+            <p>Typage dynamique</p>
+            <pre><code class="eval language-javascript" contenteditable>a = 42;
+a = '*';
+a = function () {};</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Variables</h2>
+            <p>Variables globales</p>
+            <pre><code class="eval language-javascript" contenteditable>global = 2;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section data-state="alert">
+            <h2>Variables</h2>
+            <p>Variables globales implicites</p>
+            <pre><code class="eval language-javascript" contenteditable>function fun() {
+  // __DO NOT DO THIS__
+  for (i = 0; i < 2; ++i)
+    ;
+}
+fun();
+i;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section data-state="soothe">
+            <h2>Variables</h2>
+            <p>Toujours utiliser <code class="language-javascript">var</code></p>
+            <pre><code class="eval language-javascript" contenteditable>function fun() {
+  for (var j = 0; j < 2; ++j)
+    ;
+}
+fun();
+j;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Portée</h2>
+            <p>Portée globale</p>
+            <pre><code class="eval language-javascript" contenteditable>var t = 1;
+t;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Portée</h2>
+            <p>Portée d'une fonction</p>
+            <pre><code class="eval language-javascript" contenteditable>function fun() {
+  var t = 2;
+}
+fun();
+t;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Portée</h2>
+            <p>C'est tout ! Pas de portée de bloc</p>
+            <pre><code class="eval language-javascript" contenteditable>{
+  var t = 3;
+}
+t;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Portée</h2>
+            <p>Pas de portée de bloc</p>
+            <pre><code class="eval language-javascript" contenteditable>for (var t = 12; false;)
+  ;
+t;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section data-state="alert">
+            <h2>Portée</h2>
+            <p>Variables hissées</p>
+            <pre><code class="eval language-javascript" contenteditable>function f() {
+  t = 12;
+  var t;
+  return t;
+}
+f();</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section data-state="soothe">
+            <h2>Portée</h2>
+            <p>Toujours déclarer les variables avant leur affectation</p>
+            <pre><code class="eval language-javascript" contenteditable>function f() {
+  var t;
+  t = 12;
+  return t;
+}
+f();</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h2>Objets</h2>
+            <p>(Presque) un tableau associatif</p>
+            <pre><code class="eval language-javascript" contenteditable>var obj = {
+  answer: 42,
+  ':': function(x) {
+    return x*x;
+  },
+};
+obj; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Objets</h2>
+            <p>Opérateur "point"</p>
+            <pre><code class="eval language-javascript" contenteditable>var obj = {
+  answer: 42,
+  ':': function(x) {
+    return x*x;
+  },
+};
+obj.answer; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Objets</h2>
+            <p>Indexation par crochets</p>
+            <pre><code class="eval language-javascript" contenteditable>var obj = {
+  answer: 42,
+  ':': function(x) {
+    return x*x;
+  },
+};
+obj[':'];</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Objets</h2>
+            <p>Modification</p>
+            <pre><code class="eval language-javascript" contenteditable>var obj = {
+  answer: 42,
+  ':': function(x) {
+    return x*x;
+  },
+};
+obj.question = '*';
+obj; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Objets</h2>
+            <p>Suppression d'une propriété</p>
+            <pre><code class="eval language-javascript" contenteditable>var obj = {
+  answer: 42,
+  ':': function(x) {
+    return x*x;
+  },
+};
+delete obj.answer;
+obj.answer; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Contenu hétérogène</p>
+            <pre><code class="eval language-javascript" contenteditable>var mixed = [1,'2','trois',[4]];
+mixed; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Indexation par crochets</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array[0]; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Conversion de l'index en entier</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array['3']; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Attribut <code>length</code></p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array.length; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Taille dynamique</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array[12] = '21';
+array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Les tableaux sont aussi des objets</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array['nananana'] = 'Batman';
+array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Opérateur <code>in</code></p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array['nananana'] = 'Batman';
+'nananana' in array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Itérer sur un tableau</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+for (var i=0, l=array.length; i < l; ++i)
+  array[i] = i;
+array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Itérer sur un objet</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array.nananana = 'Batman';
+for (var index in array)
+  array[index] *= 2;
+[array, array.nananana]; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Tableaux</h2>
+            <p>Ajout d'un élément</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array.push(5);
+array;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section data-state="alert">
+            <h2>Tableaux</h2>
+            <p>Suppression d'un élément (laisse un trou)</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+delete array[1];
+array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section data-state="soothe">
+            <h2>Tableaux</h2>
+            <p>Suppression d'un élément (sans trou)</p>
+            <pre><code class="eval language-javascript" contenteditable>var array = [1,2,3,4];
+array.splice(1,1);
+array; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>Syntaxe</p>
+            <pre><code class="eval language-javascript" contenteditable>function add(x, y) {
+  return x + y;
+}
+add(1, 2); </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>Fonctions anonymes</p>
+            <pre><code class="eval language-javascript" contenteditable>var double = function(x) {
+  return x + x;
+};
+double(8); </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>Fonctions en valeur de retour</p>
+            <pre><code class="eval language-javascript" contenteditable>function makeAdder(x) {
+  return function(y) {
+    return x + y;
+  };
+}
+
+var plus2 = makeAdder(2);
+plus2(5); </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>Fonctions passées en arguments</p>
+            <pre><code class="eval language-javascript" contenteditable>function duplicate(fn) {
+  return [fn(2), fn(2)];
+}
+
+duplicate(function(n) {
+ return n * n;
+});</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>Fonctions dans des variables</p>
+            <pre><code class="eval language-javascript" contenteditable>function vector(x, y) {
+  return [x, y];
+}
+var v = vector;
+v(1, 2); </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>Pour connaître l’arité</p>
+            <pre><code class="eval language-javascript" contenteditable>function add(x, y) {
+  return x + y;
+}
+add.length;</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>L’arité des fonctions ne compte pas</p>
+            <pre><code class="eval language-javascript" contenteditable>function add(x, y) {
+  return x + y;
+}
+add(1);</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Fonctions</h2>
+            <p>L’arité des fonctions ne compte pas</p>
+            <pre><code class="eval language-javascript" contenteditable>function add(x, y) {
+  return x + y;
+}
+add(1,2,3);</code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Contrôle</h2>
+            <pre><code class="eval language-javascript" contenteditable>paul = {
+  name: 'Paul Atreides',
+  nickname: "Muad'dib",
+  birthplace: 'Caladan',
+  motto: 'Fear is the mind killer',
+}; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Contrôle</h2>
+            <p><code>for</code> classique</p>
+            <pre><code class="eval language-javascript" contenteditable>for (var i = 0; i < 18; ++i)
+  ;
+paul.age = i; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Contrôle</h2>
+            <p><code>for in</code></p>
+            <pre><code class="eval language-javascript" contenteditable>var obj = {};
+for (var property in paul) {
+  obj[property] = paul[property];
+}
+obj; </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Contrôle</h2>
+            <p><code>switch</code></p>
+            <pre><code class="eval language-javascript" contenteditable>switch (paul.birthplace) {
+case 'Caladan':
+  'House Atreides';
+  break;
+
+case 'Giedi Prime':
+  'House Harkonnen';
+  break;
+
+case 'Kaitain':
+  'House Corrino';
+  break;
+
+default:
+  'Arrakis';
+} </code></pre>
+            <pre><code class="echo language-javascript"> </code></pre>
+          </section>
+
+          <section>
+            <h2>Contrôle</h2>
+            <p><code>while</code></p>
+            <pre><code class="language-javascript">while (character.title < 'Emperor') {
+  harvestSpice();
+  raiseArmy();
+  harassHarkonnens();
+} </code></pre>
+          </section>
+
+          <section>
+            <h2>Contrôle</h2>
+            <p><code>do while</code></p>
+            <pre><code class="language-javascript">do {
+  harvester.forward();
+  harvester.scanForSandworms();
+} while (!harvester.isFull()); </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+          <h2>Pour aller plus loin</h2>
+          <p>
+            <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Guide">Mozilla JavaScript's Guide</a>,
+            <a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript Garden</a>,
+            <a href="http://eloquentjavascript.net/">Eloquent JavaScript</a>
+          </p>
+
+          <aside data-markdown class="notes">
+            Meilleure façon d'apprendre: projets
+
+            - Jeu simple / appli web
+            - Prototype rapide puis apprenez en améliorant
+          </aside>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+      { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'plugin/repl/repl.js', condition: function() { return !!document.querySelector('code.echo'); } },
+
+      { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      //		{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      //{ src: '/socket.io/socket.io.js', async: true },
+      //{ src: 'plugin/notes-server/client.js', async: true },
+      // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+      });
+
+    </script>
+
+  </body>
+</html>
