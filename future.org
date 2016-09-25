@@ -1,0 +1,388 @@
+* Better design
+Following the /Design of Everyday Things/, a sound course on
+JavaScript must start from the simplest mental model of the language,
+and then expand that model when necessary to understand new
+constructs.
+
+** The known
+Starting from the pre-requisites, we can build a simple mental model
+of beginner JavaScript :
+
+A JavaScript program is a sequence of instructions (like in Java, C or
+Matlab).  The familiar concepts are constants, operators and
+variables.
+
+#+BEGIN_EXAMPLE
+2 * 3 -> <constant> <operator> <constant> => 5 (mathematical multiplication)
+#+END_EXAMPLE
+
+But also operations on strings (maybe less familiar)
+
+#+BEGIN_EXAMPLE
+"aa" + "bb" => aabb (concatenation)
+#+END_EXAMPLE
+
+Variables allow us to name things (assumed known)
+
+#+BEGIN_EXAMPLE
+var x = 3;
+x + 3 => 6
+#+END_EXAMPLE
+
+But variables are of little use without loops or functions.  Enter
+control-structures (again, known).
+
+#+BEGIN_EXAMPLE
+for (var i = 0; i < 10; ++i)
+  if (i % 2 == 0)
+    print 'fizz'
+  else
+    print buzz'
+#+END_EXAMPLE
+
+Functions are abstractions over variables.  Given a sequence of
+instructions where a pattern appears, we can create a function.
+
+#+BEGIN_EXAMPLE
+2 * 2 => 4
+3 * 3 => 4
+12 * 12 => 144
+#+END_EXAMPLE
+
+We can see the pattern =number * number=, with both number being
+identical.  Hence the function =function square(x): x * x=.
+
+The mental model for functions should be explicit, to ensure there is
+no confusion during the course.  Here is a sufficient model for
+functions in JS (note: this diagram can be expanded after functions
+are first introduced.  No need to talk of lexical scoping /right
+away/, just when the mental model becomes insufficient):
+
+#+BEGIN_EXAMPLE
+                    +-----------------------+
+                    |    +------------+     |
+                    |    |            |     |
+                    |    |  Context   |     |
+                    |    |            |     |
+                    |    +------------+     |
+                    |       function        |
+                    | +-------------------+ |
+  +----+  +----+    | |                   | | +-----+
+  | v1 |  | v2 | ...| | function body     | | +  r  |
+  +----+  +----+    | |                   | | +-----+
+   /        /       | +-------------------+ |   /
+  ----------------  +-----------------------+ -------
+     arguments                                return value
+#+END_EXAMPLE
+
+A function take any number of arguments and return a value.  They
+execute with a context which provide references from the global world
+to act upon.  Besides acting on its arguments, the function can
+have any number of side-effects by acting upon the context.
+
+#+BEGIN_EXAMPLE
+function f() {
+  console.log(2);
+  document.body.addChild('<div></div>');
+
+  return 0;
+}
+#+END_EXAMPLE
+
+We can think of the context as "every reference defined outside the
+function — above /and/ below", which includes built-ins and library
+imports.
+
+The context box is necessary to explain why a function "closes" over
+its lexical environment /at definition time/.
+
+#+BEGIN_EXAMPLE
+var x = 2;
+
+function f() {
+  console.log(x);
+}
+
+f(); => 2
+
+x = 4;
+
+f(); => 4
+
+function g() {
+  var x = 12;
+  f();
+}
+
+g(); => 4
+#+END_EXAMPLE
+
+Free variables (names other than arguments) are resolved by looking
+into the context environment.  This is very different from pure
+mathematical functions where only the arguments exist inside the
+function; we need to pass everything to the function to ensure a
+correct operation.
+
+Thus we can explain the following behavior straightforwardly
+following the mental model for functions:
+
+#+BEGIN_EXAMPLE
+function f(x) {
+  return function g(y) {
+    return x + y;
+  }
+}
+
+f(1) => function
+f(1)(2) => 3
+#+END_EXAMPLE
+
+To execute =f=, we look at its definition: it returns a function.  To
+understand the second result, we look at the returned function =g=
+which only defines one argument, =y=.  =x= is a free variable which
+is looked up in the context of =g=: its definition environment.  The
+nearest definition for =x= is in the arguments of =f=, so =x= in =g=
+will refer to this argument =x= of =f=.  Even if the result of =f(1)=
+is stocked for later call, =x= in =g= will still refer to =1=: the
+context is stored alongside the function object.
+
+By the way, this mecanism of saving the context at definition time is
+called "lexical scoping".  The alternative is to look for free
+variables at /execution time/, and is called "dynamic scoping".
+
+#+BEGIN_EXAMPLE
+function f(y) {
+  return x + y;
+}
+
+f(1,2) => NaN
+
+x = 1;
+f(1,2) => 3
+#+END_EXAMPLE
+
+This leads to a different kind of behavior, which has its upsides and
+downsides (see EmacsLisp Debugging, EmacsLisp only had dynamic scoping
+for a long time).  Lisp functions can chose to have lexical or
+dynamic scoping.
+
+** Interlude
+At this point, our mental model of JavaScript is merely a mash-up of
+existing concepts from other programming languages.  Have a picture
+to illustrate this fact:
+
+#+BEGIN_EXAMPLE
++----------------------------------------------------------------+
+| +---------------+ +---------------+  +---------------+         |
+| | Constants     | | Operators     |  | Variables     |         |
+| +---------------+ +---------------+  +---------------+         |
+| +-----------------+                                            |
+| |                 |                                            |
+| | Functions       |                                            |
+| |                 |                                            |
+| +-----------------+                                            |
+|                                                                |
+|                                                                |
+|                                                                |
+|                                                                |
++----------------------------------------------------------------+
+#+END_EXAMPLE
+
+Students should already be familiar with all these concepts.
+Migrating those concepts to JavaScript is just a matter of memorizing
+syntax.  A [[file:FING/2013/cheatsheet.org][cheatsheet]] can help for this transition, since rote
+memorization is not the goal of the course.  Expanding our mental
+model of programming is.
+
+** The new
+The JavaScript course should focus on JS-specific language concepts.
+These are:
+
+1. Objects and prototypes.  Objects are associative bags, and they
+   share values via a delegation mechanism (prototypes).  When the
+   shared values are functions, dynamic binding determines the calling
+   context (receiver).
+
+   We can go further by expanding the mental model with meta-object
+   protocol constructs, but we need to illustrate their usefulness in
+   the lab.
+
+2. Asynchronous events.
+
+3. Browser environment (not language-oriented though)
+
+4. Tools for developing web-based JavaScript applications
+   - Documentation
+   - Linter (ESLint, JSHint) / static analysis (Esprima, Closure)
+   - Unit testing and coverage tests (mocha, jasmine)
+   - Browser debugger and profiler
+
+And other features that should be new to students
+
+- Dynamic typing
+
+Students should code in JavaScript, a lot.  And they should read
+JavaScript code, a lot.
+
+1. Code a lot
+   - Bread-and-butter MVC application(s) (for a given API)
+   - Slideshow app
+   - Platform game (game loop, redraw, collision detection).  Shows
+     the elements of a game engine, how things are structured, how you
+     can leverage prototypes for sharing behavior between objects.
+   - Paint application: canvas, mouse events
+   - Music application: audio API
+   - Node.js application: web server, web socket
+
+2. Read a lot of code
+   - Look at libraries that run the web: jQuery (JS patterns,
+     browser-specific fixes), underscore (JS patterns and clean code),
+     google analytics?, d3?, phaser?, mocha?, react?, backbone?
+
+   - Look at real-world websites and web-apps: devdocs?, github?,
+     rss-reader?, duckduckgo?,
+
+   - Look at real-world tools: ESLint?, Esprima?, Firefox?, Chrome?,
+     Closure compiler?, Node.js?, mustache?, V8?
+
+   PojoViz is a nice object visualizator that might be useful for
+   understanding a JS code structure at a glance.
+
+Other rite of passages:
+- Create a language that compiles to JS
+- Create a web browser (implement the DOM and event dispatching)
+- Create a web server
+- Hack a JS app
+
+On the fence (preparing for the future):
+- Web components, shadow DOW
+- EcmaScript 6 (especially generators)
+
+Writing safe JS:
+- Linter, prevent git push on error
+  + Custom rules for your team (ESLint)
+- Homogeneous arrays / vars of simple types (Object.watch? Proxies?)
+- Object.freeze for preventing object extension after creation
+- All of these should be verified statically, to avoid runtime overhead.
+- Maybe you should use Typescript
+
+To make the course complete, a student also need to learn about:
+- securing a web app
+- accessibility
+
+*** Objects
+**** Bags
+The initial mental model of objects in JS is dead simple:
+
+#+BEGIN_EXAMPLE
+ +------------------------------------------------------------+
+ | Object                                                     |
+ |                                                            |
+ | +----+    +------+                                         |
+ | |key1|----|value1|                                         |
+ | +----+    +------+                                         |
+ | +-----+   +------+                                         |
+ | |key2 |---|value2|                                         |
+ | +-----+   +------+                                         |
+ |   ...                                                      |
+ |                                                            |
+ +------------------------------------------------------------+
+#+END_EXAMPLE
+
+A list of key-value pairs, where keys can be identifiers and values
+can be anything (including objects).
+
+#+BEGIN_EXAMPLE
+var o = {
+  x : 3,
+  f : function() { return 12; }
+};
+
+o.x => 3
+o.f => function
+o.f() => 12
+#+END_EXAMPLE
+
+**** Self-reference
+Then you want to have self-reference, because it's so useful that you
+don't want to pepper all your functions with a =self= arguments à la
+Python.
+
+#+BEGIN_EXAMPLE
+var o = {
+  x : 3,
+  square: function() { return x * x; }
+}
+
+o.square() => #ERROR `x` not defined
+#+END_EXAMPLE
+
+Enter the =this= keyword (not implicit like in Java).
+
+#+BEGIN_EXAMPLE
+var o = {
+  x : 3,
+  square: function() { return this.x * this.x; }
+}
+
+o.square() => 9
+#+END_EXAMPLE
+
+The introduction of =this= does not update the mental model of
+objects; it can be used anywhere a value is expected.  But for our
+purposes, it is only used in functions to refer to the object
+receiving the call.
+
+#+BEGIN_EXAMPLE
+                    +-----------------------+
+                    |    +------------+     |
+                    |    |            |     |
+                    |    |  Context   |     |
+                    |    |            |     |
+  +----+            |    +------------+     |
+  |this|------------|       function        |
+  +----+            | +-------------------+ |
+  +----+  +----+    | |                   | | +-----+
+  | v1 |  | v2 | ...| | function body     | | +  r  |
+  +----+  +----+    | |                   | | +-----+
+   /        /       | +-------------------+ |   /
+  ----------------  +-----------------------+ -------
+     arguments                                return value
+#+END_EXAMPLE
+
+Now could be a good time to talk about the value of =this= when the
+receiver is not explicit (or keep that for later as to not overcharge
+the mental model).
+
+**** Prototypes
+Then you add prototypes
+
+BTW, to illustrate the mental model of prototypes with students, maybe
+a little game could be fun and pedagological.  Take it outside of the
+black-board, and explain it with real-life objects (or persons).
+Maybe each student is an object, they have values and parent
+relations.  Then other students ask a value to a student-object, that
+must answer (eventually by delegation).
+
+**** Meta-object protocol
+And finally you add the meta-object protocol
+
+* Snake
+is much simpler than Pacman, and is still damn fun.  Easy to add
+variants on top, and most importantly, multiplayer!
+
+Could easily use HTML/CSS for rendering rather than canvas, which
+means DOM manipulation.
+
+They could reasonably build a full-blown version from scratch, and
+learn a lot in the process.
+
+* Newer examples
+http://jlongster.com/s/lljs-cloth/
+
+Hmm https://github.com/mikaelbr/frp-piano/blob/master/public/piano.coffee
+
+* Technology
+Use an editor with a linter for tighter feedback.  [[http://eslint.org/docs/configuring/][ESLint]] is
+configurable.  Could add custom rules for some exercises and to
+enforce style conventions.
