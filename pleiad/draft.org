@@ -1,0 +1,732 @@
+JavaScript course given for the students of Éric’s PL course at
+Universitad de Chile.
+
+Focus is on PL concepts, especially objects:
+
+Overview of the JS good parts:
+- first-class functions
+- functions as objects (.call, .apply ... no access to closure though)
+- lexical closures
+  + pattern: closures as hidden state
+
+- objects as bag of properties
+  + no fields/methods dichotomy, just slots
+  + dynamic addition/suppression of slots
+  + no cloning
+  + three ways to create
+    - literal
+    - factory method and state in closure
+    - new + constructor.prototype
+
+- prototypes
+  + lookup delegation (late/dynamic binding)
+  + semantics of `this` (JS does not have /methods/)
+  + bastard notion of class constructors and instances
+  + example of JS object hierarchy (Object -> Function)
+  + dynamic inheritance
+  + example of mode switching with Pacman
+
+Prototypes lead to traits and mixins
+- Organizing programs without Classes
+
+Differences with existing approaches:
+- Delegated slot update: affect the receiver or the slot owner?
+- Multiple inheritance
+
+Meta object goodies:
+- getters, setters, Object.defineProperty, freeze, seal ...
+
+Good things coming:
+- Proxies
+- Generators
+
+* Intro
+
+Hey I’m here to talk to you about JavaScript, but mainly OO concepts
+as they are used in JS.
+
+I’m very glad to be giving you this course today.  But first, who the
+hell am I, and what have I done with Éric?
+
+I’m a doing a PhD at Mines Nantes on JS and web apps security using
+language constructs.  I give a JS course there also.
+
+I got into JS because “everyone was doing it”; stuff like nodeJS and
+the HTML canvas sounded cool, so looked it up.  Then I heard about
+WebSockets and wrote a prototype of a two-player game of ships
+shooting each other.  Then with a friend we turned it into Sparkets,
+and ended coding a lot along the way.
+
+Funny thing: we did not understand JS.  We even switched to
+CoffeeScript because we could not wrap our heads around JS prototypes
+and variable hoisting.
+
+Since then I have a much better understanding of how to use JS, and
+I’m going to share that with you.  Though we’ll focus on OO and
+language stuff, not the web.
+
+This is not a course on best practices, standard or performant JS.
+This is a narrow view of some parts of JS that are expressive and
+interesting for this PL course.
+
+* JS overview
+
+JS has Java syntax, but it’s actually more alike Scheme and Self.
+
+If you have barely touched JS code, don’t worry.  The parts we need
+you mostly know, the rest is a matter of simple syntax.
+
+For our needs, JS has:
+- primitives
+- variables
+- functions
+- objects
+
+** Primitives
+
+- Numbers
+  #+BEGIN_SRC js
+    123 * 321
+  #+END_SRC
+
+- Strings
+  #+BEGIN_SRC js
+    "str" + 'ing'
+  #+END_SRC
+
+** Variables
+
+Declaration:
+#+BEGIN_SRC js
+  var fruta;
+#+END_SRC
+
+Then assignment (yeah “variables” are mutable)
+#+BEGIN_SRC js
+  fruta = "manzana";
+#+END_SRC
+
+Can do both at the same time:
+#+BEGIN_SRC js
+  var fruta;
+  fruta = "manzana";
+  var jugo = "Jugo de " + fruta;
+#+END_SRC
+
+Variables have no type annotation, so can contain anything:
+#+BEGIN_SRC js
+  var x = "a string";
+  x = 42;
+  var y = x + 12;
+#+END_SRC
+
+** Functions
+
+Now we are getting somewhere.
+
+Here’s a function declaration:
+#+BEGIN_SRC js
+  function square(x) { return x * x; }
+
+  square(12)
+#+END_SRC
+
+Imperative syntax, so =return=.
+
+Arguments have no static types.  Functions are actually variadic.
+
+Functions are first-class values:
+#+BEGIN_SRC js
+  var f = function(x) { return x * x; }
+  f(f(2))
+#+END_SRC
+
+And they close over their lexical scope:
+#+BEGIN_SRC js
+  function adder(x) {
+    return function(y) {
+      return x + y;
+    }
+  }
+
+  var add2 = adder(2);
+  add2(20);
+#+END_SRC
+
+** Objects
+
+With functions you can pretty much do anything, but JS also has
+objects for higher-level code organization.
+
+Once again, objects have little in common with Java instances.
+
+Objects in JS are bags of /properties/:
+#+BEGIN_SRC js
+  {
+    fruta: "frambuesa",
+    aNumber: 2,
+    square: function(x) { return x * x; },
+    anObject: {
+      x: 3,
+      y: 12
+    }
+  }
+#+END_SRC
+
+Properties have names (identifier, strings), and values.
+Values can be:
+- primitives
+- functions
+- objects (first-class too)
+
+JS objects are dynamic: you can change pretty much anything about
+them:
+#+BEGIN_SRC js
+  var o = { x: 2 };
+  o.x = 12;
+  o.y = function() { return 5; };
+  delete o.x;
+  o
+#+END_SRC
+
+Modify properties, add new ones, delete existing ones.
+
+Oh and JS has few errors, so when referencing a property that does not
+exist:
+#+BEGIN_SRC js
+var o = {};
+o.foo
+#+END_SRC
+
+It just returns `undefined`.
+
+* Object Oriented JavaScript
+Ok we have the ingredients, let’s make some /cuisine/!
+
+** Self-reference
+You’ve seen it, it’s a core OO-concept.  Without self, there’s no
+self-reference.  Following Java’s syntax, the keyword is ‘this’ in JS.
+
+#+BEGIN_SRC js
+  var A = {
+    x: 2,
+    square: function() { return this.x * this.x; }
+  }
+
+  A.square();
+#+END_SRC
+
+Not following Java, `this` needs to be explicit.
+
+Where does `this` comes from?  For now you can think of it as an extra
+hidden argument to the function call.  `this` will refer to the
+receiver of the method, `A` in this case.  Python methods have an
+explict `self`, JavaScript functions have an implicit `this`.
+
+** Delegation
+
+Objects encapsulate state and behavior.
+
+What if you want to share behavior or state between objects?  This is
+a very common use-case for OO programs.  Consider:
+
+#+BEGIN_SRC js
+  var hare = {
+    x: 0,
+    speed: 2,
+    step: function() {
+      this.x += speed;
+    }
+  };
+
+  var turtle = {
+    x: 0,
+    speed: 1,
+    step: function() {
+      this.x += speed;
+    }
+  }
+#+END_SRC
+
+The step function is the same in both objects, so this is a
+duplication.  We can eliminate this duplication:
+#+BEGIN_SRC js
+  var turtle = {
+    x: 0,
+    speed: 1,
+    step: hare.step
+  }
+
+  hare.step();
+  turtle.step();
+  turtle.x;
+#+END_SRC
+
+`hare.step` is a property lookup that returns a function, not bound to
+`hare` in any way.  So it’s functionally equivalent to the previous
+code.
+
+Remember: `this` refers to the receiver, so `turtle` is the value of
+`this` in the `turtle.step()` call, but `this` is `hare` in
+`hare.step()`.
+
+** Delegation with prototypes
+
+If we have numerous methods to delegate, it can become quite tedious
+to write:
+#+BEGIN_SRC js
+  var hare = {
+    step: ...
+    run: ...
+    sleep: ...
+    eat: ...
+    ...
+  }
+
+  var turtle = {
+    step: hare.step,
+    run: hare.run,
+    sleep: hare.sleep,
+    eat: hare.eat,
+    ...
+  }
+#+END_SRC
+
+We would like to say “the behavior of turle is the same as hare”.
+That’s exactly what prototype links are for.
+#+BEGIN_SRC js
+  var hare = {
+    x: 0,
+    speed: 2,
+    step: function() {
+      this.x += speed;
+    }
+  }
+
+  var turtle = {
+    __proto__: hare,
+   x: 0,
+   speed: 2
+  }
+
+  turtle.step();
+  turtle.x
+#+END_SRC
+
+What’s happening here?  __proto__ is a special property of every JS
+object: if a property `foo` is not found on an object, the interpreter
+will look for an object in the __proto__ special property and search
+for `foo` there.
+
+Since every object can have a __proto__ property, we can have a long
+chain of objects to search in; chains have to be finite and free of
+cycles.
+
+#+BEGIN_EXAMPLE
++--------+  prototype  	+--------+
+| B      |------------->| A      |
+| y: 3   |              | x: 2   |
++--------+              | y: 5   |
+                        +--------+
+#+END_EXAMPLE
+
+** Object construction
+*** Object literal
+
+That’s what we have seen:
+#+BEGIN_SRC js
+  var b = {};
+  var o = {
+    x: 12,
+    f: function() { ...  }
+  };
+#+END_SRC
+
+*** With a function
+
+The precedent method is not well-suited to building multiple objects
+with the same behavior.
+#+BEGIN_SRC js
+  var duck1 = {
+    size: 12,
+    swim: function() { ... }
+  }
+
+  var duck2 = {
+    size: 2,
+    swim: function() { ... }
+  }
+
+  var duck3 = {
+    size: 5,
+    swim: function() { ... }
+  }
+#+END_SRC
+
+You’d rather have a function that creates ducks for you, since objects
+are first class:
+#+BEGIN_SRC js
+  function duckMaker(size) {
+    return {
+      size: size,
+      swim: function() { ... }
+    }
+  }
+
+  var donald = duckMaker(12);
+  var scrooge = duckMaker(2);
+  var louie = duckMaker(5);
+#+END_SRC
+
+But notice that each object has its own `swim` function.  It is not
+shared between ducks.
+
+If you want to change the swim behavior of every duck dynamically,
+you’d have to do update the `swim` property of every created duck.
+
+There’s a better way using propotypes.
+#+BEGIN_SRC js
+  var protoDuck = {
+    swim: function() { ... }
+  };
+
+  function duckMaker(size) {
+    return {
+      __proto__: protoDuck,
+      size: size
+    }
+  }
+
+  var donald = duckMaker(12);
+  var scrooge = duckMaker(2);
+  var louie = duckMaker(5);
+
+  protoDuck.eat = function() { this.size += 1; }
+  donald.eat();
+  donald.size;
+#+END_SRC
+
+Now you can add and modify the behavior of each duck by modifying the
+`protoDuck` object.
+
+*** Using createObject
+
+The `duckMaker` function will always do the same two things:
+1. Create a new object with the provided properties
+2. Assign the prototype of the newly created object
+
+Since there’s a pattern, we can abstract it for any kind of object we
+would want to create.
+#+BEGIN_SRC js
+  function createObject(proto, properties) {
+    properties.__proto__ = proto;
+    return properties;
+  }
+
+  function duckMaker(size) {
+    return createObject(protoDuck, {
+      size: size
+    });
+  }
+
+  var donald = duckMaker(12);
+  var scrooge = createObject(protoDuck, {size: 5});
+#+END_SRC
+
+*** The Function.prototype way
+
+JS already has a support for this pattern, though it’s a little
+confusing since it uses the `new` keyword and a “constructor”:
+#+BEGIN_SRC js
+  function Duck(size) {
+    this.size = size;
+  }
+
+  Duck.prototype.swim = function() { ... };
+
+  var donald = new Duck(12);
+#+END_SRC
+
+The `new` keyword when applied to a function call will bind a newly
+created object to the `this` keyword.  This object will also have its
+__proto__ property tied to the constructor’s “prototype” object.
+
+Looks like a Java class, but it’s all prototypes behind the scenes.
+
+** Dynamic inheritance
+Since __proto__ is just a property of every object, it can be changed
+dynamically, not just at creation time.
+
+This is an additional power not found in class-based language.  Any
+object can change its set of behavior just by changing its proto
+link.
+
+#+BEGIN_SRC js
+  var duck = {
+    swim: function() {  }
+  }
+
+  var witch = {
+    burn: function() { ... }
+  }
+
+  var donald = { __proto__: duck };
+  donald.swim();
+  donald.__proto__ = witch;
+  donald.burn();
+#+END_SRC
+
+*** Case study: Pacman
+This metamorphis of objects may sound silly, but it actually enables a
+pattern called “mode-switching”.
+
+Consider Pacman.  When he eats a fruit, he becomes super fast and can
+eat the ghosts.  The ghosts are also afraid of him, turn blue and away
+from Pacman.  This is not just a change of state, but also a change of
+behavior for Pacman and the ghosts.
+
+Here’s a way to write it:
+
+#+BEGIN_SRC js
+  var pacman = {
+    x: 0,
+    speed: 1,
+    hasEatenFruit: false,
+    move: function() {
+      this.x += this.speed;
+    },
+    collideWith: function(ghost) {
+      if (this.hasEatenFruit)
+        ghost.die();
+      else
+        this.die();
+    },
+    eatFruit: function() {
+      this.hasEatenFruit = true;
+      this.speed = 2;
+      ghost.flee = true;
+    }
+  }
+
+  var ghost = {
+    move: function() {
+      if (this.flee)
+        // AAAAW it's Pacman!
+      else
+        // DESTROY PACMAN
+    }
+  }
+#+END_SRC
+
+You have to use boolean variables to represent state changes, and
+conditional tests in the methods that are affected by the state
+changes.
+
+Now, if you use prototypes, you can do that instead:
+
+#+BEGIN_SRC js
+  var pacman = {
+    __proto__: protoPacman,
+    x: 0,
+  }
+
+  var protoPacman = {
+    speed: 1,
+    move: function() {
+      this.x += this.speed;
+    }
+    collideWith: function(ghost) {
+      this.die();
+    },
+    eatFruit: function(ghost) {
+      this.__proto__ = superPacman;
+      ghost.__proto__ = fleeingGhost;
+    }
+  }
+
+  var superPacman = {
+    __proto__: protoPacman,
+    speed: 2,
+    collideWith: function(ghost) {
+      ghost.die();
+    },
+  }
+
+  var protoGhost = {
+    move: function() { /* DESTROY PACMAN */ }
+  }
+
+  var fleeingGhost = {
+    move: function() { /* AAAAW it's PACMAN! */ }
+  }
+
+  var ghost = { __proto__: protoGhost }
+#+END_SRC
+
+One object per state; per-state behavior is encapsulated.
+
+State pattern by inheritance instead of composition.
+
+* Extra
+** JS object hierarchy
+
+JS primitives have object counterparts:
+#+BEGIN_SRC js
+  var n = 12;
+  var x = Number(12);
+  n === x;
+#+END_SRC
+
+#+RESULTS:
+: true
+
+: Number -> Object -> null
+
+#+BEGIN_SRC js
+  var s = " hola  ";
+  s.trim();
+#+END_SRC
+
+: String -> Object -> null
+
+Functions are objects as well:
+#+BEGIN_SRC js
+  var f = function() { return 2; }
+  f instanceof Function
+#+END_SRC
+
+The Function.prototype object has special methods to execute
+functions:
+#+BEGIN_SRC js
+  var f  = function() { return 2; }
+  f.call()
+#+END_SRC
+
+#+RESULTS:
+: 2
+
+: Function -> Object -> null
+
+The Object object defines useful methods for all objects, like
+`toString`.
+
+** More on `this`
+
+Since functions are first class, you can get a hold of any “method” of
+an object (actually just the value of a property).
+#+BEGIN_SRC js
+  var A = {
+    x: 2,
+    square: function() { return this.x * this.x ; }
+  }
+
+  var square = A.square;
+  square();
+#+END_SRC
+
+And you get `undefined`.  Why?
+
+If `this` points to the receiver, who is the receiver here?
+
+You can think of “this” as a hidden argument to a function call.  If
+you use the .call or .apply methods of the Function.prototype object,
+then you can control the value of `this`.
+
+#+BEGIN_SRC js
+  var A = {
+    x: 2,
+    square: function() { return this.x * this.x ; }
+  }
+
+  var square = A.square;
+  square.call(A);
+#+END_SRC
+
+The default value for `this` is the `window` object, the global
+object.  It makes sense if you think of =square()= as implicit calls
+to =window.square()=.
+
+** Object reflection
+The Object.prototype object has facilities for object reflection and
+manipulation.
+
+*** Getters/setters
+You can define a getter and a setter for a property, to override the
+default behavior:
+#+BEGIN_SRC js :session *bub*
+  var o = {
+    get x() { return Math.random(); },
+    set x(value) { /* do nothing */ }
+  };
+
+  o.x;
+  o.x = 12;
+  o.x;
+#+END_SRC
+
+#+RESULTS:
+: 0.7327769713667496
+
+A getter function will be called when the property is accessed, and
+the setter is called when the property is assigned to.
+
+You can hide complex behavior disguised as object properties.
+
+Here’s an example of building late mixins using getters:
+#+BEGIN_SRC js :session *bub*
+    var duck = {
+      size: 12,
+      swim: function() { return 'swimming'; }
+    }
+
+    var o = {};
+
+    lateMixin(o, duck);
+
+    function lateMixin(obj, source) {
+      for (var prop in source) {
+        (function(prop) {  // IIFE for closing over `prop`
+          Object.defineProperty(obj, prop, {
+            get: function() { return source[prop]; }
+          });
+        }(prop))
+      }
+    }
+
+    o.swim();
+
+    duck.size = 12;
+    o.size;
+#+END_SRC
+
+#+RESULTS:
+: 12
+
+“That’s what __proto__ gives you”.  Yes!  But now you can have both a
+__proto__ and any number of late-mixed-in objects!  Poor man’s
+multiple inheritance.
+
+*** Object.defineProperty
+
+Properties of an object have three flags:
+- configurable :: can the property be deleted?
+- enumerable :: does the property shows up in enumeration?
+- writeable :: does assigning to the property changes its value?
+
+You can easily change the flags for an object with
+Object.defineProperty.
+
+There are also shortcuts:
+#+BEGIN_SRC js
+var o = {x: 12};
+Object.freeze(o);
+// o is now *immutable*
+o.b = 12;
+o.x = 42;
+delete o.x;
+o;
+#+END_SRC
+
+See also Object.seal and Object.preventExtensions.
+
+*** Proxies
