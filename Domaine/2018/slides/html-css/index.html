@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 
 <meta charset="utf-8">
-<title>HTML, CSS</title>
+<title>HTML &amp; CSS</title>
 
 <section>
-    <h1>HTML, CSS</h1>
-    <footer>fmdkdd</footer>
+  <h1>HTML &amp; CSS</h1>
+  <footer>fmdkdd</footer>
+</section>
+
+<section>
+  <p>Web pages rely on 3 technologies:</p>
+
+  <ol>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript (next course)</li>
+  </ol>
+
+  <img src="img/html-css-js.png" style="display: block; height: 300px; margin: 20px auto;">
 </section>
 
 <section>
@@ -188,7 +200,7 @@
 
   <p>
     <a style="float: right; position: relative; top: 70px;" href="http://example.com">A link to example.com</a>
-    <pre class="smaller"><code>&lt;a href="http://example.com"&gt;
+    <pre class="smaller"><code>&lt;a <span class="alert">href="http://example.com"</span>&gt;
   A link to example.com
 &lt;/a&gt;</code></pre>
 
@@ -228,7 +240,7 @@
     <li><code>p</code> for paragraphs</li>
     <li><code>a</code> for links</li>
     <li><code>div</code> for blocks</li>
-    <li><code>img</code> for images</li>
+    <li><code>img</code> for images (also <code>audio, video</code>)</li>
     <li><code>ul, ol</code> for unordered, ordered lists</li>
     <li><code>li</code> for list items</li>
     <li><code>table, tr, td</code> for tables, table rows, table cells</li>
@@ -239,15 +251,16 @@
 
 <section>
   <p>Elements give <em>semantic structure</em> to content</p>
-  <p><code>div</code>, <code>section</code> for sectioning content</p>
+  <ul>
+    <li><code>main</code> for the main content</li>
+    <li><code>section, article</code> for divisions inside the content</li>
+    <li><code>header, footer</code> for header/footers in content or section</li>
+    <li><code>nav</code> for navigation</li>
+    <li><code>aside</code> for notes</li>
+  </ul>
 
-  <p><code>h1, h2, ..., h6</code> for headers</p>
+  <p>Semantic tags help readability and accessibility <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure">(MDN tutorial)</a></p>
 
-  <p><code>p</code> for paragraphs</p>
-
-  <p><code>ul, li, img, ...</code></p>
-
-  <p><a href="http://html5doctor.com/element-index/">Reference list</a></p>
   <div role="note">
     <ul>
       <li>Semantic: use tags for intention</li>
@@ -257,7 +270,7 @@
 </section>
 
 <section>
-  <p>A typical page</p>
+  <p>A typical HTML page has <em>three parts</em></p>
 <pre class="smaller"><code>&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
@@ -276,7 +289,6 @@
   <div role="note">
     <ul>
       <li>Go over each line</li>
-      <li>We will actually use this verbatim</li>
       <li>There are comments, use them</li>
       <li><a href="../example.html">Live example</a></li>
     </ul>
@@ -633,7 +645,7 @@ code {
     margin: 50px 0 35px 50px;
   }
 
-  ul {
+  ul, ol {
       margin: 0 100px;
   }
   li > ul {

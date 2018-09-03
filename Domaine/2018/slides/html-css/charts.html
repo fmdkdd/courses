@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<style>
+
+.axis .domain {
+  display: none;
+}
+
+</style>
+<svg width="360" height="800"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 300, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var x = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.1)
+    .align(0.1);
+
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+var z = d3.scaleOrdinal()
+    .range(["#ef652a", "#33a9dc", "#f0db4f"]);
+
+d3.csv("data.csv", function(d, i, columns) {
+  for (i = 1, t = 0; i < columns.length; ++i) {
+    t += d[columns[i]] = +d[columns[i]] * 1000;
+  }
+  d.total = t;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  var keys = data.columns.slice(1);
+
+  data.sort(function(a, b) { return b.total - a.total; });
+  x.domain(data.map(function(d) { return d.Page; }));
+  y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+  z.domain(keys);
+
+  g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.Page); })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("width", x.bandwidth());
+
+  g.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("text-anchor", "end")
+    .attr("font-size", 28)
+    .attr("dx", "-.5em")
+    .attr("dy", "-.1em")
+    .attr("transform", "rotate(-90)");
+
+  g.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(y).ticks(4, "s"))
+      .selectAll("text")
+        .attr("font-size", 22)
+        .attr("dx", "1.3em")
+        .attr("dy", "-.5em")
+        .attr("transform", "rotate(-90)");
+    // .append("text")
+    //   .attr("x", 2)
+    //   .attr("y", y(y.ticks().pop()) + 0)
+    //   .attr("dy", "0em")
+    //   .attr("fill", "#000")
+    //   .attr("font-weight", "bold")
+    //   .attr("font-size", 22)
+    //   .attr("text-anchor", "start")
+    //   .text("Size (bytes)");
+
+  var legend = g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 22)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + (10 + i * 30) + ")"; });
+
+  legend.append("rect")
+      .attr("x", width - 29)
+      .attr("width", 29)
+      .attr("height", 29)
+      .attr("fill", z);
+
+  legend.append("text")
+      .attr("x", width - 34)
+      .attr("y", 9.5)
+      .attr("dy", "0.62em")
+      .text(function(d) { return d; });
+});
+
+</script>
