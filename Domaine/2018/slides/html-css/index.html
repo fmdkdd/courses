@@ -321,12 +321,11 @@
   <h3>Resources to go further</h3>
   <ul>
     <li><a href="https://developer.mozilla.org/en-US/docs/Web/Tutorials">Mozilla Developer Network Tutorials</a></li>
-    <li><a href="http://devdocs.io/html/">Devdocs for reference</a></li>
+    <li><a href="http://devdocs.io/html/">Devdocs</a> for reference</li>
   </ul>
 
   <div role="note">
     <ul>
-      <li>Dive is a good guide</li>
       <li>MDN has guides + ref</li>
       <li>Devdocs is fast MDN + other ref, give quick demo</li>
     </ul>
@@ -355,23 +354,64 @@
   <p style="text-align: center;">Cascading Style Sheets</p>
 </section>
 
-<section>
-  <p>CSS turn this ...</p>
+<section class="css-on-off">
+  <style>
+    .css-on-off img {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      height: 450px;
+    }
 
-  <img src="img/ex2-before.png" style="display:block; margin:auto; width: 500px;" />
+    .css-on-off figure {
+      display: inline-block;
+      margin: 20px 10px;
+    }
+
+    .css-on-off figcaption {
+      margin-bottom: 10px;
+    }
+  </style>
+
+  <div style="text-align: center">
+    <figure>
+      <figcaption>CSS off</figcaption>
+      <img src="img/imt-css-off.png">
+    </figure>
+    <figure>
+      <figcaption>CSS <em>on</em></figcaption>
+      <img src="img/imt-css-on.png">
+    </figure>
+  </div>
+</section>
+
+<section class="css-on-off">
+  <div style="text-align: center">
+    <figure>
+      <figcaption>CSS off</figcaption>
+      <img src="img/wiki-css-off.png">
+    </figure>
+    <figure>
+      <figcaption>CSS <em>on</em></figcaption>
+      <img src="img/wiki-css-on.png">
+    </figure>
+  </div>
 </section>
 
 <section>
-  <p>CSS into that</p>
-  <img src="img/ex2-after.png" style="display:block; width: 500px; margin: auto;" />
+  <p>CSS can control:</p>
 
-  <div role="note">
-    <ul>
-      <li>Color, fonts, sizes, layout</li>
-      <li>Change for screen size / media</li>
-      <li>Separate content from style</li>
-    </ul>
-  </div>
+  <ul>
+    <li>page layout (grid, columns, ...)</li>
+    <li>position of elements in page</li>
+    <li>spacing in and around elements</li>
+    <li>borders</li>
+    <li>fonts</li>
+    <li>colors</li>
+    <li>shadows</li>
+    <li>transitions</li>
+    <li>animations</li>
+    <li>...</li>
+  </ul>
 </section>
 
 <section>
@@ -389,6 +429,7 @@
     <ul>
       <li>Property name in lowercase</li>
       <li>Value depends, text, number, color, url ...</li>
+      <li>Apply to one element inline, or several in rules</li>
     </ul>
   </div>
 </section>
@@ -416,9 +457,9 @@
   margin: 30px;
 }</code></pre>
 
-  <p>This will style all <code>h1</code> elements in the page</p>
+  <p>This block styles all <code>h1</code> elements in the page</p>
 
-  <p>A selector applied to a block is a CSS <strong>rule</strong></p>
+  <p>selectors + block = <strong>rule</strong></p>
 
   <div role="note">
     <ul>
@@ -436,7 +477,7 @@
     <code><span class="tag">div</span> { ... }</code>
   </p>
 
-  <p>Select by <strong class="class">class</strong><br/>
+  <p>Select by <strong class="class">class</strong> attribute<br/>
     <code><span class="class">.checked</span> { background: orange; }</code><br/>
     <code><span class="tag">span</span><span class="class">.number</span> { color: pink; }</code>
   </p>
@@ -484,7 +525,7 @@
 </section>
 
 <section>
-  <p>Useful length units</p>
+  <p>Useful <em>length units</em></p>
 
   <p><code>px</code> pixels (for ~96ppi)</p>
   <p><code>em</code> relative to font size of the element</p>
@@ -546,20 +587,52 @@
   </div>
 </section>
 
-<section>
+<section id="cascade">
   <p>Cascading example</p>
 
-  <pre><code>html {
-  font-size: 15pt;
+  <style>
+    #cascade figure {
+      margin: 0 20px;
+      float: left;
+    }
+
+    #cascade pre {
+      margin: 0;
+      padding: 0 10px;
+      text-align: left;
+    }
+
+    #cascade pre, #cascade iframe {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+    }
+
+    #cascade iframe {
+      height: 400px;
+    }
+  </style>
+
+  <div style="text-align: center; padding: 0 40px">
+    <figure>
+      <figcaption>CSS</figcaption>
+      <pre class="smaller"><code>html {
+  font-size: 20pt;
   color: red;
 }
 ul {
   font-size: 10pt;
 }
 li {
-  color: blue;
+  color: green;
 }
   </code></pre>
+    </figure>
+
+    <figure>
+      <figcaption>Page</figcaption>
+      <iframe src="css-example.html"></iframe>
+    </figure>
+  </div>
 
   <div role="note">
     Paste in live example, explain there
@@ -567,12 +640,33 @@ li {
 </section>
 
 <section>
+  <p>Browser rendering differences</p>
+
+  <p><a href="https://codepen.io/MartijnCuppens/pen/MXojmw">The <code>div</code> that looks different in every browser</a></p>
+
+  <img style="display: block; margin:auto; width: 550px; border: 4px solid #7f8c8d; border-radius: 2px;" src="img/css-differences.jpg">
+</section>
+
+<section>
+  <p>Why CSS <em>frameworks</em>?</p>
+
+  <ul>
+    <li>to get around browser differences</li>
+    <li>to get a not-bad layout from the start</li>
+    <li>to get a layout that works for every form factor</li>
+    <li>to solve common problems quickly</li>
+  </ul>
+
+  <p><a>Bootstrap</a>, other frameworks?</p>
+</section>
+
+<section>
   <h3>Resources on CSS</h3>
 
   <ul>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS">Mozilla
-    Developer Network</a>, again</li>
-    <li><a href="http://devdocs.io/css/">Devdocs</a>, again</li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS">Mozilla
+    Developer Network CSS tutorials</a></li>
+    <li><a href="http://devdocs.io/css/">Devdocs</a> for reference</li>
   </ul>
 
   <h3>Design inspiration</h3>
