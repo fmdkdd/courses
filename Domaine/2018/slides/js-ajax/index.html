@@ -1,687 +1,472 @@
 <!DOCTYPE html>
 
 <meta charset="utf-8">
-<title>HTML &amp; CSS</title>
+<title>JavaScript &amp; AJAX</title>
 
 <section>
-  <h1>HTML &amp; CSS</h1>
-  <footer>fmdkdd</footer>
-</section>
-
-<section id="html0">
-  <style>
-    #html0 li { display: inline; margin-right: 30px; }
-  </style>
-
-  <p>Web pages rely on 3 technologies</p>
-
-  <ol>
-    <li>1. HTML</li>
-    <li>2. CSS</li>
-    <li>3. JavaScript (next course)</li>
-  </ol>
-
-  <img src="img/html-css-js.png" style="display: block; height: 300px; margin: 20px auto;">
-
-  <p><a href="http://idlewords.com/talks/website_obesity.htm">Required reading on website bloat</a></p>
+  <h1>Previously</h1>
 </section>
 
 <section>
-  <h2>HTML</h2>
-  <p style="text-align: center;">HyperText Markup Language</p>
-</section>
-
-<section id="html1">
-  <p>HTML is the structure of all web pages</p>
-
-  <style>
-    #html1 img {
-      border: 4px solid #7f8c8d;
-      border-radius: 2px;
-      height: 150px;
-    }
-    #html1 figure {
-      display: inline-block;
-      margin: 20px 10px;
-    }
-
-    #html1 figcaption {
-      margin-bottom: 30px;
-    }
-  </style>
-
-  <div style="text-align: center">
-    <figure>
-      <figcaption>Web page</figcaption>
-      <img src="img/wiki.png">
-    </figure>
-    <figure>
-      <figcaption>HTML source</figcaption>
-      <img src="img/wiki-source.png">
-    </figure>
-    <figure>
-      <img src="img/imt.png">
-    </figure>
-    <figure>
-      <img src="img/imt-source.png">
-    </figure>
-  </div>
-</section>
-
-<section id="html2">
-  <style>
-    #html2 img {
-      border: 4px solid #7f8c8d;
-      border-radius: 2px;
-      height: 280px;
-    }
-    #html2 figure {
-      display: inline-block;
-      margin: 5px 0;
-    }
-  </style>
-
-  <div style="text-align: center">
-    <figure>
-      <img src="img/wiki-zoom.png">
-    </figure>
-    <figure>
-      <img src="img/wiki-source-zoom.png">
-    </figure>
-  </div>
-</section>
-
-<section id="tree">
-  <style>
-    #tree figure {
-      margin: 0 0 20px 20px;
-      float: left;
-    }
-
-    #tree pre {
-      margin: 0;
-      text-align: left;
-    }
-
-    #tree pre, #tree iframe {
-      border: 4px solid #7f8c8d;
-      border-radius: 2px;
-    }
-  </style>
-
-  <p>An HTML page is a <em>tree of elements</em></p>
-
-  <div style="text-align: center">
-    <figure>
-      <figcaption>HTML</figcaption>
-      <pre class="smaller"><code>&lt;section&gt;
-  &lt;header&gt;
-    &lt;h2&gt;Header Title&lt;/h2&gt;
-  &lt;/header&gt;
-  &lt;p&gt;A paragraph&lt;/p&gt;
-&lt;/section&gt;</code></pre>
-    </figure>
-
-    <figure>
-      <figcaption>Page</figcaption>
-      <iframe src="ex1.html"></iframe>
-    </figure>
-
-    <figure>
-      <figcaption>Tree</figcaption>
-      <img width="200px" src="img/ex1-tree.svg">
-    </figure>
-  </div>
+  <p>HTML is a tree of <strong>elements</strong></p>
+  <p>Syntax: <code>&lt;tag&gt;...&lt;/tag&gt;</code>
+    or <code>&lt;tag&gt;</code></p>
+  <p>Tags can have attributes:<br/><code>&lt;tag attr1="val"
+      attr2="val" ...&gt;</code></p>
+  <p>Common tags:<br>
+    <code>html, body, div, p, a, ul, ol, li, section, nav, table, tr, td...</code>
+  </p>
 
   <div role="note">
     <ul>
-      <li>A root; nodes contains other nodes</li>
-      <li>Show DOM inspector in Chrome</li>
+      <li>Points lost on unclosed tags (mind the slash)</li>
+      <li>Two types: read doc to find which apply</li>
+      <li>Attributes syntax matters</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <p>Syntax of elements</p>
+  <p>Cascading Style Sheets (CSS) apply <strong>style</strong> to elements</p>
 
-  <figure style="text-align: center">
-    <img width="600px" src="img/tag.png">
-  </figure>
-
-  <p>Void elements need no closing tag<br>
-    <code>&lt;img src="cat.jpg"&gt;</code></p>
-</section>
-
-<section id="lenient">
-  <style>
-    #lenient figure {
-      margin: 0 0 20px 20px;
-      float: left;
-    }
-
-    #lenient pre {
-      margin: 0;
-      text-align: left;
-    }
-
-    #lenient pre, #lenient iframe {
-      border: 4px solid #7f8c8d;
-      border-radius: 2px;
-    }
-  </style>
-
-  <p>Browsers are <em>lenient in parsing</em></p>
-
-  <div style="text-align: center">
-    <figure>
-      <figcaption>HTML</figcaption>
-      <pre class="smaller"><code>&lt;section&gt;
-  <span class="alert">&lt;header&gt;</span>
-    &lt;h2&gt;Header Title<span class="alert">&lt;/h3</span>&gt;
-  &lt;p&gt;A paragraph<span class="alert">&lt;p&gt;</span>
-<span class="alert">&lt;/scetion&gt;</span></code></pre>
-    </figure>
-
-    <figure>
-      <figcaption>Page</figcaption>
-      <iframe src="ex2.html"></iframe>
-    </figure>
-  </div>
-
-  <p style="clear: left">Badly-formed HTML may still render correctly</p>
-
-  <p>Use <a href="https://validator.w3.org/">validators</a> (or <a href="http://www.html-tidy.org/">offline tools</a>)</p>
-</section>
-
-<section>
-  <p>Elements can have <em>attributes</em></p>
-  <p>
-    <img style="float: right; padding: 20px; width: 180px;" src="img/moa-moe.jpg"
-         title="A description text"/>
-    <pre class="smaller"><code>&lt;img <span class="alert">src="moa-moe.jpg"
-     title="A description text"
-     alt="Picture of a moa bird
-          with moe eyes"</span>/&gt;</code></pre>
+  <p>Numerous CSS selectors:
+    <strong>tag</strong>, <strong class="class">class</strong>, <strong class="id">id</strong>,
+    ancestry, and <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors">some others</a>
   </p>
 
   <p>
-    <a style="float: right; position: relative; top: 70px;" href="http://example.com">A link to example.com</a>
-    <pre class="smaller"><code>&lt;a <span class="alert">href="http://example.com"</span>&gt;
-  A link to example.com
-&lt;/a&gt;</code></pre>
-
+    <code><span class="tag">h1</span> { ... }</code><br/>
+    <code><span class="class">.checked</span> { background: orange; }</code><br/>
+    <code><span class="id">#specialDiv</span> { ... }</code><br/>
+    <code><span class="id">#main</span> <span class="tag">header</span> <span class="class">.subtitle</span>
+      { ... }</code><br/>
   </p>
-
-  <p>Syntax:<br/><code>&lt;tag attr1="val" attr2="val" ...&gt;</code></p>
-
-  <div role="note">
-    Syntax: name="string"
-  </div>
 </section>
 
 <section>
-  <p>Some attributes apply to all elements</p>
-  <p><code>&lt;div <span class="alert">id</span>="specialDiv"&gt;&lt;/div&gt;</code><br/>
-    <code>id</code> is used for navigation.<br>
-    The value of `id` is unique in the page.
-  </p>
-  <p><code>&lt;span <span class="alert">class</span>="literal&nbsp;number"&gt;12 &lt;/span&gt;</code>
-    <code>class</code> is useful for styling.<br>
-    Elements can share one or more classes.
-  </p>
-
-  <div role="note">
-    <ul>
-      <li>Two classes here; share semantics of elements</li>
-      <li>No space in id</li>
-      <li>Used for CSS, JS</li>
-    </ul>
-  </div>
+    <h1>JavaScript &amp; AJAX</h1>
+    <footer>fmdkdd</footer>
 </section>
 
 <section>
-  <p>Common HTML elements</p>
+  <p>JavaScript lets you do what CSS can't</p>
 
-  <ul style="list-style: none">
-    <li><code>h1, h2, ..., h6</code> for headings</li>
-    <li><code>p</code> for paragraphs</li>
-    <li><code>a</code> for links</li>
-    <li><code>div</code> for blocks</li>
-    <li><code>img</code> for images (also <code>audio, video</code>)</li>
-    <li><code>ul, ol</code> for unordered, ordered lists</li>
-    <li><code>li</code> for list items</li>
-    <li><code>table, tr, td</code> for tables, table rows, table cells</li>
-  </ul>
-
-  <p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">Reference list on MDN</a></p>
-</section>
-
-<section>
-  <p><em>HT</em>ML stands for <em>H</em>yper<em>T</em>ext</p>
-
-  <p><code>&lt;a href="/pages/about.html"&gt;</code> links to a page on
-    the same domain</p>
-
-  <p><code>href="https://example.com/welcome/"</code> links to another domain</p>
-
-  <p><code>href="#el"</code> links to the element with attribute <code>id="el"</code></p>
-</section>
-
-<section>
-  <p>Elements give <em>semantic structure</em> to content</p>
   <ul>
-    <li><code>main</code> for the main content</li>
-    <li><code>section, article</code> for divisions inside the content</li>
-    <li><code>header, footer</code> for header/footers in content or section</li>
-    <li><code>nav</code> for navigation</li>
-    <li><code>aside</code> for notes</li>
+    <li>Traverse & manipulate the <span class="alert">DOM</span></li>
+    <li>React to user actions via <span class="alert">events</span></li>
+    <li>Communicate <span class="alert">asynchronously</span> with a server or peers</li>
+    <li>Combine all of the above</li>
   </ul>
 
-  <p>Semantic tags help readability and accessibility <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure">(MDN tutorial)</a></p>
+  <p>Full-featured programming language with Java syntax</p>
 
   <div role="note">
     <ul>
-      <li>Semantic: use tags for intention</li>
-      <li>Gross categories: container, content, metadata</li>
+      <li>+ sound, webcam, 2d/3d, geolocation, ...</li>
+      <li>Explain DOM</li>
+      <li>Asynchronous is for next lecture</li>
+      <li>Show <a href="http://localhost:3000/proto/index.html">example</a></li>
+    </ul>
+  </div>
+</section>
+
+<section id="js1">
+  <style>
+    #js1 img {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      display: inline;
+      height: 280px;
+      margin: 5px;
+    }
+  </style>
+
+  <div style="text-align: center">
+    <img src="img/vscode.png">
+    <img src="img/gmaps.png">
+    <img src="img/riot.png">
+    <img src="img/doomjs.png">
+  </div>
+</section>
+
+<section>
+  <p>JavaScript (JS) syntax</p>
+
+  <pre class="smaller"><code><span class="kw">function</span> mapReduce<span class="syn">(</span><span class="var">fun</span><span class="syn">)</span> <span class="syn">{</span>
+  <span class="kw">var</span> <span class="var">tab</span> <span class="op">=</span> <span class="op">[</span><span class="con">1</span><span class="syn">,</span> <span class="con">2</span><span class="syn">,</span> <span class="con">3</span><span class="syn">,</span> <span class="con">5.12</span><span class="op">]</span><span class="syn">;</span>
+  <span class="kw">var</span> <span class="var">sum</span> <span class="op">=</span> <span class="con">0</span><span class="syn">;</span>
+  <span class="kw">for</span> <span class="syn">(</span><span class="kw">var</span> <span class="var">i</span> <span class="op">=</span> <span class="con">0</span><span class="syn">;</span> i <span class="op">&lt;</span> tab<span class="op">.</span>length<span class="syn">;</span> <span class="op">++</span>i<span class="syn">)</span> <span class="syn">{</span>
+    <span class="kw">if</span> <span class="syn">(</span>fun<span class="syn">(</span>tab<span class="op">[</span>i<span class="op">]</span><span class="syn">)</span> <span class="op">==</span> <span class="con">true</span><span class="syn">)</span>
+      sum <span class="op">+=</span> tab<span class="op">[</span>i<span class="op">]</span><span class="syn">;</span>
+  <span class="syn">}</span>
+  <span class="kw">return</span> sum<span class="syn">;</span>
+<span class="syn">}</span></code></pre>
+
+  <p><span class="kw">Keywords</span>, <span class="var">local
+      variables</span>, <span class="op">operators</span>, and <span class="con">constants</span>
+  <div role="note">
+    <ul>
+      <li>Clown code</li>
+      <li>Operators "do" something, dot is for property access</li>
+      <li>Arrays not homogeneous, mutable variables</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <p>A typical HTML page has <em>three parts</em></p>
+  <p>DOM: <em>D</em>ocument <em>O</em>bject <em>M</em>odel</p>
 
-  <div style="position: absolute; top: 110px; left: 40px; width: 250px; height: 43px; border: 4px solid #7f8c8d;"></div>
-  <span class="alert" style="position: absolute; top: 105px; left: 300px;">doctype</span>
+  <p>HTML elements represented as JS objects</p>
 
-  <div style="position: absolute; top: 186px; left: 70px; width: 650px; height: 220px; border: 4px solid #7f8c8d;"></div>
-  <span class="alert" style="position: absolute; top: 145px; left: 520px;">head (metadata)</span>
+  <div>
+    <img src="../html-css/img/ex1-tree.svg" style="display: inline-block; margin-left: 30px">
+    <pre class="smaller" style="display: inline-block; vertical-align: top; margin: 0 0 0 40px"><code>var s = $('section')
+s.children[0] == $('header')
+s.children[1] == $('p')
+    </code></pre>
+  </div>
+</section>
 
-  <div style="position: absolute; top: 408px; left: 70px; width: 550px; height: 142px; border: 4px solid #7f8c8d;"></div>
-  <span class="alert" style="position: absolute; top: 410px; left: 630px;">body (content)</span>
+<section>
+  <p>DOM <strong>traversal</strong> with <a href="http://jquery.com/">jQuery</a></p>
 
-<pre class="smaller"><code>&lt;!doctype html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Create event&lt;/title&gt;
-    &lt;script src="script.js"&gt;&lt;/script&gt;
-    &lt;link rel="stylesheet" href="style.css"&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Create event&lt;/h1&gt;
-    &lt;!-- Rest of content here ... --&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+  <p>CSS-like selector '<code>$</code>'<br/>
+    <code class="smaller">$('header .subtitle')</code><br/>
+    <code class="smaller">$('#main').children()</code><br/>
+    <code class="smaller">$('p').closest('section')</code>
+  </p>
+
+  <p>'<code>$</code>' returns an <span class="alert">array</span> of matching elements</p>
+
+  <div role="note">
+    <ul>
+      <li>Explain Zepto/jQuery need</li>
+      <li>Switch to example in Chrome</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <p>How to include JavaScript in a page?</p>
+
+  <p>Using the <code>&lt;script&gt;</code> tag</p>
+
+  <p><code>&lt;script&gt;alert('hello')&lt;/script&gt;</code></p>
+
+  <p>From a linked file</p>
+
+  <p><code>&lt;script src="/js/index.js"&gt;&lt;/script&gt;</code></p>
+</section>
+
+<section>
+  <p>DOM <strong>manipulation</strong></p>
+
+  <p>Create, add or remove elements
+    <pre class="smaller"><code>var li = $('&lt;li>List item&lt/li>')
+$('ul').append(li)
+$('ul li').remove()</code></pre>
+
+  <p>Change attributes<br/>
+    <pre class="smaller"><code>$('input').attr('required', true)
+$('thead th').addClass('selected')
+$('p').css('color', 'pink')</code></pre>
+  </p>
+
+  <div role="note">
+    <ul>
+      <li>Live examples</li>
+      <li>Devdocs will help you (show Zepto/jQuery)</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <p>Typical DOM manipulation</p>
+
+  <pre class="smaller"><code>$('.comment')
+  .filter(function() {
+    return $(this).text() === 'Mario'
+  })
+  .data('user', 'mario')
+  .addClass('highlighted')
+  .append("&lt;p>it's a him&lt;/p>")
 </code></pre>
 
+  <p>Can <span class="alert">chain</span> calls to Zepto functions.<br>
+  They apply to the currently-selected elements.</p>
+</section>
+
+<section>
+  <p>All you need to know about <strong>events</strong></p>
+
+  <p>Register an event<br/>
+    <code class="smaller"><span class="dom">$('p')</span>.on(<span class="ev">'click'</span>,
+      <span class="cb">hide</span>)</code></p>
+
+  <p>The <span class="cb">callback</span>
+      (or <span class="cb">handler</span>) is called whenever
+      the <span class="ev">event</span> occurs on
+      the <span class="dom">DOM element</span>.</p>
+
+  <p>Inside the <span class="cb">callback</span>, <span class="dom"><code>this</code></span>
+    refers to <br>the <span class="dom">DOM element</span> that raised the <span class="ev">event</span>.</p>
+
   <div role="note">
     <ul>
-      <li>Go over each line</li>
-      <li>There are comments, use them</li>
-      <li><a href="../example.html">Live example</a></li>
+      <li>Callback is any function</li>
+      <li>It receives an event object as first argument</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <h3>Resources to go further</h3>
-  <ul>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/Tutorials">Mozilla Developer Network Tutorials</a></li>
-    <li><a href="http://devdocs.io/html/">Devdocs</a> for reference</li>
-  </ul>
+  <p>Mouse click on element<br/>
+    <code class="smaller">$('button').on('click', ...);</code></p>
 
-  <div role="note">
-    <ul>
-      <li>MDN has guides + ref</li>
-      <li>Devdocs is fast MDN + other ref, give quick demo</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <h2>CSS</h2>
-  <p style="text-align: center;">Cascading Style Sheets</p>
-</section>
-
-<section class="css-on-off">
-  <style>
-    .css-on-off img {
-      border: 4px solid #7f8c8d;
-      border-radius: 2px;
-      height: 450px;
-    }
-
-    .css-on-off figure {
-      display: inline-block;
-      margin: 20px 10px;
-    }
-
-    .css-on-off figcaption {
-      margin-bottom: 10px;
-    }
-  </style>
-
-  <div style="text-align: center">
-    <figure>
-      <figcaption>CSS off</figcaption>
-      <img src="img/imt-css-off.png">
-    </figure>
-    <figure>
-      <figcaption>CSS <em>on</em></figcaption>
-      <img src="img/imt-css-on.png">
-    </figure>
-  </div>
-</section>
-
-<section class="css-on-off">
-  <div style="text-align: center">
-    <figure>
-      <figcaption>CSS off</figcaption>
-      <img src="img/wiki-css-off.png">
-    </figure>
-    <figure>
-      <figcaption>CSS <em>on</em></figcaption>
-      <img src="img/wiki-css-on.png">
-    </figure>
-  </div>
-</section>
-
-<section>
-  <p>CSS can control:</p>
-
-  <ul>
-    <li>page layout (grid, columns, ...)</li>
-    <li>position of elements in page</li>
-    <li>spacing in and around elements</li>
-    <li>borders</li>
-    <li>fonts</li>
-    <li>colors</li>
-    <li>shadows</li>
-    <li>transitions</li>
-    <li>animations</li>
-    <li>...</li>
-  </ul>
-</section>
-
-<section>
-  <p>CSS are composed of <strong>declarations</strong></p>
-
-  <p>Syntax:<br/><code><span class="prop">property</span> : <span class="value">value</span>;</code></p>
-
-  <p>Examples:<br/>
-    <code><span class="prop">background-color</span>: <span class="value">red</span>;</code><br/>
-    <code><span class="prop">font-family</span>: <span class="value">sans-serif</span>;</code><br/>
-    <code><span class="prop">margin</span>: <span class="value">30px</span>;</code>
+  <p>Mouse enters or leaves element<br/>
+    <code class="smaller">$('div').on('mousenter', ...);</code><br/>
+    <code class="smaller">$('p').on('mouseleave', ...);</code>
   </p>
 
+  <p>Input element content is changing<br/>
+    <code class="smaller">$('input').on('input', ...);</code></p>
+
   <div role="note">
     <ul>
-      <li>Property name in lowercase</li>
-      <li>Value depends, text, number, color, url ...</li>
-      <li>Apply to one element inline, or several in rules</li>
+      <li>Click is most-used</li>
+      <li>Can capture keys, ... see the docs</li>
+    </ul>
+  </div>
+</section>
+
+
+
+<section>
+  <h2>AJAX</h2>
+
+  <p style="text-align: center;">Asynchronous JavaScript And XML</p>
+
+  <div role="note">
+    JSON rather than XML
+  </div>
+</section>
+
+<section>
+  <p><strong>Asynchronous</strong> requests</p>
+
+  <p>Concept: send and receive messages in the background</p>
+
+  <p>What for?</p>
+  <ul>
+    <li>non-blocking interaction</li>
+    <li>minimize bandwidth usage</li>
+  </ul>
+
+  <div role="note">
+    <ul>
+      <li>Browser block by default</li>
+      <li>JSON smaller than HTML</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <p>Declarations are grouped in <strong>blocks</strong></p>
+  <img src="img/gmail.png">
 
-  <pre><code><span class="alert">{</span>
-  background-color: red;
-  font-family: sans-serif;
-  margin: 30px;
-<span class="alert">}</span></code></pre>
-
-  <pre><code><span class="alert">{</span>
-  color: blue;
-<span class="alert">}</span></code></pre>
+  <div role="note">
+    <ul>
+      <li>Search is AJAX</li>
+      <li>Refresh is AJAX</li>
+      <li>Clicks on left menu is AJAX</li>
+    </ul>
+  </div>
 </section>
 
 <section>
-  <p>Blocks are applied using <strong>selectors</strong></p>
+  <figure>
+    <img src="img/http.svg">
+  </figure>
 
-  <pre><code><span class="alert">h1</span> {
-  background-color: red;
-  font-family: sans-serif;
-  margin: 30px;
+  <div role="note">
+    New page on each response
+  </div>
+</section>
+
+<section>
+  <figure>
+    <p>AJAX allows you to update <strong>parts</strong> of a webpage
+    in the background</p>
+    <img src="img/rest.svg" style="height: 270px; margin-top: 200px;">
+  </figure>
+
+</section>
+
+<section>
+  <p style="margin-bottom: 0px;">JSON (JavaScript Objet Notation) format</p>
+
+  <pre class="smaller"><code>{
+  "events": [
+    {
+      "name": "Event A",
+      "begin": "2013-10-18 18:00:00",
+      "end": "2013-10-19 6:00:00"
+    },
+    {
+      "name": "Event B",
+      "begin": "2013-10-23 18:00:00",
+      "end": "2013-10-23 19:00:00"
+    }
+  ],
+  "length": 2
 }</code></pre>
 
-  <p>This block styles all <code>h1</code> elements in the page</p>
-
-  <p>selectors + block = <strong>rule</strong></p>
-
   <div role="note">
     <ul>
-      <li>Can use any tag name here</li>
-      <li>Not all properties make sense for all elements</li>
-      <li>Switch to <a href="../example.html">live example</a></li>
+      <li>It's just JavaScript! (with quotes)</li>
+      <li>Object, Arrays, Strings, Numbers, Booleans</li>
+      <li>Can use XML, but JSON simpler</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <p>Select by <strong>tag</strong> name<br/>
-    <code><span class="tag">h1</span> { ... }</code><br/>
-    <code><span class="tag">p</span> { ... }</code><br/>
-    <code><span class="tag">div</span> { ... }</code>
-  </p>
+  <p>How do you <strong>send</strong> a request?</p>
 
-  <p>Select by <strong class="class">class</strong> attribute<br/>
-    <code><span class="class">.checked</span> { background: orange; }</code><br/>
-    <code><span class="tag">span</span><span class="class">.number</span> { color: pink; }</code>
-  </p>
+  <p><a href="http://devdocs.io/dom/xmlhttprequest">XMLHttpRequest</a></p>
 
+  <p><pre class="smaller"><code>var xhr = new XMLHttpRequest();
+xhr.open('GET', '/path/to/ressource', true);
+xhr.overrideMimeType('application/json');
+xhr.onreadystatechange = function() {
+  if (this.readyState === 4 &&
+      this.status === 200) {
+    var jsonData = JSON.parse(this.responseText);
+    // do something with data
+  }
+};
+xhr.send();
+</code></pre></p>
+
+  <div role="note">
   <div role="note">
     <ul>
-      <li>Go over each one</li>
-      <li>You can chain classes with .</li>
-      <li>Spaces are significant</li>
+      <li>XHR is the underlying mechanism</li>
+      <li>Bad name: not tied to XML at all</li>
+      <li>Boolean is for async</li>
     </ul>
   </div>
+  </div>
 </section>
 
 <section>
-  <p>Select by <strong class="id">id</strong><br/>
-    <code><span class="id">#specialDiv</span> { ... }</code><br/>
-    <code><span class="tag">section</span><span class="id">#main</span> { ... }</code>
+  <p>Using <a href="http://zeptojs.com/#ajax">Zepto</a>:<br/>
+    <code>$.get('/user/Luigi/friends')</code>
   </p>
 
-  <p>Select by ancestry<br/>
-    <code><span class="tag">table</span> <span class="tag">p</span> { ... }</code><br/>
-    <code><span class="id">#main</span> <span class="tag">header</span> <span class="class">.subtitle</span>
-    { ... }</code><br/>
+  <p>
+    <pre><code>$.ajax({
+  type: 'GET',
+  url: '/user/Mario/posts',
+})</code></pre>
   </p>
-
-  <div role="note">
-    <ul>
-      <li>2nd one is overspecifying (unique id)</li>
-      <li>Any level is fine, beware the space</li>
-      <li>Can combine selectors</li>
-    </ul>
-  </div>
 </section>
 
 <section>
-  <p>CSS <strong>box model</strong></p>
+  <p>How do you <strong>receive</strong> the response?</p>
 
-  <img src="img/box-model.png" style="width: 600px; margin: 0 100px;" />
+  <pre><code><span class="xhr">$.get(url, <span class="cb">onSuccess</span>)</span>;
 
-  <p>Very important for spacing your content properly</p>
+function <span class="cb">onSuccess</span>(<span class="res">data</span>) {
+  $('body').append(data)
+}</code></pre>
 
-  <div role="note">
-    Live example
-  </div>
+  <p>The <span class="cb">callback</span> is called when
+    the <span class="xhr">request</span> succeeds, with
+    optional <span class="res">response data</span></p>
 </section>
 
 <section>
-  <p>Useful <em>length units</em></p>
+  <p>How do you catch <strong>errors</strong>?</p>
 
-  <p><code>px</code> pixels (for ~96ppi)</p>
-  <p><code>em</code> relative to font size of the element</p>
-  <p><code>rem</code> relative to font size of the root element</p>
-  <p><code>pt</code> points, for fonts</p>
+  <pre class="smaller"><code><span class="xhr">$.ajax({
+  url: '/users',
+  success: onSuccess,
+  <span class="cb">error: onError</span>
+})</span>
 
-  <p>See <a href="https://developer.mozilla.org/en/docs/Web/CSS/length">length
-      on MDN</a></p>
+function <span class="cb">onError</span>(<span class="xhr">req</span>) {
+  // Alert user,
+  // Retry later, ...
+}</code></pre>
 
-  <div role="note">
-    <ul>
-      <li>html font-size + rem = win for newer browsers</li>
-      <li>px is the good fallback</li>
-      <li>exercises use rem</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <p>How to <strong>include</strong> CSS in a page?</p>
-
-  <p>In the <code>&lt;head&gt;</code> part, as a file<br/>
-    <code class="smaller">&lt;link rel="stylesheet" href="style.css"&gt;</code>
+  <p>The <span class="cb">callback</span> is called when
+    the <span class="xhr">request</span> fails.
   </p>
-
-  <p>Using the <code>&lt;style&gt;</code> tag<br/>
-    <code class="smaller">&lt;style&gt;h1 { font-weight: bold; }&lt;/style&gt;</code>
-  </p>
-
-  <p>Inline with the <code>style</code> attribute<br/>
-    <code class="smaller">&lt;p style="color: yellow;"&gt;...&lt;/p&gt;</code>
-  </p>
-
-  <div role="note">
-    <ul>
-      <li>First one is best</li>
-      <li>You can combine, have multiple sheets</li>
-    </ul>
-  </div>
 </section>
 
 <section>
-  <p><strong>Cascading</strong> Style Sheets</p>
-
-  <p>Multiple rules can apply for the same element</p>
-
-  <p>Priority is given to the more specific,<br/> latest rule
-    (<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">full story</a>)
-  </p>
-
-  <p>Elements inherit style from their parents</p>
-
-  <div role="note">
-    <ul>
-      <li>Specificity is more complex, but good approx.</li>
-      <li>Inherit from browser style, refine</li>
-      <li>Illustrate in live example</li>
-    </ul>
-  </div>
-</section>
-
-<section id="cascade">
-  <p>Cascading example</p>
-
-  <style>
-    #cascade figure {
-      margin: 0 20px;
-      float: left;
-    }
-
-    #cascade pre {
-      margin: 0;
-      padding: 0 10px;
-      text-align: left;
-    }
-
-    #cascade pre, #cascade iframe {
-      border: 4px solid #7f8c8d;
-      border-radius: 2px;
-    }
-
-    #cascade iframe {
-      height: 400px;
-    }
-  </style>
-
-  <div style="text-align: center; padding: 0 40px">
-    <figure>
-      <figcaption>CSS</figcaption>
-      <pre class="smaller"><code>html {
-  font-size: 20pt;
-  color: red;
-}
-ul {
-  font-size: 10pt;
-}
-li {
-  color: green;
-}
-  </code></pre>
-    </figure>
-
-    <figure>
-      <figcaption>Page</figcaption>
-      <iframe src="css-example.html"></iframe>
-    </figure>
-  </div>
-
-  <div role="note">
-    Paste in live example, explain there
-  </div>
-</section>
-
-<section>
-  <p>Browser rendering differences</p>
-
-  <p><a href="https://codepen.io/MartijnCuppens/pen/MXojmw">The <code>div</code> that looks different in every browser</a></p>
-
-  <img style="display: block; margin:auto; width: 550px; border: 4px solid #7f8c8d; border-radius: 2px;" src="img/css-differences.jpg">
-</section>
-
-<section>
-  <p>Why CSS <em>frameworks</em>?</p>
+  <p>What <strong>you</strong> can do with it</p>
 
   <ul>
-    <li>to get around browser differences</li>
-    <li>to get a not-bad layout from the start</li>
-    <li>to get a layout that works for every form factor</li>
-    <li>to solve common problems quickly</li>
+    <li>Auto-refresh of data on index page</li>
+    <li>Background processing of forms</li>
   </ul>
 
-  <p>Feasible in CSS, easier with a framework</p>
-
-  <p><a>Bootstrap</a> is the most popular, but others may fit other needs</p>
+  <p>Keep in mind</p>
+  <ul>
+    <li>Every user action can happen in the background</li>
+    <li>Preserve a smooth user experience</li>
+    <li>Look at examples (Github, GMail, GMaps, ...)</li>
+  </ul>
 </section>
 
 <section>
-  <h3>Resources on CSS</h3>
+  <p>What I did not tell you</p>
 
   <ul>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS">Mozilla
-    Developer Network CSS tutorials</a></li>
-    <li><a href="http://devdocs.io/css/">Devdocs</a> for reference</li>
+    <li><a href="https://developer.mozilla.org/en/docs/HTTP/Access_control_CORS">Cross-Origin</a> requests</li>
+    <li>Accessibility concerns (<a href="https://developer.mozilla.org/en-US/docs/Accessibility/ARIA">ARIA</a>)</li>
   </ul>
 
-  <h3>Design inspiration</h3>
-
+  <p>Further reading</p>
   <ul>
-    <li><a href="http://www.jnd.org/books/design-of-everyday-things-revised.html">The
-        Design of Everyday Things</a></li>
-    <li><a href="http://flatuicolors.com/">Flat UI colors</a>, <a href="http://www.colourlovers.com/palettes/">Colour lovers</a></li>
+    <li><a href="http://www.html5rocks.com/en/tutorials/file/xhr2/">XMLHttpRequest2</a></li>
+    <li><a href="https://api.jquery.com/jquery.ajax/">jquery.ajax</a></li>
+    <li><a href="http://zeptojs.com/#ajax">zepto.ajax</a></li>
   </ul>
 
   <div role="note">
     <ul>
-      <li>MDN has tuto, guide, refs</li>
-      <li>Devdocs invaluable again</li>
-      <li>Aparte on design: it matters in EVERYTHING</li>
-      <li>Use sensible palettes for your projects</li>
+      <li>What happens if the request fails?</li>
+      <li>Screen readers, breaking usability patterns</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h3>Resources</h3>
+  <ul>
+    <li><a href="https://developer.mozilla.org/en-US/docs/DOM">MDN</a>, always</li>
+    <li><a href="http://devdocs.io/dom/">Devdocs</a>, always</li>
+  </ul>
+
+  <h3>Helpful libraries</h3>
+  <ul>
+    <li><a href="http://jquery.com/">jQuery</a></li>
+    <li><a href="http://zeptojs.com/">Zepto.js</a></li>
+  </ul>
+
+  <div role="note">
+    <ul>
+      <li>Libraries for easier traversal/manipulation</li>
+      <li>Frameworks are best for large apps</li>
+      <li>jQuery doc is on devdoc (slow site)</li>
     </ul>
   </div>
 </section>
 
 <section>
   <h2>FIN</h2>
-
-  <p style="text-align: center;">Next lecture: JavaScript & AJAX</p>
 </section>
 
 <!-- Your Style -->
@@ -742,11 +527,14 @@ code {
     margin: 50px 0 35px 50px;
   }
 
-  ul, ol {
-      margin: 0 100px;
+  ul {
+      margin: 0 80px;
   }
   li > ul {
       margin: 15px 50px;
+  }
+  ol {
+      margin: 0 50px;
   }
 
   p {
@@ -756,15 +544,14 @@ code {
   }
 
   pre {
-  font-size: 40px;
-  margin: 0 50px;
-  margin-bottom: 30px;
+    font-size: 40px;
+    margin: 0 50px;
+    margin-bottom: 30px;
   }
 
   .smaller {
-  font-size: 30px;
+    font-size: 30px;
   }
-
 
   em {
     font-style: normal;
@@ -773,8 +560,8 @@ code {
   }
 
   strong {
-  font-weight: bold;
-  color: #e74c3c;
+    font-weight: bold;
+    color: #e74c3c;
   }
 
   .alert {
@@ -785,11 +572,11 @@ code {
   color: #e74c3c;
   }
 
-  .class, .prop, .kw, .dom {
+  .class, .prop, .kw, .dom, .xhr {
   color: #2980b9;
   }
 
-  .id, .value, .op, .ev {
+  .id, .value, .op, .ev, .res {
   color: #27ae60;
   }
 
@@ -817,21 +604,21 @@ code {
 
   /* Figures are displayed full-page, with the caption
      on top of the image/video */
-  /* figure { */
-  /*   background-color: black; */
-  /*   width: 100%; */
-  /*   height: 100%; */
-  /* } */
-  /* figure > * { */
-  /*   position: absolute; */
-  /* } */
-  /* figure > img, figure > video { */
-  /*   width: 100%; height: 100%; */
-  /* } */
-  /* figcaption { */
-  /*   margin: 70px; */
-  /*   font-size: 50px; */
-  /* } */
+  figure {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+  }
+  figure > * {
+    position: absolute;
+  }
+  figure > img, figure > video {
+    width: 90%; height: 90%; margin-top: 5%; margin-left: 5%;
+  }
+  figcaption {
+    margin: 70px;
+    font-size: 50px;
+  }
 
   footer {
     position: absolute;
@@ -1360,3 +1147,4 @@ code {
   }
 
 </script>
+<!-- vim: set fdm=marker: }}} -->
