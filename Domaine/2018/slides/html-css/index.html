@@ -403,16 +403,60 @@
   </ul>
 </section>
 
-<section>
+<section id="css-decl">
   <p>CSS are composed of <strong>declarations</strong></p>
 
   <p>Syntax:<br/><code><span class="prop">property</span> : <span class="value">value</span>;</code></p>
 
-  <p>Examples:<br/>
+  <style>
+    #css-decl .result {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      width: 200px;
+      height: 140px;
+      text-align: center;
+      position: absolute;
+      top: 150px;
+      right: 80px;
+    }
+
+    #css-decl .result p {
+      margin: 0;
+      font-family: serif;
+      font-size: 28px;
+    }
+
+    #css-decl .selected::before {
+      content: '✔';
+      color: #e74c3c;
+    }
+  </style>
+
+  <p class="eval">Examples:<br/>
     <code><span class="prop">background-color</span>: <span class="value">red</span>;</code><br/>
     <code><span class="prop">font-family</span>: <span class="value">sans-serif</span>;</code><br/>
     <code><span class="prop">margin</span>: <span class="value">30px</span>;</code>
   </p>
+
+  <div class="result">
+    <p>Example text</p>
+  </div>
+
+  <script>
+    function toggleStyle(ev) {
+      const el = document.querySelector("#css-decl .result p")
+      const code = ev.target.closest('code')
+      const [prop, val] = code.textContent.slice(0,-1).split(':')
+      if (el.style[prop]) {
+        el.style[prop] = null
+        code.classList.remove('selected')
+      } else {
+        el.style[prop] = val
+        code.classList.add('selected')
+      }
+    }
+    document.querySelector('#css-decl .eval').addEventListener('click', toggleStyle)
+  </script>
 
   <div role="note">
     <ul>
@@ -459,16 +503,35 @@
   </div>
 </section>
 
-<section>
+<section class="css-decl">
+  <object class="dom-svg" data="img/css-ex1.svg" style="float: right; margin: 30px 40px 0 0"></object>
+
+  <style>
+    .css-decl .selected {
+      outline: 4px solid #8e44ad;
+      padding: 5px;
+    }
+  </style>
+
+  <script>
+    function querySVG(s, source) {
+      source.closest('section').querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
+      source.classList.add('selected')
+      const svg = source.closest('.css-decl').querySelector('.dom-svg').getSVGDocument()
+      svg.querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
+      svg.querySelectorAll(s).forEach(e => e.classList.add("selected"))
+    }
+  </script>
+
   <p>Select by <strong>tag</strong> name<br/>
-    <code><span class="tag">h1</span> { ... }</code><br/>
-    <code><span class="tag">p</span> { ... }</code><br/>
-    <code><span class="tag">div</span> { ... }</code>
+    <code onclick="querySVG('#g4563-3, #g4563-3-9', this)"><span class="tag">h2</span> { ... }</code><br/>
+    <code onclick="querySVG('#g4563-0, #g4563-3-8', this)"><span class="tag">p</span> { ... }</code><br/>
+    <code onclick="querySVG('#g4568, #g4563-0-0', this)"><span class="tag">div</span> { ... }</code>
   </p>
 
   <p>Select by <strong class="class">class</strong> attribute<br/>
-    <code><span class="class">.checked</span> { background: orange; }</code><br/>
-    <code><span class="tag">span</span><span class="class">.number</span> { color: pink; }</code>
+    <code onclick="querySVG('#g4568, #g4563-0', this)"><span class="class">.check</span> { ... }</code><br/>
+    <code onclick="querySVG('', this)"><span class="tag">span</span><span class="class">.number</span> { ... }</code>
   </p>
 
   <div role="note">
@@ -480,17 +543,21 @@
   </div>
 </section>
 
-<section>
+<section class="css-decl">
+  <object class="dom-svg" data="img/css-ex2.svg" style="float: right; margin: 30px 40px 0 0"></object>
+
   <p>Select by <strong class="id">id</strong><br/>
     <code><span class="id">#specialDiv</span> { ... }</code><br/>
     <code><span class="tag">section</span><span class="id">#main</span> { ... }</code>
   </p>
 
   <p>Select by ancestry<br/>
-    <code><span class="tag">table</span> <span class="tag">p</span> { ... }</code><br/>
-    <code><span class="id">#main</span> <span class="tag">header</span> <span class="class">.subtitle</span>
-    { ... }</code><br/>
+    <code onclick="querySVG('#g4563-3-9-0-1, #g4563-3-9-0-1-1', this)"><span class="tag">section</span> <span class="tag">p</span> { ... }</code><br/>
+    <code onclick="querySVG('#g4563-3-9, #g4563-3-9-0, #g4563-3-9-0-1, #g4563-3-9-0-1-1', this)"><span class="tag">div</span> <span class="tag">p</span> { ... }</code><br/>
+    <code onclick="querySVG('#g4563-3-9, #g4563-3-9-0', this)"><span class="tag">div</span> &gt; <span class="tag">p</span> { ... }</code><br/>
   </p>
+
+  <p>And <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Combinators_and_multiple_selectors">many</a> <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Attribute_selectors">others</a></p>
 
   <div role="note">
     <ul>
