@@ -17,8 +17,8 @@
    inkscape:version="0.92.2 2405546, 2018-03-11"
    sodipodi:docname="ex1-tree.svg">
   <style>
-    .selected rect { stroke: red !important; }
-    .selected text { fill: red !important; }
+    .selected rect { stroke: #e74c3c !important; }
+    .selected text { fill: #e74c3c !important; }
   </style>
   <defs
      id="defs2" />

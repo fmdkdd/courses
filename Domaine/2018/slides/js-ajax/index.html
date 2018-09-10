@@ -113,17 +113,32 @@
   </div>
 </section>
 
-<section>
+<section id="dom1">
   <p>DOM: <em>D</em>ocument <em>O</em>bject <em>M</em>odel</p>
 
   <p>HTML elements represented as JS objects</p>
 
+  <style>
+    #dom1 .selected {
+      color: #e74c3c;
+    }
+  </style>
+
+  <script>
+    function querySVG(s, source) {
+      source.parentElement.querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
+      source.classList.add('selected')
+      const svg = document.getElementById('dom-svg').getSVGDocument()
+      svg.querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
+      svg.querySelector(s).classList.add("selected")
+    }
+  </script>
+
   <div>
-    <img src="../html-css/img/ex1-tree.svg" style="display: inline-block; margin-left: 30px">
-    <pre class="smaller" style="display: inline-block; vertical-align: top; margin: 0 0 0 40px"><code>var s = $('section')
-s.children[0] == $('header')
-s.children[1] == $('p')
-    </code></pre>
+    <object id="dom-svg" data="../html-css/img/ex1-tree.svg" style="display: inline-block; margin-left: 30px"></object>
+    <pre class="smaller" style="display: inline-block; vertical-align: top; margin: 0 0 0 40px"><code><span onclick="querySVG('#g4568', this)">var s = $('section')</span>
+<span onclick="querySVG('#g4563', this)">s.children[0] == $('header')</span>
+<span onclick="querySVG('#g4573', this)">s.children[1] == $('p')</span></code></pre>
   </div>
 </section>
 
