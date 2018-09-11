@@ -403,15 +403,18 @@
   </ul>
 </section>
 
-<section id="css-decl">
+<section class="css-eval" id="css-eval1">
   <p>CSS are composed of <strong>declarations</strong></p>
 
   <p>Syntax:<br/><code><span class="prop">property</span> : <span class="value">value</span>;</code></p>
 
   <style>
-    #css-decl .result {
+    .css-eval .result {
       border: 4px solid #7f8c8d;
       border-radius: 2px;
+    }
+
+    #css-eval1 .result {
       width: 200px;
       height: 140px;
       text-align: center;
@@ -420,13 +423,13 @@
       right: 80px;
     }
 
-    #css-decl .result p {
+    #css-eval1 .result p {
       margin: 0;
       font-family: serif;
       font-size: 28px;
     }
 
-    #css-decl .selected::before {
+    .css-eval .selected::before {
       content: '✔';
       color: #e74c3c;
     }
@@ -444,18 +447,23 @@
 
   <script>
     function toggleStyle(ev) {
-      const el = document.querySelector("#css-decl .result p")
+      const root = this.closest('section')
+      const els = root.querySelectorAll(".result p")
       const code = ev.target.closest('code')
-      const [prop, val] = code.textContent.slice(0,-1).split(':')
-      if (el.style[prop]) {
-        el.style[prop] = null
-        code.classList.remove('selected')
-      } else {
-        el.style[prop] = val
-        code.classList.add('selected')
+      if (code) {
+        const [prop, val] = code.textContent.slice(0,-1).split(':')
+        if (els[0].style[prop]) {
+          els.forEach(e => e.style[prop] = null)
+          code.classList.remove('selected')
+        } else {
+          els.forEach(e => e.style[prop] = val)
+          code.classList.add('selected')
+        }
       }
     }
-    document.querySelector('#css-decl .eval').addEventListener('click', toggleStyle)
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.css-eval .eval').forEach(e => e.addEventListener('click', toggleStyle))
+    })
   </script>
 
   <div role="note">
@@ -573,11 +581,42 @@
 
   <img src="img/box-model.png" style="width: 600px; margin: 0 100px;" />
 
-  <p>Very important for spacing your content properly</p>
+  <p>Very important for spacing your content properly (<a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Box_model">more on MDN</a>)</p>
 
   <div role="note">
     Live example
   </div>
+</section>
+
+<section class="css-eval" id="css-eval2">
+  <p>CSS <strong>box model</strong> example</p>
+
+  <style>
+    #css-eval2 .result {
+      width: 700px;
+      height: 200px;
+      margin: auto;
+    }
+
+    #css-eval2 .result p {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      font-size: 28px;
+    }
+  </style>
+
+  <div class="result">
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+  </div>
+
+  <p class="eval">
+    <code>border: 10px solid #fa1;</code><br>
+    <code>padding: 10px;</code><br>
+    <code>padding-left: 50px;</code><br>
+    <code>margin: 15px 5px;</code>
+  </p>
 </section>
 
 <section>
