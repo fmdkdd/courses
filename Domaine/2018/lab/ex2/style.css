@@ -1,0 +1,196 @@
+/* Whole page style */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  color: #212529;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Top nav bar */
+
+#site-nav {
+  box-shadow: 0 2px 1px #eee;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+#site-nav a {
+  display: inline-block;
+  margin: 10px 15px;
+  color: #777;
+  text-decoration: none;
+}
+
+#site-nav a:hover {
+  color: #007bff;
+}
+
+#site-nav a:first-child {
+  font-weight: bold;
+}
+
+/* Page-specific side nav bar */
+
+#page-nav {
+  float: left;
+  margin: 0 35px 15px 15px;
+  width: 180px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+#page-nav .title {
+  display: block;
+  margin: 0;
+  padding: 8px;
+  background-color: #f2f2f2;
+  border-radius: 3px 3px 0 0;
+  font-weight: normal;
+}
+
+#page-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#page-nav li {
+  padding: 8px;
+  border-top: 1px solid #ccc;
+}
+
+/* Main content */
+
+main {
+  float: left;
+  padding-left: 15px;
+}
+
+main > header {
+  background-color: #6f42c1;
+  color: #ffffff80;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 35px;
+}
+
+main > header * {
+  font-size: 20px;
+  font-weight: normal;
+  display: inline-block;
+  margin: 0;
+}
+
+main > header div {
+  vertical-align: middle;
+  margin-left: 20px;
+  line-height: 1;
+}
+
+main > header h2 {
+  display: block;
+  color: #fff;
+  font-size: 18px;
+}
+
+main > header h3 {
+  font-size: 15px;
+}
+
+section {
+  margin: 15px;
+}
+
+section a {
+  color: #212529;
+  text-decoration: none;
+}
+
+section > header {
+  margin: 40px 0 20px 0;
+}
+
+section > header * {
+  display: inline-block;
+}
+
+section > header h2 {
+  font-weight: normal;
+  font-size: 18px;
+  margin: 0;
+}
+
+section .search {
+  float: right;
+  font-size: 14px;
+}
+
+main section {
+  border-bottom: 1px solid #ccc;
+}
+
+section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+section ul img {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+section li {
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+section p {
+  margin: 0;
+  display: inline-block;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+section .missions {
+  font-size: 12px;
+}
+
+/* Challenges table */
+
+#challenges table {
+  border-collapse: collapse;
+  font-size: 15px;
+  margin: 20px 0;
+}
+
+#challenges tr:first-child {
+  background-color: #f2f2f2;
+}
+
+#challenges tr {
+  border: 1px solid #ddd;
+}
+
+#challenges td, #challenges th {
+  padding: 5px 15px;
+}
