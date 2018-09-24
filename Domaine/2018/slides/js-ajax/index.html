@@ -419,9 +419,20 @@ $('ul').append(li)</code>
 </section>
 
 <section>
-  Why events?
+  <p>DOM <em>events</em></p>
 
-  Capture user interaction with the page
+  <p>Respond to user interaction within the page</p>
+
+  <ul>
+    <li>Mouse click, double click, right-click, ...</li>
+    <li>Text input changes</li>
+    <li>Window resize</li>
+    <li>Going fullscreen</li>
+    <li>Ajax events</li>
+    <li>...</li>
+  </ul>
+
+  <p><a href="https://developer.mozilla.org/en-US/docs/Web/Events">List of events on MDN</a></p>
 </section>
 
 <section>
@@ -447,26 +458,41 @@ $('ul').append(li)</code>
   </div>
 </section>
 
-<section>
-  <p>Number box that increases when the event is fired</p>
+<section id="js-events">
+  <style>
+    #js-events .box {
+      float: right;
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      margin-top: 20px;
+      padding: 10px 0;
+      text-align: center;
+      width: 80px;
+    }
+  </style>
 
-  <p>Mouse click on element<br/>
+  <script>
+    function inc(el) {
+      el.textContent = (+el.textContent) + 1
+    }
+  </script>
+
+  <p>Mouse click on element
+    <span class="box" onclick="inc(this)">0</span>
     <code class="smaller">$('button').on('click', ...);</code></p>
 
-  <p>Mouse enters or leaves element<br/>
+  <p>Mouse enters or leaves element
+    <span class="box" onmouseenter="inc(this)">0</span>
     <code class="smaller">$('div').on('mousenter', ...);</code><br/>
+    <span class="box" onmouseleave="inc(this)">0</span>
     <code class="smaller">$('p').on('mouseleave', ...);</code>
   </p>
 
-  <p>Input element content is changing<br/>
-    <code class="smaller">$('input').on('input', ...);</code></p>
-
-  <div role="note">
-    <ul>
-      <li>Click is most-used</li>
-      <li>Can capture keys, ... see the docs</li>
-    </ul>
-  </div>
+  <p>Input element content is changing
+    <code class="smaller">$('input').on('input', ...);</code>
+    <span id="input-box" class="box">0</span>
+    <input oninput="inc(document.querySelector('#input-box'))" type="text">
+  </p>
 </section>
 
 <section>
