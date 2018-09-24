@@ -119,23 +119,23 @@
   <p>HTML elements represented as JS objects</p>
 
   <style>
-    #dom1 .selected {
+    .selected {
       color: #e74c3c;
     }
   </style>
 
   <script>
     function querySVG(s, source) {
-      source.parentElement.querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
+      source.closest('section').querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
       source.classList.add('selected')
-      const svg = document.getElementById('dom-svg').getSVGDocument()
+      const svg = source.closest('section').querySelector('object').getSVGDocument()
       svg.querySelectorAll('.selected').forEach(e => e.classList.remove('selected'))
-      svg.querySelector(s).classList.add("selected")
+      svg.querySelectorAll(s).forEach(e => e.classList.add("selected"))
     }
   </script>
 
   <div>
-    <object id="dom-svg" data="../html-css/img/ex1-tree.svg" style="display: inline-block; margin-left: 30px"></object>
+    <object data="../html-css/img/ex1-tree.svg" style="display: inline-block; margin-left: 30px"></object>
     <pre class="smaller" style="display: inline-block; vertical-align: top; margin: 0 0 0 40px"><code><span onclick="querySVG('#g4568', this)">var s = $('section')</span>
 <span onclick="querySVG('#g4563', this)">s.children[0] == $('header')</span>
 <span onclick="querySVG('#g4573', this)">s.children[1] == $('p')</span></code></pre>
@@ -145,10 +145,14 @@
 <section>
   <p>DOM <strong>traversal</strong> with <a href="http://jquery.com/">jQuery</a></p>
 
+  <object data="img/ex-traverse.svg" style="float: right"></object>
+
   <p>CSS-like selector '<code>$</code>'<br/>
-    <code class="smaller">$('header .subtitle')</code><br/>
-    <code class="smaller">$('#main').children()</code><br/>
-    <code class="smaller">$('p').closest('section')</code>
+    <code class="smaller" onclick="querySVG('#g2389', this)">$('header .sub)</code><br/>
+    <code class="smaller" onclick="querySVG('#g4568', this)">$('section')</code><br/>
+    <code class="smaller" onclick="querySVG('#g4563, #g4573, #g4573-6', this)">$('section').children()</code><br/>
+    <code class="smaller" onclick="querySVG('#g2389', this)">$('a')</code>
+    <code class="smaller" onclick="querySVG('#g4568', this)">$('a').closest('section')</code>
   </p>
 
   <p>'<code>$</code>' returns an <span class="alert">array</span> of matching elements</p>
@@ -161,42 +165,245 @@
   </div>
 </section>
 
-<section>
-  <p>How to include JavaScript in a page?</p>
+<section id="js-manip">
+  <p>DOM <em>manipulation</em>: Change attributes</p>
 
-  <p>Using the <code>&lt;script&gt;</code> tag</p>
+  <style>
+    #js-manip .result {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      padding: 10px;
+      width: 700px;
+      height: 200px;
+      margin: auto;
+      font-family: monospace;
+      font-size: 30px;
+      white-space: pre;
+    }
 
-  <p><code>&lt;script&gt;alert('hello')&lt;/script&gt;</code></p>
+    #js-manip .selected {
+      font-weight: bold;
+    }
 
-  <p>From a linked file</p>
+    #js-manip .source {
+      display: none;
+    }
+  </style>
 
-  <p><code>&lt;script src="/js/index.js"&gt;&lt;/script&gt;</code></p>
-</section>
+  <script>
+    function printHTML(el) {
+      const src = el.closest('section').querySelector('.source')
+      const out = el.closest('section').querySelector('.result')
+      out.textContent = src.innerHTML.trim()
+      if (out.textContent.indexOf('<li>') > -1) {
+        out.textContent = out.textContent
+          .replace(/\n/g, '')
+          .replace(/<li>/g, '\n<li>')
+          .replace('</ul>', '\n</ul>')
+      }
+    }
 
-<section>
-  <p>DOM <strong>manipulation</strong></p>
+    const saved_li = []
 
-  <p>Create, add or remove elements
-    <pre class="smaller"><code>var li = $('&lt;li>List item&lt/li>')
-$('ul').append(li)
-$('ul li').remove()</code></pre>
+    function toggleJS(el) {
+      const selected = el.classList.toggle('selected')
+
+      const sec = el.closest('section').querySelector('.source')
+      const src = el.textContent
+      const $ = (sel) => {
+        if (sel[0] === '<') {
+          const li = document.createElement('li')
+          li.textContent = 'List item #3'
+          return li
+        }
+
+        const els = sec.querySelectorAll(sel)
+
+        return {
+          attr(a, v) { if (selected) { els.forEach(e => e.setAttribute(a, v)) }
+                       else { els.forEach(e => e.removeAttribute(a)) } },
+          addClass(c) { if (selected) { els.forEach(e => e.classList.add(c)) }
+                        else { els.forEach(e => e.classList.remove(c)) } },
+          text(t) { if (selected) { els.forEach(e => e.textContent = t) }
+                    else { els.forEach(e => e.textContent = "...") } },
+          append(el) { if (selected) { els.forEach(e => e.appendChild(el)) }
+                       else { els.forEach(e => e.removeChild(e.children[e.children.length-1])) } },
+          remove() { if (selected) { els.forEach(e => { saved_li.push(e); e.remove() }) }
+                     else { const ul = sec.querySelector('ul');
+                            saved_li.forEach(li => ul.appendChild(li));
+                            saved_li.length = 0 } },
+        }
+      }
+      eval(src)
+      printHTML(el)
+    }
+  </script>
 
   <p>Change attributes<br/>
-    <pre class="smaller"><code>$('input').attr('required', true)
-$('thead th').addClass('selected')
-$('p').css('color', 'pink')</code></pre>
+    <pre class="smaller"><code onclick="toggleJS(this)">$('input').attr('required', true)</code>
+<code onclick="toggleJS(this)">$('p').addClass('left')</code>
+<code onclick="toggleJS(this)">$('p').text('new text')</code></pre>
   </p>
 
-  <div role="note">
-    <ul>
-      <li>Live examples</li>
-      <li>Devdocs will help you (show Zepto/jQuery)</li>
-    </ul>
+  <div class="source">
+<input type="text">
+<input type="date">
+<p class="small">...</p>
+<p>...</p>
   </div>
+
+  <div class="result">
+  </div>
+
+  <script>
+    printHTML(document.querySelector('#js-manip'))
+  </script>
+
+</section>
+
+<section id="change-class">
+  <p>DOM <em>manipulation</em>: Change style</p>
+
+  <style>
+    #change-class .grid > div {
+      float: left;
+      display: inline-block;
+      margin: 20px;
+    }
+
+    #change-class pre {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      font-size: 25px;
+      padding: 10px;
+      margin: 0;
+    }
+
+    #change-class .source {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+    }
+
+    #change-class .source p {
+      font-size: 25px;
+      margin: 10px;
+      font-family: serif;
+    }
+
+    #change-class .source h2 {
+      font-size: 35px;
+      margin: 10px;
+      font-family: serif;
+    }
+
+    #change-class .alert {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+
+  <div class="grid">
+
+  <div>
+  <label>CSS</label>
+  <pre class="smaller" style="width: 350px">
+.alert {
+  color: red;
+  font-weight: bold;
+}</pre>
+  </div>
+
+  <div>
+  <label>JavaScript</label>
+  <pre class="smaller" style="width: 330px"><code onclick="toggleJS(this)">$('p').addClass('alert')</code></pre>
+  </div>
+
+  <div style="clear: left">
+    <label>HTML</label>
+    <pre class="result" style="width: 500px">
+    </pre>
+  </div>
+
+  <div>
+    <label>Page</label>
+  <div class="source">
+<h2>A header</h2>
+<p>Some text</p>
+<p>Other text</p>
+  </div>
+  </div>
+
+  </div>
+
+  <script>
+    printHTML(document.querySelector('#change-class'))
+  </script>
+</section>
+
+<section id="js-add">
+  <p>DOM <em>manipulation</em>: Add, remove elements</p>
+
+    <style>
+    #js-add > div {
+      float: left;
+      display: inline-block;
+      margin: 20px;
+    }
+
+    #js-add pre {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      font-size: 25px;
+      padding: 10px;
+      margin: 0;
+    }
+
+    #js-add .source {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+    }
+
+    #js-add .source ul {
+      margin: 0 25px;
+    }
+
+    #js-add .source li {
+      font-size: 25px;
+      margin: 10px;
+      font-family: serif;
+    }
+  </style>
+
+  <div>
+    <label>JavaScript</label>
+    <pre class="smaller"><code onclick="toggleJS(this)">var li = $('&lt;li&gt;List item #3&lt;/li&gt;')
+$('ul').append(li)</code>
+<code onclick="toggleJS(this)">$('ul li').remove()</code></pre>
+  </div>
+
+  <div style="clear: left">
+    <label>HTML</label>
+    <pre class="result" style="width: 430px; height: 180px;">
+    </pre>
+  </div>
+
+  <div>
+    <label>Page</label>
+    <div class="source" style="height: 150px; width: 220px">
+<ul>
+<li>List item #1</li>
+<li>List item #2</li>
+</ul>
+    </div>
+  </div>
+
+  <script>
+    printHTML(document.querySelector('#js-add'))
+  </script>
 </section>
 
 <section>
-  <p>Typical DOM manipulation</p>
+  <p>DOM <em>manipulation</em>: Combo</p>
 
   <pre class="smaller"><code>$('.comment')
   .filter(function() {
@@ -207,8 +414,14 @@ $('p').css('color', 'pink')</code></pre>
   .append("&lt;p>it's a him&lt;/p>")
 </code></pre>
 
-  <p>Can <span class="alert">chain</span> calls to Zepto functions.<br>
+  <p>Can <span class="alert">chain</span> calls to jQuery functions.<br>
   They apply to the currently-selected elements.</p>
+</section>
+
+<section>
+  Why events?
+
+  Capture user interaction with the page
 </section>
 
 <section>
@@ -221,7 +434,7 @@ $('p').css('color', 'pink')</code></pre>
   <p>The <span class="cb">callback</span>
       (or <span class="cb">handler</span>) is called whenever
       the <span class="ev">event</span> occurs on
-      the <span class="dom">DOM element</span>.</p>
+      any <span class="dom">selected element</span>.</p>
 
   <p>Inside the <span class="cb">callback</span>, <span class="dom"><code>this</code></span>
     refers to <br>the <span class="dom">DOM element</span> that raised the <span class="ev">event</span>.</p>
@@ -235,6 +448,8 @@ $('p').css('color', 'pink')</code></pre>
 </section>
 
 <section>
+  <p>Number box that increases when the event is fired</p>
+
   <p>Mouse click on element<br/>
     <code class="smaller">$('button').on('click', ...);</code></p>
 
@@ -254,6 +469,17 @@ $('p').css('color', 'pink')</code></pre>
   </div>
 </section>
 
+<section>
+  <p>How to <em>include</em> JavaScript in a page?</p>
+
+  <p>Using the <code>&lt;script&gt;</code> tag</p>
+
+  <p><code>&lt;script&gt;alert('hello')&lt;/script&gt;</code></p>
+
+  <p>From a linked file</p>
+
+  <p><code>&lt;script src="/js/index.js"&gt;&lt;/script&gt;</code></p>
+</section>
 
 
 <section>
@@ -319,7 +545,7 @@ $('p').css('color', 'pink')</code></pre>
 <section>
   <p style="margin-bottom: 0px;">JSON (JavaScript Objet Notation) format</p>
 
-  <pre class="smaller"><code>{
+  <pre style="font-size: 28px"><code>{
   "events": [
     {
       "name": "Event A",
@@ -345,11 +571,11 @@ $('p').css('color', 'pink')</code></pre>
 </section>
 
 <section>
-  <p>How do you <strong>send</strong> a request?</p>
+  <p>AJAX: How do you <strong>send</strong> a request?</p>
 
   <p><a href="http://devdocs.io/dom/xmlhttprequest">XMLHttpRequest</a></p>
 
-  <p><pre class="smaller"><code>var xhr = new XMLHttpRequest();
+  <p><pre style="font-size: 28px"><code>var xhr = new XMLHttpRequest();
 xhr.open('GET', '/path/to/ressource', true);
 xhr.overrideMimeType('application/json');
 xhr.onreadystatechange = function() {
@@ -374,8 +600,12 @@ xhr.send();
 </section>
 
 <section>
-  <p>Using <a href="http://zeptojs.com/#ajax">Zepto</a>:<br/>
+  <p>Using <a href="https://api.jquery.com/jQuery.ajax">jQuery</a>:<br/>
     <code>$.get('/user/Luigi/friends')</code>
+  </p>
+
+  <p>
+    <pre><code>$.post('/post/123/comments', '...')</code></pre>
   </p>
 
   <p>
@@ -447,7 +677,6 @@ function <span class="cb">onError</span>(<span class="xhr">req</span>) {
   <ul>
     <li><a href="http://www.html5rocks.com/en/tutorials/file/xhr2/">XMLHttpRequest2</a></li>
     <li><a href="https://api.jquery.com/jquery.ajax/">jquery.ajax</a></li>
-    <li><a href="http://zeptojs.com/#ajax">zepto.ajax</a></li>
   </ul>
 
   <div role="note">
@@ -468,7 +697,6 @@ function <span class="cb">onError</span>(<span class="xhr">req</span>) {
   <h3>Helpful libraries</h3>
   <ul>
     <li><a href="http://jquery.com/">jQuery</a></li>
-    <li><a href="http://zeptojs.com/">Zepto.js</a></li>
   </ul>
 
   <div role="note">
