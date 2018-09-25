@@ -11,3 +11,12 @@
   [here](lab/ex2/target-boxes-1.png) and [here](lab/ex2/target-boxes-2.png).
 
 - Lecture 2: [JavaScript & AJAX](slides/js-ajax)
+
+- Lab 3: Implement filtering and sorting for the table in <a
+  href="lab/ex3/index.html" download>this page</a> by completing <a
+  href="lab/ex3/interface.js" download>this JavaScript file</a>.
+
+- Lab 4: Implement a dynamic friend list using AJAX in <a
+  href="lab/ex4/index.html" download>this page</a> by completing <a
+  href="lab/ex4/interface.js" download>this JavaScript file</a> and <a
+  href="lab/ex4/friends.json" download>this JSON file</a>.
