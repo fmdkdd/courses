@@ -20,9 +20,9 @@
 - Lecture 0: JavaScript and its Ecosystem
 - Lecture 1: Closures ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#closure))
 - Lecture 2: Prototypes ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#prototype))
-- Lecture 3: Event Loop, Promises, Async ([recommended
-  reading](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/),
-  [event loop simulator](http://latentflip.com/loupe/))
+- Lecture 3: Event Loop, Promises, Async ([event loop simulator](http://latentflip.com/loupe/),
+  [intro to promises](https://developers.google.com/web/fundamentals/primers/promises),
+  [about tasks and queues](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/))
 
 ### Labs
 TP0, TP1 and TP2 are written for [s3c](/s3c).
