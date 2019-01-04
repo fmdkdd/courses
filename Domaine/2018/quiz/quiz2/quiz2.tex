@@ -1,0 +1,74 @@
+\documentclass[a4paper, 12pt]{article}
+\addtolength{\topmargin}{-1.6in}
+\addtolength{\textheight}{2in}
+\addtolength{\oddsidemargin}{-.4in}
+\addtolength{\textwidth}{.8in}
+
+\usepackage[french]{babel}
+
+%% \usepackage{lastpage}
+%% \usepackage{fancyhdr}
+%% \fancypagestyle{plain}{%
+%%   \fancyfoot[C]{\thepage{}/\pageref{LastPage}}
+%% }
+%% \renewcommand{\headrulewidth}{0pt}
+%% \pagestyle{plain}
+
+\usepackage[bitstream-charter]{mathdesign}
+\usepackage{fontspec}
+%% \setmainfont{Charter}
+\setmonofont[Scale=MatchLowercase]{Fira Mono}
+
+\usepackage{graphicx}
+
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily}
+\lstset{tabsize=2, columns=fullflexible, keepspaces=true}
+\lstset{breaklines=false, showstringspaces=false}
+\lstset{frame=leftline, framerule=1pt}
+\lstset{framesep=4pt}
+
+\title{Quiz JavaScript}
+\author{U.V. Domaine}
+\date{19 octobre 2018}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Nom} :
+
+Sans machine ni document
+
+Durée : 5 minutes
+
+\vspace{1cm}
+
+\begin{enumerate}
+\item Expliquez à quoi sert JavaScript dans une page web, et donnez 3 exemples
+  d'utilisation.
+
+  \framebox(400,130){}
+
+\item Que fait le code suivant?
+\begin{lstlisting}
+$('#check').on('click', f)
+
+function f() {
+  $('.item')
+    .filter(function() {
+      return $(this).data('valid') === true
+    })
+   .hide()
+}
+\end{lstlisting}
+
+\framebox(400,90){}
+
+\item Quelle est la différence entre jQuery et JavaScript?
+
+  \framebox(400,50){}
+
+\end{enumerate}
+
+\end{document}
