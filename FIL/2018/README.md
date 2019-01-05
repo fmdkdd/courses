@@ -17,7 +17,7 @@
 
 ### Lectures
 
-- Lecture 0: JavaScript and its Ecosystem
+- Lecture 0: [JavaScript and its Ecosystem](slides/js-intro/)
 - Lecture 1: Closures ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#closure))
 - Lecture 2: Prototypes ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#prototype))
 - Lecture 3: Event Loop, Promises, Async ([event loop simulator](http://latentflip.com/loupe/),
@@ -30,12 +30,3 @@ TP0, TP1 and TP2 are written for [s3c](/s3c).
 - [TP0 – Basics](../2017/tp0.js)
 - [TP1 – Higher-Order Functions](../2017/tp1.js)
 - [TP2 – Implementing Objects and Prototypes](tp/tp2.js)
-
-For TP3, you'll need to download the files and run an HTTP server locally, using
-e.g. Python:
-
-```python
-python -m http.server
-```
-
-- TP3 – Asynchronous Programming.
