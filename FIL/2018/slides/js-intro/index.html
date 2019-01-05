@@ -71,10 +71,20 @@
   </p>
 </section>
 
-<section>
+<section id="humble">
   <h3>Humble beginnings</h3>
 
-  Picture of alert cascade
+  <style>
+    #humble img {
+      float: left;
+      margin-left: 30px;
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+    }
+  </style>
+
+  <img style="width: 350px" src="img/netscape2.png">
+  <img style="width: 350px" src="img/alert.jpg">
 
   <script>
     function move(el) {
@@ -85,62 +95,226 @@
     }
   </script>
 
-  <button style="position: absolute; font-size: 20px; font-weight: bold"
+  <button style="position: absolute; left: 350px; top: 500px; font-size: 20px; font-weight: bold"
           onmouseover="move(this)">Click me</button>
 </section>
 
 <section>
-  <h3>Cambrian Explosion</h3>
+  <h3 style="margin-bottom: 10px">Timeline</h3>
 
-  pic showing growing JS popularity since 2000
+  <style>
+    #js-timeline {
+      font: 20px "Oswald";
+    }
 
-  timeline of ECMAScript standard releases
+    #js-timeline svg {
+      display: block;
+      margin: auto;
+    }
+
+    #js-timeline .axis path,
+    #js-timeline .axis line {
+      fill: none;
+      stroke: #000;
+    }
+  </style>
+
+  <div id="js-timeline"></div>
+
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script>
+    const startDate = 1994;
+    const endDate   = 2020;
+
+    const events = [
+      [1995,  0, "Netscape 2.0"],
+      [1997,  6, "ES 1"],
+      [1998,  6, "ES 2"],
+      [1999, 12, "ES 3"],
+      [2009, 12, "ES 5"],
+      [2011,  6, "ES 5.1"],
+      [2015,  6, "ES 6 (2015)"],
+      [2016,  6, "ES 2016"],
+      [2017,  6, "ES 2017"],
+      [2018,  6, "ES 2018"],
+      [2005,  0, "Ajax"],
+      [2009, 05, "Node.js"],
+      [2009, 12, "CoffeeScript"],
+      [2012, 10, "TypeScript"],
+      [2006,  8, "jQuery"],
+      [2000,  9, "ActionScript"],
+      [2013,  3, "asm.js"],
+      [2012, 11, "Emscripten"],
+      [2012, 12, "HTML5"],
+      [2014, 10, "Babel"],
+      [2010, 10, "Angular"],
+      [2013,  5, "React"],
+      [2011,  8, "Bootstrap"],
+      [1995,  8, "IE 1"],
+      [2001,  8, "IE 6"],
+      [2008,  9, "Chrome"],
+      [2002,  9, "Firefox"],
+    ];
+
+    // Convert month to decimal point
+    for (let ev of events) {
+      ev[0] += ev[1] / 13
+    }
+
+    events.sort((a, b) => a[0] - b[0]);
+
+    // Adjust the Y-coordinate of events to avoid overlaps.
+    const max_rows = 17
+    let row = 0
+    let prev
+    for (let ev of events) {
+      if (ev[0] - prev > 2 || row >= max_rows) {
+	row = 0
+      }
+      ev.push(row)
+      prev = ev[0]
+      row += 1
+    }
+
+    // Timeline size
+    const margin = {top: 20, right: 30, bottom: 30, left: 20}
+    const outerWidth = 760
+    const outerHeight = 450
+    const width = outerWidth - margin.left - margin.right
+    const height = outerHeight - margin.top - margin.bottom
+
+    // Bottom axis
+    const x = d3.scale.linear()
+	  .domain([startDate, endDate])
+	  .range([0, width]);
+
+    const y = d3.scale.linear()
+	  .domain([0, max_rows])
+	  .range([0, height]);
+
+    const svg = d3.select("#js-timeline").append("svg")
+	  .attr("width", outerWidth)
+	  .attr("height", outerHeight)
+	  .append("g")
+	  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    const xAxis = d3.svg.axis()
+	  .scale(x)
+	  .ticks(15)
+          .tickPadding(6)
+	  .tickFormat(d3.format("1f"))
+	  .orient("bottom");
+
+    const xAxis2 = d3.svg.axis()
+	  .scale(x)
+	  .ticks(20)
+	  .tickFormat("")
+	  .orient("bottom");
+
+    const gx = svg.append("g")
+	  .attr("class", "x axis")
+	  .attr("transform", "translate(0," + height + ")")
+	  .call(xAxis2)
+          .call(xAxis);
+
+    // Vertical axes for each event
+    svg.append("g").selectAll("eventLine")
+  .data(events)
+  .enter().append("line")
+  .attr("class", "eventLine")
+  .attr("x1", d => x(d[0]))
+  .attr("y1", height)
+  .attr("x2", d => x(d[0]))
+  .attr("y2", d => y(d[3]))
+  .attr("stroke", "black");
+
+    // Event text
+    const titres = svg.append("g").selectAll("eventText")
+	  .data(events)
+	  .enter().append("text")
+	  .attr("class", "eventText")
+          .text(d => d[2])
+          .attr("text-anchor", "left")
+          .attr("x", d => x(d[0]))
+          .attr("y", d => y(d[3]))
+          .attr("dy", ".9em")
+          .attr("dx", "0.25em");
+  </script>
 </section>
 
 <section>
-  <h3>JavaScript today</h3>
+  <h3 style="margin-top: 20px">JavaScript today</h3>
 
-  - part of JS in websites
-  - JS in servers
-  - JS in mobile apps
-  - JS in IoT
-
-  (smaller version of first slide)
+  <img src="img/githut.png" style="height: 250px; display: block; margin: 20px auto">
+  <img src="img/html-css-js.png" style="display: block; height: 200px; margin: 20px auto;">
 </section>
 
 <section>
   <h3>Common misconceptions</h3>
 
-  JS is horrible
-  JS == jQuery
-  JS == HTML
+  <ul>
+    <li>JavaScript is a dialect of Java</li>
+    <li>JavaScript == jQuery</li>
+    <li>JavaScript == React/Angular/Bootstrap</li>
+    <li>JavaScript == Web</li>
+    <li>JavaScript is for noobs</li>
+    <li>JavaScript is an interpreted language</li>
+    <li>JavaScript is slow</li>
+    <li>JavaScript is terrible</li>
+  </ul>
 </section>
 
 <section>
-  <h3>Runtime environments</h3>
+  <h3>Many runtime environments</h3>
 
-  Browsers (V8 + .. SpiderMonkey + ..)
-  Nodejs/deno
+  <ul>
+    <li>Web browsers (Firefox, Chrome, IE, Edge, Safari, ...)</li>
+    <li>Node.js</li>
+    <li>Electron</li>
+    <li>GNOME Shell</li>
+    <li>MongoDB</li>
+    <li>PDF files</li>
+    <li>Unity</li>
+    <li>LibreOffice</li>
+    <li>...</li>
+  </ul>
+
+  <img src="img/firefox-arch.jpg" style="width: 400px; position: absolute; right: 20px; bottom: 100px">
 </section>
 
 <section>
-  <h3>JavaScript as a compilation target</h3>
+  <h3>JavaScript is a compilation target</h3>
 
-  CoffeeScript
-  TypeScript
-  React JSX
-  C, Haskell, Elm, Rust, ...
-  WASM
+  <ul>
+    <li>CoffeeScript</li>
+    <li>TypeScript</li>
+    <li>React JSX</li>
+    <li>Elm</li>
+    <li>Haskell</li>
+    <li>C</li>
+    <li>Rust</li>
+    <li>...</li>
+  </ul>
 </section>
 
 <section>
-  <p>JavaScript (JS) syntax</p>
+  <h3>JavaScript is terrible</h3>
+
+  <img src="img/js_good_parts.jpg" style="display: block; margin: auto">
+
+  <quote style="margin-top: 25px">
+    It is a poor craftsman that blames his tools
+  </quote>
+</section>
+
+<section>
+  <p>Syntax</p>
 
   <pre class="smaller"><code><span class="kw">function</span> mapReduce<span class="syn">(</span><span class="var">fun</span><span class="syn">)</span> <span class="syn">{</span>
-  <span class="kw">var</span> <span class="var">tab</span> <span class="op">=</span> <span class="op">[</span><span class="con">1</span><span class="syn">,</span> <span class="con">2</span><span class="syn">,</span> <span class="con">3</span><span class="syn">,</span> <span class="con">5.12</span><span class="op">]</span><span class="syn">;</span>
-  <span class="kw">var</span> <span class="var">sum</span> <span class="op">=</span> <span class="con">0</span><span class="syn">;</span>
-  <span class="kw">for</span> <span class="syn">(</span><span class="kw">var</span> <span class="var">i</span> <span class="op">=</span> <span class="con">0</span><span class="syn">;</span> i <span class="op">&lt;</span> tab<span class="op">.</span>length<span class="syn">;</span> <span class="op">++</span>i<span class="syn">)</span> <span class="syn">{</span>
-    <span class="kw">if</span> <span class="syn">(</span>fun<span class="syn">(</span>tab<span class="op">[</span>i<span class="op">]</span><span class="syn">)</span> <span class="op">==</span> <span class="con">true</span><span class="syn">)</span>
+  <span class="kw">let</span> <span class="var">tab</span> <span class="op">=</span> <span class="op">[</span><span class="con">1</span><span class="syn">,</span> <span class="con">2</span><span class="syn">,</span> <span class="con">3</span><span class="syn">,</span> <span class="con">5.12</span><span class="op">]</span><span class="syn">;</span>
+  <span class="kw">let</span> <span class="var">sum</span> <span class="op">=</span> <span class="con">0</span><span class="syn">;</span>
+  <span class="kw">for</span> <span class="syn">(</span><span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="con">0</span><span class="syn">;</span> i <span class="op">&lt;</span> tab<span class="op">.</span>length<span class="syn">;</span> <span class="op">++</span>i<span class="syn">)</span> <span class="syn">{</span>
+    <span class="kw">if</span> <span class="syn">(</span>fun<span class="syn">(</span>tab<span class="op">[</span>i<span class="op">]</span><span class="syn">)</span> <span class="op">===</span> <span class="con">true</span><span class="syn">)</span>
       sum <span class="op">+=</span> tab<span class="op">[</span>i<span class="op">]</span><span class="syn">;</span>
   <span class="syn">}</span>
   <span class="kw">return</span> sum<span class="syn">;</span>
