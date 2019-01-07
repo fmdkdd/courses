@@ -25,7 +25,7 @@
   [about tasks and queues](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/))
 
 ### Labs
-TP0, TP1 and TP2 are written for [s3c](/s3c).
+TP0, TP1, TP2 and TP3 are written for [s3c](/s3c).
 
 - [TP0 – Basics](../2017/tp0.js)
 - [TP1 – Higher-Order Functions](../2017/tp1.js)
