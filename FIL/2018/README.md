@@ -29,5 +29,5 @@ TP0, TP1 and TP2 are written for [s3c](/s3c).
 
 - [TP0 – Basics](../2017/tp0.js)
 - [TP1 – Higher-Order Functions](../2017/tp1.js)
-- [TP2 – Constructor objects](tp/tp2.js)
+- [TP2 – Constructing objects](tp/tp2.js)
 - [TP2 – Implementing Objects and Prototypes](tp/tp3.js)
