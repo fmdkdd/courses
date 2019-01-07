@@ -1,479 +1,442 @@
-// # Object-Oriented programming without objects
+// Creating objects in JavaScript
 
-// In this exercise, you will build the principles of object-orientation without
-// using a single object.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Singleton literal
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// The purpose of this is two-fold.  First, it shows that higher-order functions
-// and lexical closures are expressive enough to simulate an object-oriented
-// language.
+// The easiest way to create an object in JavaScript is to create a *singleton*.
+// The object literal syntax makes this concise.
+
+// **Complete** this definition, and **check** that all the tests evaluate to
+// `true`.
+let counterSingleton = {
+  i: 0,
+
+  inc: function() {
+    counterSingleton.i += 1;
+    return counterSingleton.i;
+  },
+
+  dec: function() {
+
+  },
+};
+
+let c1 = counterSingleton;
+let c2 = counterSingleton;
+
+// Since its a singleton, there are no "instances".  c1 and c2 are just aliases
+// of the same object.
+c1 === c2; //:
+
+c1.inc() === 1; //:
+c1.inc() === 2; //:
+c2.inc() === 3; //:
+c1.dec() === 2; //:
+c1.dec() === 1; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Closure with state
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// Secondly, it reveals that object concepts like method call, dynamic dispatch,
-// methods table and self reference are really not magical.
+// The singleton has its uses, but usually when we think of objects, we think of
+// instances.  what if we need more than one counter?  In this case, we can get
+// by with a *closure*.
 
-// ## Get comfortable with closures
-//
-// To start with, let's review closures.
+// The `counterFactory` function returns an object that contains the two methods
+// `inc` and `dec`.  Each of these method refer to the `i` that is defined
+// inside `counterFactory`.  **Complete** the definition and check the tests.
+function counterFactory() {
+  let i = 0;
 
-// We've seen the adder, which takes a first argument and returns a closure on
-// `x` which takes a second argument `y` and return the sum of `x` and `y`.  We
-// use the term "closures" because we say that the `add2` *closes* over its
-// argument `x`.  **Complete** this definition.
-function adder(x) {
+  return {
 
+  };
 }
 
-var add2 = adder(2);
-typeof add2 === 'function'; //:
-add2(8) === 10; //:
-add2(-2) === 0; //:
+c1 = counterFactory();
+c2 = counterFactory();
 
-// We can view `x` as part of the *state* of the returned function `add2`.  It
-// is even more clear when using *mutable state* in the closure, as in the
-// `counter`.
-
-// The function `counter` holds an internal value (starting at 0) and returns a
-// function which increases and returns its internal value when called.
-// **Complete** its definition.
-function counter() {
-
-}
-
-var c1 = counter();
-typeof c1 === 'function'; //:
-c1() === 1; //:
-c1() === 2; //:
-
-var c2 = counter(); //:
-typeof c2 === 'function'; //:
+// This time the two objects are different
 c1 !== c2; //:
-c2() === 1; //:
-c2() === 2; //:
 
-// What if we want to be able to increase or decrease the counter?  We can only
-// return one function, but we can accept a 'message' argument that will
-// differentiate the cases of increasing and decreasing the counter.  **Write**
-// the function.
-function bidiCounter() {
+c1.inc() === 1; //:
+c1.inc() === 2; //:
+c2.inc() === 1; //:
+c1.dec() === 1; //:
+c1.dec() === 0; //:
+
+// The functions `inc` and `dec`, however, are also different, even though they
+// contain the same code.  Each instance of counter has its own version of `inc`
+// and `dec`.  Not only does this waste memory, it prevents us from easily
+// redefining these functions at runtime for all instances.
+c1.inc !== c2.inc; //:
+c1.dec !== c2.dec; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Factory and prototype object
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Since the issue with `counterFactory` is duplication, we will define the
+// functions `inc` and `dec` outside the factory, in a *prototype* object.  Note
+// that the methods need to refer to `i` using the special value `this`, whereas
+// previously we were /closing over/ the local `i`.  The keyword `this` is
+// necessary to refer to the receiver, which is unknown at the time we are
+// defining these methods.  **Complete** the definition, and the factory below,
+// then check the tests.
+let counterPrototype = {
+  inc: function() {
+    this.i += 1;
+    return this.i;
+  },
+};
+
+// The `counterPrototypeFactory` function returns a new object that has
+// `counterPrototype` as its prototype.  This is achieved using `Object.create`.
+// This function is essentially a constructor.
+function counterPrototypeFactory() {
 
 }
 
-c1 = bidiCounter();
-typeof c1 === 'function'; //:
-c1('inc') === 1; //:
-c1('inc') === 2; //:
-c1('dec') === 1; //:
+c1 = counterPrototypeFactory();
+c2 = counterPrototypeFactory();
 
-c2 = bidiCounter();
-typeof c2 === 'function'; //:
+// We have two separate instances.
 c1 !== c2; //:
-c2('dec') === -1; //:
-c2('inc') === 0; //:
 
-// When we think about it, the `c1` function begins to look like an object.  It
-// has a state, `x`, and it has ways of executing different behavior depending
-// on the message given.
+c1.inc() === 1; //:
+c1.inc() === 2; //:
+c2.inc() === 1; //:
+c1.dec() === 1; //:
+c1.dec() === 0; //:
 
-// ## Another example: stack
+// But this time, their methods are the same.
+c1.inc === c2.inc; //:
+c1.dec === c2.dec; //:
 
-// Let's try another example: a stack 'object'.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Constructor function
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// A stack must understand 4 messages:
-//
-// 1. 'push', which pushes an item on top of the stack;
-// 2. 'pop', which removes the item at the top of the stack and
-//    returns it;
-// 3. 'peek' which returns the item at the top of the stack (but does
-//    not remove it);
-// 4. 'size' which returns the number of elements in the stack.
-//
-// In addition, it must return the string "Message not understood" when the
-// message argument is not in this list.  **Write** this function.
-function stack() {
+// The previous pattern is not the most common way to define objects in
+// JavaScript.  The usual way (prior to ES6) is to use a *constructor function*.
+// But the differences between the two are superficial.
 
+// First we need to define the constructor.  Here we just need to set
+// the instance properties.
+function CounterConstructor() {
+  this.i = 0;
 }
 
-var s = stack();
-typeof s === 'function'; //:
-s('push', 1);
-s('push', 2);
-s('push', 3);
-s('size') === 3; //:
-s('pop') === 3; //:
-s('peek') === 2; //:
-s('size') === 2; //:
-s('poke') === "Message not understood"; //:
+// Then, to define the methods, we add properties to the
+// `CounterConstructor.prototype` object.  **Complete** this definition.
+CounterConstructor.prototype.inc = function() {
 
-var s2 = stack();
-typeof s2 === 'function'; //:
-s !== s2; //:
-s2('size') === 0; //:
+};
 
-// ## Dynamic dispatch
+CounterConstructor.prototype.dec = function() {
 
-// Let's build another collection.  This time a queue, a first-in, first-out
-// collection.
-//
-// The `queue` function creates a queue which responds to the following
-// messages:
-//
-// 1. 'enqueue' takes an argument and adds this element to the end of
-//    the queue;
-// 2. 'dequeue' removes and returns the first element of the queue;
-// 3. 'size' returns the number of elements in the queue.
-//
-// **Complete** the definition.
-function queue() {
+};
 
-}
+// Lastly, to call the constructor function we need to use the keyword `new`.
+c1 = new CounterConstructor();
+c2 = new CounterConstructor();
 
-var q = queue();
-typeof q === 'function'; //:
-q('enqueue', 1);
-q('enqueue', 2);
-q('enqueue', 3);
-q('size') === 3; //:
-q('dequeue') === 1; //:
-q('dequeue') === 2; //:
-q('q') === "Message not understood"; //:
-
-var q2 = queue();
-typeof q2 === 'function'; //:
-q !== q2; //:
-q2('size') === 0; //:
-
-// Now we can write a generic function `size` that retrieves the size of the
-// collection.  All that matters is that the object passed as an argument to
-// this function understands the 'size' message, and returns a meaningful value.
-// **Complete** the definition.
-function collectionSize(collection) {
-
-}
-
-collectionSize(s) === 2; //:
-collectionSize(q) === 1; //:
-collectionSize(stack()) === 0; //:
-collectionSize(queue()) === 0; //:
-
-// ## A simple point object
-
-// Another example of abstraction with objects is a 1-dimensional point.
-//
-// The `point` function takes one argument: the initial value for the x
-// coordinate of the point, and returns a function that understands the
-// following messages:
-//
-// 1. 'getX': returns the value of the x coordinate;
-// 2. 'setX': takes an argument and sets the x coordinate of the point
-//    to the argument value;
-// 3. 'equals': takes another point as argument, and returns true if
-//    and only if both points have the same coordinates.
-//
-// **Complete** the definition.
-function point(x) {
-
-}
-
-var p1 = point(0);
-typeof p1 === 'function'; //:
-var p2 = point(1);
-typeof p2 === 'function'; //:
-p1 !== p2; //:
-p1('getX') === 0; //:
-p2('getX') === 1; //:
-p1('equals', p2) === false; //:
-p2('equals', p1) === false; //:
-p1('setX', 1);
-p1('equals', p2); //:
-p1() === "Message not understood"; //:
-
-// ## Self reference
-
-// Let's add another method to the point object, the method 'rightmost' which
-// takes another point as argument and returns the point with the higher x
-// coordinate.  What value should we return for the current object?
-//
-// We have no way to refer to the object itself inside its methods!  The object
-// itself is what is returned by the function `point`.
-//
-// **Complete** this definition.
-function point2(x) {
-
-}
-
-p1 = point2(1);
-typeof p1 === 'function'; //:
-p2 = point2(0);
-typeof p2 === 'function'; //:
-p1 !== p2; //:
-p1('rightmost', p2) === p1; //:
-p2('rightmost', p1) === p1; //:
-p1('equals', p2) === false; //:
-p2('equals', p1) === false; //:
-p2('setX', 2);
-p1('rightmost', p2) === p2; //:
-p2('rightmost', p1) === p2; //:
-p1() === "Message not understood"; //:
-
-// ## Abstracting the object pattern
-
-// All these object definitions are frankly getting a little repetitive.  Once
-// we have seen the pattern, the methods objects is always defined in the same
-// way, and the returned function is always the same.
-
-// We can abstract the pattern by creating an `object` function, which takes the
-// methods of the object to create, and return the dispatching function.
-// **Write** this function.  An example of its use follows.
-function object(methods) {
-
-}
-
-// Here is how we use `object` to create the bi-directional counter at the
-// beginning of this document.  Note that we are using a JavaScript object, but
-// only as a dictionary structure.  We could have used an array of tuples as
-// well, or a Map.  The literal object syntax is just more convenient.
-function makeCounter() {
-  var i = 0;
-
- return object({
-   inc: function() {
-     i += 1;
-     return i;
-   },
-
-   dec: function() {
-     i -= 1;
-     return i;
-   },
- });
-}
-
-c1 = makeCounter();
-typeof c1 === 'function'; //:
-c1('inc') === 1; //:
-c1('inc') === 2; //:
-c1('dec') === 1; //:
-c1() === "Message not understood"; //:
-
-c2 = makeCounter();
-typeof c2 === 'function'; //:
 c1 !== c2; //:
-c2('dec') === -1; //:
-c2('inc') === 0; //:
-c2('ee') === "Message not understood"; //:
 
-// ## Self-reference, again
+c1.inc() === 1; //:
+c1.inc() === 2; //:
+c2.inc() === 1; //:
+c1.dec() === 1; //:
+c1.dec() === 0; //:
 
-// If we want to define a `point2` object with `object`, we need to to pass the
-// object itself to the methods in the dispatcher.  Let's call this variant
-// `objectWithSelf`.  **Complete** its definition.  Look at an example of its
-// use in `makePoint` below.
-function objectWithSelf(methods) {
+// Functions are still shared.
+c1.inc === c2.inc; //:
+c1.dec === c2.dec; //:
 
-}
+// Using a prototype object and a factory or using a constructor function and
+// extending its `prototype` object are equivalent.  The former is more
+// explicit, while the latter hides the object construction and prototype
+// assignation with the `new` keyword.
 
-// This defines a `point2` object with `objectWithSelf`.  Note how the methods
-// receive the object itself as first argument: we can call methods on `self`.
-function makePoint(x) {
-  return objectWithSelf({
-    getX: function() {
-      return x;
-    },
-
-    setX: function(self, v) {
-      x = v;
-    },
-
-    equals: function(self, p) {
-      return p('getX') === self('getX');
-    },
-
-    rightmost: function(self, p) {
-      return self('getX') > p('getX') ? self : p;
-    },
-  });
-}
-
-p1 = makePoint(1);
-typeof p1 === 'function'; //:
-p2 = makePoint(0);
-typeof p2 === 'function'; //:
-p1 !== p2; //:
-p1('rightmost', p2) === p1; //:
-p2('rightmost', p1) === p1; //:
-p2('setX', 2);
-p1('rightmost', p2) === p2; //:
-p2('rightmost', p1) === p2; //:
-p1() === "Message not understood"; //:
-
-// ## Forwarding
-
-// Let's say we want to define a two-dimensional point.  Since we already have a
-// one-dimensional one, we would like to reuse its functionality for the x
-// coordinate.  We can define this object using `objectWithSelf` and
-// `makePoint`.  We'll leave the `rightmost` method for later, as it will prove
-// problematic.
-function makePoint2d(x,y) {
-  var point1d = makePoint(x);
-
-  return objectWithSelf({
-    getX: function() {
-      return point1d('getX');
-    },
-
-    setX: function(self, v) {
-      point1d('setX', v);
-    },
-
-    getY: function() {
-      return y;
-    },
-
-    setY: function(self, v) {
-      y = v;
-    },
-
-    equals: function(self, p) {
-      return point1d('equals', p) && p('getY') === self('getY');
-    },
-  });
-}
-
-// **Check** that all these tests return `true`, otherwise you made a mistake in
-// `objectWithSelf`.
-p1 = makePoint2d(1,2);
-typeof p1 === 'function'; //:
-p2 = makePoint2d(3,5);
-typeof p2 === 'function'; //:
-p1 !== p2; //:
-p1('getX') === 1; //:
-p1('getY') === 2; //:
-p2('getX') === 3; //:
-p2('getY') === 5; //:
-p1('equals', p2) === false; //:
-p1('setX', 3);
-p1('setY', 5);
-p1('equals', p2); //:
-p2('equals', p1); //:
-p1('equals', p1); //:
-p2('equals', p2); //:
-
-// We have effectively forwarded the messages we did not want to handle on the
-// internal `point1d`.  Though we have to be exhaustive in `makePoint2d`: every
-// message that we want to forward must be explicitly specified as such.
-
-// ## Delegation
-
-// What if we could define a handler object for all messages we do not wish to
-// capture?  That would save us from explicitly forwarding all messages.
-
-// The `objectWithDelegate` function takes an additional argument, the
-// `delegate` object, and when the method is not found in the current object, it
-// lets the delegate object try to answer it.  **Write** this function.  You
-// should also add the delegate in a property named `delegate` to the returned
-// function, in order for `equals` to work in the example below.
-function objectWithDelegate(methods, delegate) {
-
-}
-
-// Here is how we use it.  Note the additional argument to `objectWithDelegate`.
-// Also note the `self.delegate` in `equals` to refer to the delegate object
-// from inside the methods.
-function makePoint2dDelegated(x, y) {
-  return objectWithDelegate({
-    getY: function() {
-      return y;
-    },
-
-    setY: function(self, v) {
-      y = v;
-    },
-
-    equals: function(self, p) {
-      return self.delegate('equals', p) && p('getY') === self('getY');
-    },
-  }, makePoint(x));
-}
-
-p1 = makePoint2dDelegated(1,2);
-typeof p1 === 'function'; //:
-p2 = makePoint2dDelegated(3,5);
-typeof p2 === 'function'; //:
-p1 !== p2; //:
-p1('getX') === 1; //:
-p1('getY') === 2; //:
-p2('getX') === 3; //:
-p2('getY') === 5; //:
-p1('equals', p2) === false; //:
-p2('equals', p1) === false; //:
-p1('setX', 3);
-p1('setY', 5);
-p1('equals', p2); //:
-p2('equals', p1); //:
-p1('equals', p1); //:
-p2('equals', p2); //:
-
-// ## Fixing the self
-
-// Why does the call to 'rightmost' fail?  To make things worse, note that
-// inverting the points gives a different answer, even though 'rightmost' is
-// obviously a symmetric operation.
-p1 = makePoint2dDelegated(1,2);
-p2 = makePoint2dDelegated(3,5);
-p2('rightmost', p1) === p2 === false; //:
-p1('rightmost', p2) === p2 === true; //:
-
-// Well, it has to do with the binding of the `self` variable.  Recall that
-// `rightmost` returns `self`, but since `rightmost` is called from a
-// 1-dimensional point, `self` in this refers to the 1-dimensional point object.
-// In the current case, we expect `self` to refer to the *receiver* of the
-// 'rightmost' message, not the object that actually responded to it.
-
-// To fix this issue, we need to pass to each method the reference of the actual
-// receiver.  But where does this receiver value come from?  It is provided by
-// the original caller of the method, so it must be passed as an argument to the
-// dispatcher.  **Write** the functions `objectWithSelf2` and
-// `objectWithDelegate2` that correctly handles the issue with `rightmost`.
-// Check that they work with the example below.
-function objectWithSelf2(methods) {
-
-}
-
-function objectWithDelegate2(methods, delegate) {
-
-}
-
-// To check that it works, we can just create a point objects that delegates
-// everything to a 1-dimensional point.  We must first define a new version of
-// `makePoint` that handles the additional `receiver`argument.  Note the
-// additional arguments when calling a method on `self` and `p` in `rightmost`.
-function makePointWithReceiver(x) {
-  return objectWithSelf2({
-    getX: function() { return x; },
-    setX: function(self, v) { x = v; },
-    rightmost: function(self, p) { return self(self, 'getX') > p(p, 'getX') ? self : p; },
-  });
-}
-
-function makePointDelegated(x) {
-  return objectWithDelegate2({}, makePointWithReceiver(x));
-}
-
-p1 = makePointDelegated(1);
-p2 = makePointDelegated(3);
-p1(p1, 'setX', 2);
-p1(p1, 'getX') === 2; //:
-p1(p1, '') === "Message not understood"; //:
-
-// Again, the receiver is the first argument when calling methods now.
-p2(p2, 'rightmost', p1) === p2; //:
-p1(p1, 'rightmost', p2) === p2; //:
-
-// ## Getting back to JavaScript
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Classes (ES6)
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// How does all of this relate to JavaScript objects?  The `self` reference we
-// used is called `this` in JavaScript, and `this` is an hidden argument to
-// functions (contrast this to methods in Python, which receive an extra `self`
-// argument).  The 'delegate' link we defined is just the prototype link of
-// JavaScript objects.  The passing of the receiver object to the delegated
-// method is exactly the same mechanism.  There is nothing more to objects and
-// prototypes in JavaScript than what we've implemented here.
+// The standard way to build classes in ECMAScript 6 is to use the `class`
+// keyword.  The difference is again syntactical: the `class` keyword is mostly
+// syntactic sugar on top of the constructor function + prototype object
+// pattern.
+
+// **Complete** the constructor, the `inc` method and add the `dec` method.
+class CounterClass {
+  constructor() {
+
+  }
+
+  inc() {
+
+  }
+}
+
+c1 = new CounterClass();
+c2 = new CounterClass();
+
+// Results are the same as above
+c1 !== c2; //:
+c1.inc() === 1; //:
+c1.inc() === 2; //:
+c2.inc() === 1; //:
+c1.dec() === 1; //:
+c1.dec() === 0; //:
+c1.inc === c2.inc; //:
+c1.dec === c2.dec; //:
+
+// Using `class` makes the intention clearer, especially to programmers used to
+// class-based language.  But make no mistake: it does not turn JavaScript into
+// a class-based language.  It's all prototypes behind the scenes:
+
+typeof CounterClass === 'function'; //:
+'inc' in CounterClass.prototype; //:
+'dec' in CounterClass.prototype; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// `class` or constructor + prototype object?
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// If you have ES6 support, you should use the `class` keyword to define classes
+// since, outside of a few corner cases, you are expressing the exact same thing
+// with a clearer syntax.
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Literal with constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Just to show that JavaScript is flexible, we will consider one final object
+// construction pattern.  This one is syntactically close to the `class` one,
+// but the constructor is not treated specially.
+
+// The `counterLiteral` object integrates its constructor as a property named
+// `new`.  This is the same as in the factory and prototype object pattern, but
+// with the factory moved as a method of the prototype object.  **Complete**
+// this definition.
+let counterLiteral = {
+
+};
+
+// `new` is just a method of `counterLiteral`.  No need for a special keyword.
+c1 = counterLiteral.new();
+c2 = counterLiteral.new();
+
+c1 !== c2; //:
+
+c1.inc() === 1; //:
+c1.inc() === 2; //:
+c2.inc() === 1; //:
+c1.dec() === 1; //:
+c1.dec() === 0; //:
+
+// Functions are still shared.
+c1.inc === c2.inc; //:
+c1.dec === c2.dec; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// The reset counter
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Now we wish to extend the counter with a reset functionality.  Of course we
+// not want to modify the counter objects themselves, since we also wish to
+// create plain counter alongside reset counters.  We would like reset counters
+// to *inherit* the `inc` and `dec` methods from counter objects.
+//
+// We'll see how the different patterns above handle inheritance.
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Singleton literal
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Extending a singleton object is easily done by assigning a parent object as
+// the value of the special `__proto__` property.  **Complete** this definition.
+let resetCounterSingleton = {
+
+};
+
+let r1 = resetCounterSingleton;
+
+// This checks that even though `inc` and `dec` are not defined on the
+// object `r1` itself, we can still reach them via the prototype
+// chain.
+r1.hasOwnProperty('inc') === false; //:
+r1.hasOwnProperty('dec') === false; //:
+'inc' in r1; //:
+'dec' in r1; //:
+
+r1.resetCount === 0; //:
+r1.inc() === 2; //:
+r1.inc() === 3; //:
+r1.i === 3; //:
+r1.reset();
+r1.i === 0;
+r1.resetCount === 1; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Factory and prototype object
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Of course, if we want more than one instance of reset counter, we cannot
+// settle with a singleton.
+
+// The first way to do that is to use the factory and prototype object again.
+// Here, the prototype object will inherit from `counterPrototype`.
+let resetCounterPrototype = {
+
+};
+
+function resetCounterPrototypeFactory() {
+
+}
+
+r1 = resetCounterPrototypeFactory();
+let r2 = resetCounterPrototypeFactory();
+
+// The `inc` and `dec` methods are inherited.
+r1.hasOwnProperty('inc') === false; //:
+r1.hasOwnProperty('dec') === false; //:
+'inc' in r1; //:
+'dec' in r1; //:
+
+r1.resetCount === 0; //:
+r1.inc() === 1; //:
+r1.inc() === 2; //:
+r1.i === 2; //:
+r1.reset();
+r1.i === 0;
+r1.resetCount === 1; //:
+
+// The two instances are distinct and do not share state.
+r1 !== r2; //:
+r2.i === 0; //:
+r2.resetCount === 0; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Function constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Same as before, but with the additional prototype link.  **Complete** these
+// definitions.
+function ResetCounterConstructor() {
+
+}
+
+ResetCounterConstructor.prototype = Object.create(CounterConstructor.prototype);
+ResetCounterConstructor.prototype.constructor = ResetCounterConstructor;
+
+r1 = new ResetCounterConstructor();
+r2 = new ResetCounterConstructor();
+
+r1.hasOwnProperty('inc') === false; //:
+r1.hasOwnProperty('dec') === false; //:
+'inc' in r1; //:
+'dec' in r1; //:
+
+r1.resetCount === 0; //:
+r1.inc() === 1; //:
+r1.inc() === 2; //:
+r1.i === 2; //:
+r1.reset();
+r1.i === 0;
+r1.resetCount === 1; //:
+
+r1 !== r2; //:
+r2.i === 0; //:
+r2.resetCount === 0; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Class (ES6)
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// With a `class`, we can inherit conveniently using the `extends` keyword.
+// This is yet another advantage of using the `class` keyword other the
+// constructor function pattern above.
+
+// **Complete** this definition using `extends`.
+class ResetCounterClass {
+
+}
+
+r1 = new ResetCounterClass();
+r2 = new ResetCounterClass();
+
+r1.hasOwnProperty('inc') === false; //:
+r1.hasOwnProperty('dec') === false; //:
+'inc' in r1; //:
+'dec' in r1; //:
+
+r1.resetCount === 0; //:
+r1.inc() === 1; //:
+r1.inc() === 2; //:
+r1.i === 2; //:
+r1.reset();
+r1.i === 0;
+r1.resetCount === 1; //:
+
+r1 !== r2; //:
+r2.i === 0; //:
+r2.resetCount === 0; //:
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Literal with constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// The last pattern is, once again, the literal object with a constructor.
+// **Complete** this definition and check the tests.
+let resetCounterLiteral = {
+
+};
+
+r1 = resetCounterLiteral.new();
+r2 = resetCounterLiteral.new();
+
+r1.hasOwnProperty('inc') === false; //:
+r1.hasOwnProperty('dec') === false; //:
+'inc' in r1; //:
+'dec' in r1; //:
+
+r1.resetCount === 0; //:
+r1.inc() === 1; //:
+r1.inc() === 2; //:
+r1.i === 2; //:
+r1.reset();
+r1.i === 0;
+r1.resetCount === 1; //:
+
+r1 !== r2; //:
+r2.i === 0; //:
+r2.resetCount === 0; //:
+
+// The last pattern has one interesting twist: We can add methods on objects,
+// and use `new` to create objects that share these methods.  You might have to
+// alter `resetCounterLiteral.new` to make the following tests work.
+r1.set = function(i) { this.i = i; };
+let r3 = r1.new();
+r1.hasOwnProperty('set'); //:
+'set' in r1; //:
+r3.hasOwnProperty('set') === false; //:
+'set' in r3; //:
+
+// Note that only objects created from `r1.new` have the `set` method:
+'set' in r2 === false; //:
+
+// So, `r1` is an instance of the `resetCounterLiteral` prototype, but `r3` is
+// an instance of the `r1` prototype.  Note that we didn't need to create a
+// class for `r1` in order to derive an instance from it.  That is the main
+// characteristic of prototype-based languages.  In class-based languages, by
+// you need to create classes before creating instances.  In prototype-based
+// languages, you can derive from other instances.
+
+//~~~~~~~~
+// Bonus
+//~~~~~~~~
+//
+// We could have used the closure pattern as well to define a reset counter and
+// still use delegation.  Can you write it?
