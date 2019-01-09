@@ -27,7 +27,7 @@
 ### Labs
 TP0, TP1, TP2 and TP3 are written for [s3c](/s3c).
 
-- [TP0 – Basics](../2017/tp0.js)
+- [TP0 – Basics](/tp/tp0.js) ([solution](tp/tp0.solution.js))
 - [TP1 – Higher-Order Functions](../2017/tp1.js)
 - [TP2 – Creating Objects](tp/tp2.js)
 - [TP3 – Implementing Objects and Prototypes](tp/tp3.js)
