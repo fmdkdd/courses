@@ -18,7 +18,7 @@
 ### Lectures
 
 - Lecture 0: [JavaScript Overview](slides/js-intro/)
-- Lecture 1: Closures ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#closure))
+- Lecture 1: [Closures](slides/closures/) ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#closure))
 - Lecture 2: Prototypes ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#prototype))
 - Lecture 3: Event Loop, Promises, Async ([event loop simulator](http://latentflip.com/loupe/),
   [intro to promises](https://developers.google.com/web/fundamentals/primers/promises),
