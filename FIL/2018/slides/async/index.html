@@ -14,6 +14,103 @@
   <h3>Asynchronous code</h3>
 
   <style>
+    @keyframes spin {
+      to {transform: rotate(360deg);}
+    }
+
+    .spinner:before {
+      content: '';
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      margin-top: -40px;
+      margin-left: -40px;
+      border-radius: 100%;
+      border-top: 8px solid #07d;
+      border-right: 8px solid transparent;
+      animation: spin 1s linear infinite;
+    }
+  </style>
+
+  <script>
+    function load_stuff() {
+      const h = document.querySelector('.spinner-holder')
+      h.classList.add('spinner')
+      setTimeout(() => {
+        h.classList.remove('spinner')
+        document.getElementById('cat-picture')
+          .style.display = 'block'
+      }, 6000)
+    }
+  </script>
+
+  <div class="spinner-holder"></div>
+
+  <button style="font-family: 'Oswald'; font-size: 30px; margin-left: 50px;" onclick="load_stuff()">Load stuff</button>
+
+  <div id="cat-picture" class="output" style="margin: 50px; display: none;">
+    <p>&lt;Cat picture with funny caption&gt;</p>
+  </div>
+
+</code></pre>
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <pre class="smaller"><code>$('#spinner-holder').addClass('spinner')
+$.ajax('cats.io/random')
+ .done(<span class="alert">function(pic) {
+    $('#spinner-holder').removeClass('spinner')
+    $(body).append(pic)
+  }</span>)
+  </code></pre>
+
+  <p>Asyncrhonous code relies on <strong>callbacks</strong></p>
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <style>
+    .output {
+      border: 4px solid #7f8c8d;
+      border-radius: 2px;
+      padding: 0 5px;
+    }
+  </style>
+
+  <pre><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output"><code>
+
+
+</code></pre>
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <pre><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output"><code>Hello
+Bye
+Wait</code></pre>
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <style>
     .output {
       border: 4px solid #7f8c8d;
       border-radius: 2px;
@@ -182,21 +279,40 @@ Wait</code></pre>
 
   <ul>
     <li>Tasks run to completion</li>
-    <li>Code in a single script is single-threaded</li>
+    <li>Code in a single script is "single-threaded"</li>
     <li>Browsers may do work in parallel (e.g., AJAX fetch)</li>
     <li>Web workers may run JS in parallel and communicate via messages (actor pattern)</li>
   </ul>
+
+  <p>A task is <strong>never preempted</strong></p>
+</section>
+
+<section>
+  <h2>Promises</h2>
 </section>
 
 <section>
   <h3>Callback hell</h3>
 
-
+  <pre class="smaller"><code>doThing1(function(result) {
+  doThing2(result, function(newResult) {
+    doThing3(newResult, function(finalResult) {
+      log('Got the final result:', finalResult)
+    }, handleFailure)
+  }, handleFailure)
+}, handleFailure)</code></pre>
 </section>
 
 <section>
   <h3>Promises</h3>
 
+  <pre class="smaller"><code>doThing1()
+.<span class="alert">then</span>(doThing2)
+.<span class="alert">then</span>(doThing3)
+.<span class="alert">then</span>(function(finalResult) {
+  log('Got the final result:', finalResult)
+ })
+.<span class="alert">catch</span>(handleFailure)</code></pre>
 
 </section>
 
@@ -207,8 +323,22 @@ Wait</code></pre>
 </section>
 
 <section>
+  <h2>Async/await</h2>
+</section>
+
+<section>
   <h3>Async/await</h3>
 
+  <pre class="smaller"><code><span class="alert">async</span> function f() {
+  try {
+    let result  = <span class="alert">await</span> doThing1()
+    newResult   = <span class="alert">await</span> doThing2(result)
+    finalResult = <span class="alert">await</span> doThing3(newResult)
+    log('Got the final result:', finalResult)
+  catch(e) {
+    handleFailure(e)
+  }
+}</code></pre>
 
 </section>
 
@@ -218,12 +348,10 @@ Wait</code></pre>
   <h3>Takeaways</h3>
 
   <ul>
-    <li>Objects delegate property lookup to their prototype</li>
-    <li><code>Object.prototype</code> is the default</li>
-    <li>Prototypes form a chain</li>
-    <li>Prototypes may be muted, but at a performance cost</li>
-    <li><code>this</code> is dynamically bound to the receiver</li>
-    <li>Arrow functions bind <code>this</code> lexically</li>
+    <li>JS enables asynchronous calls</li>
+    <li>Tasks are never preempted</li>
+    <li>Promises ease chaining and error handling</li>
+    <li>Async/await syntax is more familiar</li>
   </ul>
 </section>
 
