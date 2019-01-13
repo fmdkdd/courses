@@ -6,24 +6,27 @@
 
 const pendingRequests = []
 
-// Get the list of images and call `cb` with the list when complete.
-function getIndex(cb) {
+// AJAX helper.  Do a GET request for `url` with response type `type`, and call
+// `cb` when complete.
+function get(url, type = 'text', cb) {
   const xhr = new XMLHttpRequest()
-  xhr.open('GET', 'index.json')
-  xhr.responseType = 'json'
+  xhr.open('GET', url)
+  xhr.responseType = type
   xhr.onload = function(e) { cb(this.response) }
   xhr.send()
   pendingRequests.push(xhr)
 }
 
+// Get the list of images and call `cb` with the list when complete.
+function getIndex(cb) {
+  return get('index.json', 'json', cb)
+}
+
 // Get the image at `url` and call `cb` with the result when complete.
 function getImage(url, cb) {
-  const xhr = new XMLHttpRequest()
-  xhr.open('GET', url)
-  xhr.responseType = 'blob'
-  xhr.onload = function(e) { cb(URL.createObjectURL(this.response)) }
-  xhr.send()
-  pendingRequests.push(xhr)
+  return get(url, 'blob', function(data) {
+    cb(URL.createObjectURL(data))
+  })
 }
 
 // We don't want to bother ourselves with creating HTML elements.  Let's get
@@ -62,6 +65,7 @@ function reset() {
   }
 }
 
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Loading functions
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,18 +91,9 @@ function reset() {
 //
 // This is fast, but the images are added out of order.
 function parallel() {
-  addSpinner()
-
   getIndex(images => {
-    let count = 0
     for (let im of images) {
-      getImage(im, function(img) {
-        addImage(img)
-        count++
-        if (count === images.length) {
-          removeSpinner()
-        }
-      })
+      getImage(im, addImage)
     }
   })
 }
@@ -112,21 +107,7 @@ function parallel() {
 // The images are in order, but this is slow, since we parallelize network
 // requests.
 function sequential() {
-  addSpinner()
 
-  getIndex(images => {
-    function getAndAdd(cur) {
-      if (cur < images.length) {
-        getImage(images[cur], function (img) {
-          addImage(img)
-          getAndAdd(cur+1)
-        })
-      } else {
-        removeSpinner()
-      }
-    }
-    getAndAdd(0)
-  })
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~
@@ -139,25 +120,7 @@ function sequential() {
 // This is faster, but we have to wait for all images before we can even see
 // one of them on the page.
 function parallelGetAddAll() {
-  addSpinner()
 
-  getIndex(images => {
-    const queue = []
-    let received = 0
-
-    for (let i in images) {
-      getImage(images[i], function(img) {
-        queue[i] = img
-        received++
-        if (received === images.length) {
-          while (queue.length > 0) {
-            addImage(queue.shift())
-          }
-          removeSpinner()
-        }
-      })
-    }
-  })
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,39 +134,128 @@ function parallelGetAddAll() {
 // This makes sure to launch all requests in parallel, and add images as soon as
 // they arrive while maintaining their order.
 function parallelGetStreamingAdd() {
-  addSpinner()
 
-  getIndex(images => {
-    const queue = []
-    let cur = 0
+}
 
-    for (let i in images) {
-      getImage(images[i], function(img) {
-        queue[i] = img
 
-        while (queue[cur] != null) {
-          addImage(queue[cur++])
-          if (cur === images.length) {
-            removeSpinner()
-          }
-        }
-      })
-    }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// With Promises
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Now we rewrite the functions above using promises instead of callbacks.
+
+// We need new helpers for AJAX requests that emit promises instead of
+// callbacks.  We'll add the suffix `P` to distinguish them:
+
+function getP(url, type = 'text') {
+  return new Promise(function(resolve, reject) {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url)
+    xhr.responseType = type
+    xhr.onload = function(e) { resolve(this.response) }
+    xhr.onerror = reject
+    xhr.send()
+    pendingRequests.push(xhr)
   })
 }
 
+function getIndexP() {
+  return getP('index.json', 'json')
+}
+
+function getImageP(url) {
+  return getP(url, "blob").then(URL.createObjectURL)
+}
+
 //~~~~~~~~~~
-// Simplest
+// Parallel
 //~~~~~~~~~~
 
-// Add an <img> element for each image, the browser will take care of making the
-// actual requests and put the image at the proper place when it is loaded.
-//
-// Probably the best way to do it when you are dealing with images.
-function simplest() {
-  getIndex(images => {
-    for (let im of images) {
-      addImage(im)
-    }
-  })
+// Start fetching all the images in parallel, and add them as soon as they
+// arrive.
+function promiseParallel() {
+  getIndexP()
+    .then(images => /* ... */)
+}
+
+//~~~~~~~~~~~~
+// Sequential
+//~~~~~~~~~~~~
+
+// Fetch the first image then add it, then fetch the second one and add it, etc.
+function promiseSequential() {
+
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~
+// Parallel get, add all
+//~~~~~~~~~~~~~~~~~~~~~~~
+
+// Fetch all images in parallel, but wait until all have arrived before adding
+// them in order.
+function promiseParallelGetAddAll() {
+
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Parallel get, streaming add
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Fetch all images in parallel, but add them in increasing order.  When image 1
+// arrives, add it, and add continue adding 2, 3, and 4 if they have arrived,
+// etc.  Otherwise don't do anything.
+function promiseParallelGetStreamingAdd() {
+
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// With async/await
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// One last time.  We rewrite the functions above using async functions and the
+// await keyword instead of promises.
+
+// We don't need new AJAX helpers, since `await` works with promises.
+
+//~~~~~~~~~~
+// Parallel
+//~~~~~~~~~~
+
+// Start fetching all the images in parallel, and add them as soon as they
+// arrive.
+function asyncParallel() {
+  let urls = await getIndexP()
+
+  /* ... */
+}
+
+//~~~~~~~~~~~~
+// Sequential
+//~~~~~~~~~~~~
+
+// Fetch the first image then add it, then fetch the second one and add it, etc.
+function asyncSequential() {
+
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~
+// Parallel get, add all
+//~~~~~~~~~~~~~~~~~~~~~~~
+
+// Fetch all images in parallel, but wait until all have arrived before adding
+// them in order.
+function asyncParallelGetAddAll() {
+
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Parallel get, streaming add
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Fetch all images in parallel, but add them in increasing order.  When image 1
+// arrives, add it, and add continue adding 2, 3, and 4 if they have arrived,
+// etc.  Otherwise don't do anything.
+function asyncParallelGetStreamingAdd() {
+
 }

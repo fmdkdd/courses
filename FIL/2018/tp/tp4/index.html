@@ -25,15 +25,32 @@
       @keyframes spin {
         to { transform: rotate(360deg) };
       }
+
+      label {
+        display: inline-block;
+        width: 5rem;
+      }
     </style>
-    <script src="index-with-spinner.js"></script>
+    <script src="index.solution.js"></script>
   </head>
   <body>
+    <label>Callbacks:</label>
     <button onclick="reset(); parallel()">Parallel</button>
     <button onclick="reset(); sequential()">Sequential</button>
     <button onclick="reset(); parallelGetAddAll()">ParallelGetAddAll</button>
     <button onclick="reset(); parallelGetStreamingAdd()">ParallelGetStreamingAdd</button>
-    <button onclick="reset(); simplest()">Simplest</button>
+    <br>
+    <label>Promises:</label>
+    <button onclick="reset(); promiseParallel()">Parallel</button>
+    <button onclick="reset(); promiseSequential()">Sequential</button>
+    <button onclick="reset(); promiseParallelGetAddAll()">ParallelGetAddAll</button>
+    <button onclick="reset(); promiseParallelGetStreamingAdd()">ParallelGetStreamingAdd</button>
+    <br>
+    <label>Async:</label>
+    <button onclick="reset(); asyncParallel()">Parallel</button>
+    <button onclick="reset(); asyncSequential()">Sequential</button>
+    <button onclick="reset(); asyncParallelGetAddAll()">ParallelGetAddAll</button>
+    <button onclick="reset(); asyncParallelGetStreamingAdd()">ParallelGetStreamingAdd</button>
     <div id="gallery"></div>
   </body>
 </html>
