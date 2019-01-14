@@ -31,3 +31,14 @@ TP0, TP1, TP2 and TP3 are written for [s3c](/s3c).
 - [TP1 – Higher-Order Functions](../2017/tp1.js) ([solution](../2017/tp1.solution.js))
 - [TP2 – Creating Objects](tp/tp2.js) ([solution](tp/tp2.solution.js))
 - [TP3 – Implementing Objects and Prototypes](tp/tp3.js)
+
+For TP4, you'll need to unzip the archive and run your own web server.  With
+Python 3, in the folder containing the `index.html` file:
+
+```
+$ python -m http.server
+```
+
+Then edit the `index.js` file in your editor of choice and follow its instructions.
+
+- [TP4 - Callbacks, Promises and Async](tp/tp4.zip)
