@@ -18,8 +18,7 @@
       to {transform: rotate(360deg);}
     }
 
-    .spinner:before {
-      content: '';
+    .spinner {
       box-sizing: border-box;
       position: absolute;
       top: 50%;
@@ -61,15 +60,63 @@
 <section>
   <h3>Asynchronous code</h3>
 
-  <pre class="smaller"><code>$('#spinner-holder').addClass('spinner')
-$.ajax('cats.io/random')
- .done(<span class="alert">function(pic) {
-    $('#spinner-holder').removeClass('spinner')
-    $(body).append(pic)
-  }</span>)
-  </code></pre>
+  <pre class="smaller"><code>$('button').click(<span class="alert">() =&gt; {</span>
+  $('#spinner-holder').addClass('spinner')
+  $.ajax('cats.io/random')
+   .done(<span class="alert">function(pic) {</span>
+      $('#spinner-holder').removeClass('spinner')
+      $(body).append(pic)
+    })
+})</code></pre>
 
-  <p>Asyncrhonous code relies on <strong>callbacks</strong></p>
+  <p>Asynchronous code relies on <strong>callbacks</strong></p>
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <pre class="smaller"><code>$('button').click(() =&gt; {
+  $('#spinner-holder').addClass('spinner')
+  $.ajax('cats.io/random')
+   .done(function(pic) {
+      $('#spinner-holder').removeClass('spinner')
+      $(body).append(pic)
+    })
+})</code></pre>
+
+  <button style="font-family: 'Oswald'; font-size: 30px; margin-left: 50px;">Load stuff</button>
+
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <pre class="smaller"><code>$('button').click(<span class="alert">() =&gt; {</span>
+  $('#spinner-holder').addClass('spinner')
+  <span class="alert">$.ajax('cats.io/random')</span>
+   .done(function(pic) {
+      $('#spinner-holder').removeClass('spinner')
+      $(body).append(pic)
+    })
+})</code></pre>
+
+  <img src="img/diag2.svg" style="margin: 0 50px">
+  <div class="spinner" style="top: 550px; left: 260px; width: 50px; height: 50px"></div>
+</section>
+
+<section>
+  <h3>Asynchronous code</h3>
+
+  <pre class="smaller"><code>$('button').click(() =&gt; {
+  $('#spinner-holder').addClass('spinner')
+  $.ajax('cats.io/random')
+   .done(<span class="alert">function(pic) {
+      $('#spinner-holder').removeClass('spinner')
+      $(body).append(pic)
+    })</span>
+})</code></pre>
+
+  <img src="img/diag2b.svg" style="margin: 0 50px">
 </section>
 
 <section>
@@ -146,7 +193,7 @@ Wait</code></pre>
   <h3>The <strong>task queue</strong></h3>
 
   <pre class="smaller"><code>log('Hello')
-setTimeout(() =&gt; log('Wait'), 0)
+setTimeout(() =&gt; log('Wait'), 1000)
 log('Bye')</code></pre>
 
   <label style="margin-left: 50px;">Console output</label>
@@ -155,7 +202,194 @@ log('Bye')</code></pre>
 
 </code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1a.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code><span class="alert">log('Hello')</span>
+setTimeout(() =&gt; log('Wait'), 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1a.svg">
+</div>
+</section>
+
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+<span class="alert">setTimeout(() =&gt; log('Wait'), 1000)</span>
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1e.svg">
+</div>
+
+<div class="spinner" style="left: 530px; top: 340px; width: 40px; height: 40px;"></div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1a.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 1000)
+<span class="alert">log('Bye')</span></code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+Bye
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1e.svg">
+</div>
+
+<div class="spinner" style="left: 530px; top: 340px; width: 40px; height: 40px;"></div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1a.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+Bye
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1e.svg">
+</div>
+
+<div class="spinner" style="left: 530px; top: 340px; width: 40px; height: 40px;"></div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1d.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+Bye
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1e.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; <span class="alert">log('Wait')</span>, 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+Bye
+Wait</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1c.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 1000)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+Bye
+Wait</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1d.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), <span class="alert">0</span>)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>
+
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1a.svg">
 </div>
@@ -174,7 +408,7 @@ log('Bye')</code></pre>
 
 </code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1a.svg">
 </div>
@@ -194,7 +428,38 @@ log('Bye')</code></pre>
 
 </code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1e.svg">
+</div>
+
+<div class="spinner" style="left: 530px; top: 340px; width: 40px; height: 40px;"></div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
+  <label style="display: block">Tasks</label>
+  <img src="img/diag1a.svg">
+</div>
+</section>
+
+<section>
+  <h3>The <strong>task queue</strong></h3>
+
+  <pre class="smaller"><code>log('Hello')
+setTimeout(() =&gt; log('Wait'), 0)
+log('Bye')</code></pre>
+
+  <label style="margin-left: 50px;">Console output</label>
+  <pre class="output" style="width: 300px"><code>Hello
+
+
+</code></pre>
+
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1b.svg">
 </div>
@@ -213,7 +478,12 @@ Bye
 
 </code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1b.svg">
 </div>
@@ -232,7 +502,12 @@ Bye
 
 </code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1e.svg">
 </div>
@@ -250,7 +525,12 @@ log('Bye')</code></pre>
 Bye
 Wait</code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1c.svg">
 </div>
@@ -268,7 +548,12 @@ log('Bye')</code></pre>
 Bye
 Wait</code></pre>
 
-<div style="position: absolute; right: 50px; bottom: 120px">
+<div style="position: absolute; right: 50px; bottom: 230px">
+  <label style="display: block">Timers</label>
+  <img src="img/diag1d.svg">
+</div>
+
+<div style="position: absolute; right: 50px; bottom: 80px">
   <label style="display: block">Tasks</label>
   <img src="img/diag1d.svg">
 </div>
@@ -294,17 +579,19 @@ Wait</code></pre>
 <section>
   <h3>Callback hell</h3>
 
-  <pre class="smaller"><code>doThing1(function(result) {
-  doThing2(result, function(newResult) {
-    doThing3(newResult, function(finalResult) {
+  <pre class="smaller"><code>doThing1(<span class="alert">function(result) {</span>
+  doThing2(result, <span class="alert">function(newResult) {</span>
+    doThing3(newResult, <span class="alert">function(finalResult) {</span>
       log('Got the final result:', finalResult)
-    }, handleFailure)
-  }, handleFailure)
-}, handleFailure)</code></pre>
+    }, <span class="alert">handleFailure</span>)
+  }, <span class="alert">handleFailure</span>)
+}, <span class="alert">handleFailure</span>)</code></pre>
+
+  <img src="img/diag3.svg" style="width: 250px; position: absolute; right: 50px; bottom: 50px">
 </section>
 
 <section>
-  <h3>Promises</h3>
+  <h3>Promises chaining</h3>
 
   <pre class="smaller"><code>doThing1()
 .<span class="alert">then</span>(doThing2)
@@ -314,12 +601,50 @@ Wait</code></pre>
  })
 .<span class="alert">catch</span>(handleFailure)</code></pre>
 
+  <img src="img/diag4.svg" style="width: 250px; position: absolute; right: 50px; top: 20px">
+
+  <ul>
+    <li>Promises are always called in a different (micro-)task</li>
+    <li>Methods added with <code>then</code> after the promise is settled are
+    still called</li>
+</ul>
+
 </section>
 
 <section>
-  <h3>Promises: error handling</h3>
+  <h3>Turning a callback API into a Promise</h3>
 
+  <div>
+  <label style="margin-left: 50px">With callbacks</label>
+  <pre class="smaller output"><code>function doThing(arg, cb, error) { ... }</code></pre>
+  </div>
 
+  <div>
+  <label style="margin-left: 50px">With promises</label>
+  <pre class="smaller output"><code>function doThingP(arg) {
+  return new Promise((resolve, reject) =&gt; {
+    doThing(arg, resolve, reject)
+  })
+}</code></pre>
+  </div>
+
+</section>
+
+<section>
+  <h3>Promises combinators</h3>
+
+  <div>
+  <label style="margin-left: 50px">Wait for all promises</label>
+  <pre class="output"><code>Promise.all([f1(), f2(), f3()])
+  .then([r1, r2, r3] =&gt ...)
+  </code></pre>
+  </div>
+
+  <div>
+  <label style="margin-left: 50px">Wait for the first promise</label>
+<pre class="output"><code>Promise.race([f1(), f2(), f3()])
+  .then(r =&gt ...)</code></pre>
+  </div>
 </section>
 
 <section>
@@ -329,7 +654,7 @@ Wait</code></pre>
 <section>
   <h3>Async/await</h3>
 
-  <pre class="smaller"><code><span class="alert">async</span> function f() {
+  <pre style="font-size: 25px"><code><span class="alert">async</span> function f() {
   try {
     let result  = <span class="alert">await</span> doThing1()
     newResult   = <span class="alert">await</span> doThing2(result)
@@ -340,8 +665,72 @@ Wait</code></pre>
   }
 }</code></pre>
 
+  <img src="img/diag4.svg" style="width: 250px; position: absolute; right: 20px; bottom: 20px">
+
 </section>
 
+<section>
+  <h3>Async/await force sequentiality</h3>
+
+  <pre style="font-size: 25px"><code>async function sequential() {
+  log(await sleep(2))
+  log(await sleep(1))
+}
+async function concurrent() {
+  let a = sleep(2)
+  let b = sleep(1)
+  log(await a)
+  log(await b)
+}
+async function parallel() {
+  let a = sleep(2).then(log)
+  let b = sleep(1).then(log)
+}</code></pre>
+
+  <div style="position: absolute; left: 500px; top: 150px; display: flex;">
+    <img src="img/clock.svg" style="width: 50px; margin-right: 20px">
+  </div>
+  <div style="position: absolute; left: 500px; top: 300px; display: flex;">
+    <img src="img/clock.svg" style="width: 50px; margin-right: 20px">
+  </div>
+  <div style="position: absolute; left: 500px; top: 450px; display: flex;">
+    <img src="img/clock.svg" style="width: 50px; margin-right: 20px">
+  </div>
+
+</section>
+
+<section>
+  <h3>Async/await force sequentiality</h3>
+
+  <pre style="font-size: 25px"><code>async function sequential() {
+  log(await sleep(2))
+  log(await sleep(1))
+}
+async function concurrent() {
+  let a = sleep(2)
+  let b = sleep(1)
+  log(await a)
+  log(await b)
+}
+async function parallel() {
+  let a = sleep(2).then(log)
+  let b = sleep(1).then(log)
+}</code></pre>
+
+  <div style="position: absolute; left: 500px; top: 150px; display: flex;">
+    <img src="img/clock.svg" style="width: 50px; margin-right: 20px">
+    <label>3 seconds</label>
+  </div>
+  <div style="position: absolute; left: 500px; top: 300px; display: flex;">
+    <img src="img/clock.svg" style="width: 50px; margin-right: 20px">
+    <label>2 seconds</label>
+  </div>
+  <div style="position: absolute; left: 500px; top: 450px; display: flex; align-items: flex-start">
+    <img src="img/clock.svg" style="width: 50px; margin-right: 20px">
+    <label>2 seconds<br>(but out of order)</label>
+  </div>
+
+</section>
 
 
 <section>
@@ -351,7 +740,7 @@ Wait</code></pre>
     <li>JS enables asynchronous calls</li>
     <li>Tasks are never preempted</li>
     <li>Promises ease chaining and error handling</li>
-    <li>Async/await syntax is more familiar</li>
+    <li>Async/await syntax is more familiar but may hinder parallelism</li>
   </ul>
 </section>
 

@@ -20,7 +20,7 @@
 - Lecture 0: [JavaScript Overview](slides/js-intro/)
 - Lecture 1: [Closures](slides/closures/) ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#closure))
 - Lecture 2: [Prototypes](slides/proto/) ([recommended reading](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#prototype))
-- Lecture 3: Event Loop, Promises, Async ([event loop simulator](http://latentflip.com/loupe/),
+- Lecture 3: [Concurrency](slides/async/) ([event loop simulator](http://latentflip.com/loupe/),
   [intro to promises](https://developers.google.com/web/fundamentals/primers/promises),
   [about tasks and queues](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/))
 
