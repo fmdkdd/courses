@@ -148,7 +148,7 @@ p.x <span class="s3c-result">//: <span class="incremental"><span>2</span></span>
   move(x) { <span class="kw">this</span>.x = x; }
 };
 let p = { x: 1 };
-<span class="alert">o.move.apply(p, 2);</span>
+<span class="alert">o.move.call(p, 2);</span>
 p.x <span class="s3c-result">//: 2</span></code></pre>
 </section>
 
@@ -161,7 +161,7 @@ p.x <span class="s3c-result">//: 2</span></code></pre>
 };
 let p = { x: 1 };
 <span class="alert">let m = o.move;
-m.apply(p, 2);</span>
+m.call(p, 2);</span>
 p.x <span class="s3c-result">//: 2</span></code></pre>
 </section>
 
@@ -197,7 +197,7 @@ this.x <span class="s3c-result">//: 2</span></code></pre>
 <span class="alert">function makeMove() {
   return (x) =&gt; { this.x = x };
 }</span>
-let m = makeMove.apply(o);
+let m = makeMove.call(o);
 m(2);
 o.x <span class="s3c-result">//: 2</span>
 this.x <span class="s3c-result">//: undefined</span></code></pre>
