@@ -41,4 +41,4 @@ $ python -m http.server
 
 Then edit the `index.js` file in your editor of choice and follow its instructions.
 
-- [TP4 - Callbacks, Promises and Async](tp/tp4.zip) ([solution](tp4/index.solution.js))
+- [TP4 - Callbacks, Promises and Async](tp/tp4.zip) ([solution](tp/tp4/index.solution.js))
