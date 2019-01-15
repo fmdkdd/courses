@@ -1,0 +1,329 @@
+\documentclass[a4paper, 12pt]{article}
+\addtolength{\topmargin}{-.8in}
+\addtolength{\textheight}{1.6in}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{%
+  \fancyfoot[C]{\thepage{}/\pageref{LastPage}}
+}
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{plain}
+
+\usepackage[bitstream-charter]{mathdesign}
+\usepackage{fontspec}
+%% \setmainfont{Charter}
+\setmonofont[Scale=MatchLowercase]{Fira Mono}
+
+\usepackage{wasysym}
+\newcommand{\choice}[1]{\Square\hspace{2pt} #1\hspace{5pt}}
+\newcommand{\choicec}[1]{\Square\hspace{2pt} \lstinline{#1}\hspace{5pt}}
+
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily}
+\lstset{tabsize=3, columns=fullflexible, keepspaces=true}
+\lstset{breaklines=false, showstringspaces=false}
+\lstset{frame=leftline, framerule=1pt}
+\lstset{framesep=2pt}
+\lstdefinelanguage{JavaScript}{
+keywords={new, true, false, try, catch, var, let, function, return, null,
+  undefined, switch, if, in, of, while, do, else, case, break},
+keywordstyle=\bfseries,
+ndkeywords={class, export, boolean, throw, implements, import, this},
+ndkeywordstyle=\bfseries,
+identifierstyle=,
+sensitive=false,
+comment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]',
+morestring=[b]"
+}
+
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Quiz JavaScript}
+\author{FIL A2}
+\date{15 janvier 2019}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Nom} :
+
+Sans machine ni document.
+
+Durée : 25 minutes.
+
+Cocher la bonne réponse (il peut y en avoir plusieurs).
+
+\begin{enumerate}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ a = 1 + 2 / 4;
+\end{lstlisting}
+
+  Que vaut \lstinline{a} ?
+
+  \choicec{6/4} \choicec{3/2} \choicec{1.5} \choicec{1} \choicec{2}
+
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ var a;
+ var a = 2;
+\end{lstlisting}
+
+  Que vaut \lstinline{a} ?
+
+  \choicec{"2"} \choicec{2} \choicec{"a"} \choicec{undefined} \choice{C'est une erreur}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ a = 2;
+ let a;
+\end{lstlisting}
+
+  Que vaut \lstinline{a} ?
+
+  \choicec{"2"} \choicec{2} \choicec{"a"} \choicec{undefined} \choice{C'est une erreur}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ const a = [1,2];
+ a.push(3);
+\end{lstlisting}
+
+  Que vaut \lstinline{a[2]} ?
+
+  \choicec{1} \choicec{2} \choicec{3} \choicec{undefined} \choice{C'est une erreur}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ 1 == true;
+\end{lstlisting}
+
+  Que vaut cette expression ?
+
+  \choicec{true} \choicec{false} \choicec{1} \choicec{undefined} \choice{C'est une erreur}
+
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ 1 === true;
+\end{lstlisting}
+
+  Que vaut cette expression ?
+
+  \choicec{true} \choicec{false} \choicec{1} \choicec{undefined} \choice{C'est une erreur}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ null == undefined;
+\end{lstlisting}
+
+  Que vaut cette expression ?
+
+  \choicec{true} \choicec{false} \choicec{null} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ 'ab2' === ('ab' + 2);
+\end{lstlisting}
+
+  Que vaut cette expression ?
+
+  \choicec{true} \choicec{false} \choicec{'ab2'} \choicec{'abtwo'}
+  \choicec{undefined}\\\choice{C'est une erreur}
+\item \begin{lstlisting}
+ function f(x,y) {
+   return y;
+ }
+\end{lstlisting}
+
+  Que vaut \lstinline{f(1,2)} ?
+
+  \choicec{1} \choicec{2} \choicec{undefined} \choice{C'est une erreur}
+
+  Que vaut \lstinline{f(1)} ?
+
+  \choicec{1} \choicec{2} \choicec{undefined} \choice{C'est une erreur}
+
+  Que vaut \lstinline{f(1,2,3)} ?
+
+  \choicec{1} \choicec{2} \choicec{3} \choicec{undefined} \choice{C'est une erreur}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ let r = [];
+ for (var i = 0; i < 3; ++i) {
+   r.push(x => x + i);
+ }
+ let t = r.map(f => f(3))
+\end{lstlisting}
+
+  Que vaut \lstinline{t} ?
+
+  \choicec{[0,1,2]} \choicec{[3,4,5]} \choicec{[3,3,3]} \choicec{[6,6,6]}
+
+\newpage
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ let r = [];
+ for (let i = 0; i < 3; ++i) {
+   r.push(i => i + i);
+ }
+ let t = r.map(f => f(3))
+\end{lstlisting}
+
+  Que vaut \lstinline{t} ?
+
+  \choicec{[0,1,2]} \choicec{[3,4,5]} \choicec{[3,3,3]} \choicec{[6,6,6]}
+
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ function f(x) {
+   let o = [x];
+   return function(y) {
+     o.push(y);
+     return o.length;
+   };
+ }
+ let g = f('b');
+ g('c');
+ g('d');
+\end{lstlisting}
+
+  Que retourne \lstinline{f('a')} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choice{une fonction} \choicec{undefined}
+
+  Que retourne \lstinline{f('a')('a')} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choice{une fonction} \choicec{undefined}
+
+  Que retourne l'appel \lstinline{g('c')} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choice{une fonction} \choicec{undefined}
+
+  Que retourne l'appel \lstinline{g('d')} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choice{une fonction} \choicec{undefined}
+\item \lstset{language=javascript}
+\begin{lstlisting}
+ let obj = {
+   a: "b",
+   b: 2
+ };
+\end{lstlisting}
+
+  Que vaut \lstinline{obj.a} ?
+
+  \choicec{2} \choicec{"a"} \choicec{"b"} \choicec{obj} \choicec{undefined}
+
+  Que vaut \lstinline{obj[2]} ?
+
+  \choicec{2} \choicec{"a"} \choicec{"b"} \choicec{obj} \choicec{undefined}
+
+  Que vaut \lstinline{obj[obj.a]} ?
+
+  \choicec{2} \choicec{"a"} \choicec{"b"} \choicec{obj} \choicec{undefined}
+\newpage
+\item \begin{lstlisting}
+ let P = {
+   x: 0,
+   y: 1,
+ };
+ let O = {__proto__: P,
+   x: 2,
+ };
+ O.y = 3;
+\end{lstlisting}
+
+  Que vaut \lstinline{O.x} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+
+  Que vaut \lstinline{O.y} \emph{avant} l'affectation \lstinline{O.y = 3} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+
+  Que vaut \lstinline{O.y} \emph{après} l'affectation \lstinline{O.y = 3} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+
+  Que vaut \lstinline{P.y} \emph{après} l'affectation \lstinline{O.y = 3} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+\item \begin{lstlisting}
+ let O = {
+   m(i) {
+     this.i = i;
+     return function(y) { this.i += y; };
+   },
+   g(i) {
+     this.i = i;
+     return y => { this.i += y; };
+   }
+ };
+ let m = O.m(1);
+ m(1);
+
+ let g = O.g(1);
+ g(1);
+
+ let f = O.m;
+ f(1);
+\end{lstlisting}
+
+  Que vaut \lstinline{O.i} après l'appel \lstinline{m(1)} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+
+  Que vaut \lstinline{O.i} après l'appel \lstinline{g(1)} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+
+  Que vaut \lstinline{O.i} après l'appel \lstinline{f(1)} ?
+
+  \choicec{0} \choicec{1} \choicec{2} \choicec{3} \choicec{undefined}
+\item \begin{lstlisting}
+ let P = { x: 0 };
+ let T = { x: 1 };
+ let O = {__proto__: P };
+ O.__proto__ = T;
+\end{lstlisting}
+
+  Que vaut \lstinline{O.x} \emph{avant} l'affectation \lstinline{O.__proto__ = T} ?
+
+  \choicec{0} \choicec{1} \choicec{undefined}
+
+  Que vaut \lstinline{O.x} \emph{après} l'affectation \lstinline{O.__proto__ = T} ?
+
+  \choicec{0} \choicec{1} \choicec{undefined}
+\item La fonction \lstinline{log(x)} affiche \lstinline{x} dans la console.  La
+  fonction \lstinline{sleep(n)} retourne une promesse qui se résout après
+  \lstinline{n} secondes.
+  \begin{lstlisting}
+ async function f() {
+   log(1)
+   sleep(10).then(log(2))
+   log(3)
+   await sleep(20).then(log(4))
+   log(5)
+ }
+ f()
+\end{lstlisting}
+
+  Après combien de secondes se termine le programme ?  (On suppose que toute
+  opération autre que \lstinline{sleep} prend un temps insignifiant.)
+
+  \choice{0} \choice{10} \choice{20} \choice{30}
+
+  Donnez l'affichage de la console:
+
+  \framebox(400,50){}
+\newpage
+\item Écrivez la fonction \lstinline{zipWith(a, b, f)} où \lstinline{a} et
+  \lstinline{b} sont deux tableaux et \lstinline{f} une fonction de deux
+  arguments.  La fonction \lstinline{zipWith} retourne le tableau
+  \lstinline{[f(a[0], b[0]), f(a[1], b[1]), ...]}.  Le tableau retourné par
+  \lstinline{zipWith} est de longueur égale au plus petit tableau passé en
+  arguments.
+
+  \framebox(400,600){}
+\end{enumerate}
+
+\end{document}
